@@ -8,15 +8,16 @@
    Getting all releases out on time and avoiding finishing work last-minute.
 1. __What are your personal goals for improving your teamwork and communication skills this semester?__ 
    Creating a plan of work allocation for everyone in the group before any work is started to ensure the sprints are 
-	organized and no two people accidentally work on the same part of the project or a part of the project is missed.
-	Keeping up communication over slack/text during this process will be essential to knowing what is done and what still
-	needs to be finished.
+   organized and no two people accidentally work on the same part of the project or a part of the project is missed.
+   Keeping up communication over slack/text during this process will be essential to knowing what is done and what still
+   needs to be finished.
 1. __What kinds of obstacles might you encounter in trying to reach both your team and personal goals?__ 
-   * answer
-1. __What happens if some people on the team want to get an ìAî while others think a ìBî will be acceptable?__ 
+   Commitments outside of class conflicting with deadlines, difficulty portioning out equal workloads amongst the team and allocating
+   unexpected additional work needed throughout sprints.
+1. __What happens if some people on the team want to get an ‚ÄúA‚Äù while others think a ‚ÄúB‚Äù will be acceptable?__ 
    Communicating this to the rest of the team and making sure we all understand what every group member is expecting
    is vital. From there those who want to get a higher grade are welcome to put in the extra effort to achieve that.
-1. __Is it acceptable for some team members to do more work on the assignment in order to get an ìAî?__ 
+1. __Is it acceptable for some team members to do more work on the assignment in order to get an ‚ÄúA‚Äù?__ 
    Yes, but this should be communicated from the start of each sprint. If there is anyone who wants to put in more effort
    it should be allocated from the beginning, so that they don't take up the work of others without them knowing. Getting an
    A at the cost of someone else's grade is not acceptable.
@@ -25,7 +26,7 @@
 1. __How will you decide who should do what on the project and activities?__ 
    A group meeting at the start of every sprint devoted to deciding who is allocated what work based on 
    preferences and skill sets is my suggestion.
-1. __What will happen if someone doesnít follow through on a commitment (missing deadline, no show, etc.)?__ 
+1. __What will happen if someone doesn‚Äôt follow through on a commitment (missing deadline, no show, etc.)?__ 
    Preferably that person will communicate beforehand that they will have trouble meeting the deadline. Regardless, workload likely
    needs to be adjusted to compensate and i would expect anyone who doesn't follow through on commitments and doesnt communicate 
    beforehand to recieve a lower grade.
