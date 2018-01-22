@@ -3,7 +3,7 @@
 1. __What is your personality type?__
    * ESFJ
 1. __Is it generally easier to reach you by text, electronic mail, voice mail or something else?  What hours?__ 
-   * Text is probably the easiest, though Email and Slack will work. Any hours will work, but it could take me an hour to response at any given time.
+   * Text is probably the easiest, (605)569-0241, though Email and Slack will work. Any hours will work, but it could take me an hour to response at any given time.
 1. __What are your expectations about what your team will accomplish this semester?__ 
    * My expectations are that we knock this TripCo project out of the water, learn a ton, and have a lot of fun doing it.
 1. __What are your personal goals for improving your teamwork and communication skills this semester?__ 
