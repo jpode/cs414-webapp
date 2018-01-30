@@ -118,6 +118,14 @@ function get_distance(phi_1, lambda_1, phi_2, lambda_2, dist_type){
   }
 }
 
+class UI extends React.Component{
+  render() {
+    return (
+    
+    );
+  }
+}
+
 /* Main is the "main" driver class for this app */
 class Main extends React.Component{
   render(){
