@@ -104,6 +104,20 @@ function processInput(props){
   return finalValue;
 }
 
+function get_distance(phi_1, lambda_1, phi_2, lambda_2, dist_type){
+  var delta_x = Math.cos(phi_2) * Math.cos(lambda_2) - Math.cos(phi_1) * Math.cos(lambda_1);
+  var delta_y = Math.cos(phi_2) * Math.sin(lambda_2) - Math.cos(phi_1) * Math.sin(lambda_1); 
+  var delta_z = Math.sin(phi_2) - Math.sin(phi_1);
+  var chord_length = Math.sqrt(Math.pow(delta_x, 2) + Math.pow(delta_y, 2) + Math.pow(delta_z, 2));
+  var cent_angle = 2 * Math.asin(chord_length / 2);
+    
+  if(dist_type == "K"){
+    return 6371.0088 * cent_angle;
+  } else {
+    return 3958.7613 * cent_angle;
+  }
+}
+
 /* Main is the "main" driver class for this app */
 class Main extends React.Component{
   render(){
@@ -114,7 +128,8 @@ class Main extends React.Component{
     
         <SinglePairOfLocations />
         {/* HERE IS WHERE VARIABLES SHOULD BE UPDATED ON EVENT CALL, ETC*/}
-          {/* HERE IS WHERE CALL TO CALCULATION GOES*/}
+          {/*CALL TO CALCULATION: CURRENT PARAMETERS ARE PLACEHOLDERS*/}
+		  get_distance(0,0,0,0,M);
       </div>
       </div>
     )
