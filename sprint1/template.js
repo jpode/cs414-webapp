@@ -123,7 +123,20 @@ class UI extends React.Component{
     return (
     <form className="form-inline" onSubmit={this.get_distance}>
         
-        </form>
+        <input type="text" className="text-right form-control mr-sm-2" 
+          value={this.state.operand1} onChange={this.updateOperand1}/> 
+
+        <button className="btn btn-secondary mr-sm-2" disabled>+</button>
+
+        <input type="text" className="text-right form-control mr-sm-2" 
+          value={this.state.operand2} onChange={this.updateOperand2}/> 
+
+        <button className="btn btn-primary mr-sm-2" type="submit" value="submit" 
+          disabled>=</button>
+
+        <input type="text" className="text-right form-control mr-sm-2" 
+          value={this.state.sum} disabled/>
+      </form>
     );
   }
 }
