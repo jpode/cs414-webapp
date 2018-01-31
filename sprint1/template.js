@@ -121,7 +121,15 @@ function get_distance(phi_1, lambda_1, phi_2, lambda_2, dist_type){
 class UI extends React.Component{
   render() {
     return (
-    
+    <form className="form-inline" onSubmit={SinglePairOfLocations.get_distance}>
+        <input type="text" className="text-left form-control mr-sm-2" placeholder="Location 1"/>
+        <button className="btn btn-secondary mr-sm-2" disabled>to</button>
+        <input type="text" className="text-left form-control mr-sm-2" placeholder="Location 2"/>
+        <button className="btn btn-primary mr-sm-2" type="submit" value="submit" 
+          disabled>Submit</button>
+        <input type="text" className="text-left form-control mr-sm-2" placeholder="Distance"
+          disabled/>
+        </form>
     );
   }
 }
@@ -130,15 +138,13 @@ class UI extends React.Component{
 class Main extends React.Component{
   render(){
     return(
-      <div>
-      <div className="container">
-      {/* HERE IS WHERE CALL TO STYLE CLASSES GOES*/}
-    
-        <SinglePairOfLocations />
+      <div className="jumbotron">
+        <h3> TripCo  Distance Calculator </h3>
+      <hr/>
+        <UI />
         {/* HERE IS WHERE VARIABLES SHOULD BE UPDATED ON EVENT CALL, ETC*/}
           {/*CALL TO CALCULATION: CURRENT PARAMETERS ARE PLACEHOLDERS*/}
-		  get_distance(0,0,0,0,M);
-      </div>
+		  /* get_distance(0,0,0,0,M); */
       </div>
     )
   }
