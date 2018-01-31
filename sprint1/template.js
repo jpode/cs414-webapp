@@ -112,9 +112,9 @@ function get_distance(phi_1, lambda_1, phi_2, lambda_2, dist_type){
   var cent_angle = 2 * Math.asin(chord_length / 2);
     
   if(dist_type == "K"){
-    return 6371.0088 * cent_angle;
+    return Math.round(6371.0088 * cent_angle);
   } else {
-    return 3958.7613 * cent_angle;
+    return Math.round(3958.7613 * cent_angle);
   }
 }
 
