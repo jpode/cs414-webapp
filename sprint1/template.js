@@ -121,22 +121,15 @@ function get_distance(phi_1, lambda_1, phi_2, lambda_2, dist_type){
 class UI extends React.Component{
   render() {
     return (
+    /* Need to add events for submitting text and for hitting submit */
     <form className="form-inline" onSubmit={this.get_distance}>
-        
-        <input type="text" className="text-right form-control mr-sm-2" 
-          value={this.state.operand1} onChange={this.updateOperand1}/> 
-
-        <button className="btn btn-secondary mr-sm-2" disabled>+</button>
-
-        <input type="text" className="text-right form-control mr-sm-2" 
-          value={this.state.operand2} onChange={this.updateOperand2}/> 
-
+        <input type="text" className="text-left form-control mr-sm-2"/>
+        <button className="btn btn-secondary mr-sm-2" disabled>to</button>
+        <input type="text" className="text-left form-control mr-sm-2"/>
         <button className="btn btn-primary mr-sm-2" type="submit" value="submit" 
-          disabled>=</button>
-
-        <input type="text" className="text-right form-control mr-sm-2" 
-          value={this.state.sum} disabled/>
-      </form>
+          disabled>Submit</button>
+        <input type="text" className="text-left form-control mr-sm-2" 
+          disabled/>
     );
   }
 }
