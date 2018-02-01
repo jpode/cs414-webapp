@@ -201,19 +201,17 @@ function processInput(value) {
 }
 
 function get_distance(phi_1, lambda_1, phi_2, lambda_2, dist_type) {
-  var delta_x =
-    Math.cos(phi_2) * Math.cos(lambda_2) - Math.cos(phi_1) * Math.cos(lambda_1);
-  var delta_y =
-    Math.cos(phi_2) * Math.sin(lambda_2) - Math.cos(phi_1) * Math.sin(lambda_1);
+  var delta_x = Math.cos(phi_2) * Math.cos(lambda_2) - Math.cos(phi_1) * Math.cos(lambda_1);
+  var delta_y = Math.cos(phi_2) * Math.sin(lambda_2) - Math.cos(phi_1) * Math.sin(lambda_1);
   var delta_z = Math.sin(phi_2) - Math.sin(phi_1);
   var chord_length = Math.sqrt(
     Math.pow(delta_x, 2) + Math.pow(delta_y, 2) + Math.pow(delta_z, 2)
   );
   var cent_angle = 2 * Math.asin(chord_length / 2);
   if (dist_type == "K") {
-    return 6371.0088 * cent_angle;
+    return Math.round(6371.0088 * cent_angle);
   } else {
-    return 3958.7613 * cent_angle;
+    return Math.round(3958.7613 * cent_angle);
   }
 }
 
