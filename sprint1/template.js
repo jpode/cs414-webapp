@@ -4,6 +4,7 @@ class SinglePairOfLocations extends React.Component {
     this.state = {
       /* if any other global variables are needed, add here */
       dist: "",
+      metric: "",
       /* these coord values will be in floating point form, with correct polarity (negative / positive) */
       A_Raw_Input: "",
       B_Raw_Input: "",
@@ -18,6 +19,7 @@ class SinglePairOfLocations extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.updateA = this.updateA.bind(this);
     this.updateB = this.updateB.bind(this);
+    this.updateMetric = this.updateMetric.bind(this);
   }
 
   /* updates A's coord (as string) value */
@@ -68,6 +70,11 @@ class SinglePairOfLocations extends React.Component {
     }
   }
 
+  updateMetric(event) {
+	var tempMetric = event.target.value;
+	this.setState({ metric : tempMetric});
+  }
+
   /* basic forms for entry (formerly seperate UI class) */
   render() {
     return (
@@ -88,8 +95,8 @@ class SinglePairOfLocations extends React.Component {
         <input type="text" className="text-right form-control mr-sm-2" placeholder="Distance"
           value={this.state.dist} disabled/>
        
-        <button className="btn btn-secondary active" aria-pressed="true" value="M"> Miles </button>
-        <button className="btn btn-secondary active" aria-pressed="true" value="K"> Kilometers </button>
+        <button className="btn btn-secondary active" aria-pressed="true" value="M" type="button" onClick={this.updateMetric}> Miles </button>
+        <button className="btn btn-secondary active" aria-pressed="true" value="K" type="button" onClick={this.updateMetric}> Kilometers </button>
             
      </form>
     );
