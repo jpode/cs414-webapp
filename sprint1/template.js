@@ -71,37 +71,27 @@ class SinglePairOfLocations extends React.Component {
   /* basic forms for entry (formerly seperate UI class) */
   render() {
     return (
-      <form className="form-inline" onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          className="text-left form-control mr-sm-2"
-          placeholder="Location 1"
-          value={this.state.A_Raw_Input}
-          onChange={this.updateA}
-        />
-
-        <input
-          type="text"
-          className="text-left form-control mr-sm-2"
-          placeholder="Location 2"
-          value={this.state.B_Raw_Input}
-          onChange={this.updateB}
-        />
-        <button
-          className="btn btn-primary mr-sm-2"
-          type="submit"
-          value="submit"
-        >
-          =
-        </button>
-        <input
-          type="text"
-          className="text-left form-control mr-sm-2"
-          placeholder="Distance"
-          value={this.state.dist}
-          disabled
-        />
-      </form>
+     <form className="form-inline" onSubmit={this.handleSubmit}>
+        
+        <button className="btn btn-secondary mr-sm-2" disabled>From</button>
+        
+        <input type="text" className="text-right form-control mr-sm-2" placeholder="Location 1"
+         value={this.state.A_Raw_Input} onChange={this.updateA}/>
+        
+        <button className="btn btn-secondary mr-sm-2" disabled>To</button>
+        
+        <input type="text" className="text-right form-control mr-sm-2" placeholder="Location 2"
+          value={this.state.B_Raw_Input} onChange={this.updateB}/>
+        
+        <button className="btn btn-primary mr-sm-2" type="submit" value="submit">=</button>
+        
+        <input type="text" className="text-right form-control mr-sm-2" placeholder="Distance"
+          value={this.state.dist} disabled/>
+       
+        <button className="btn btn-secondary active" aria-pressed="true" value="M"> Miles </button>
+        <button className="btn btn-secondary active" aria-pressed="true" value="K"> Kilometers </button>
+            
+     </form>
     );
   }
 }
