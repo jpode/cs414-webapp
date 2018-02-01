@@ -64,7 +64,7 @@ class SinglePairOfLocations extends React.Component {
         temp_A_EW,
         temp_B_NS,
         temp_B_EW,
-        "M"
+        this.state.metric
       );
       this.setState({ dist: tempDist });
     }
