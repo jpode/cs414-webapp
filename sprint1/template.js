@@ -121,15 +121,27 @@ function get_distance(phi_1, lambda_1, phi_2, lambda_2, dist_type){
 class UI extends React.Component{
   render() {
     return (
-    <form className="form-inline" onSubmit={SinglePairOfLocations.get_distance}>
-        <input type="text" className="text-left form-control mr-sm-2" placeholder="Location 1"/>
-        <button className="btn btn-secondary mr-sm-2" disabled>to</button>
-        <input type="text" className="text-left form-control mr-sm-2" placeholder="Location 2"/>
-        <button className="btn btn-primary mr-sm-2" type="submit" value="submit" 
-          disabled>Submit</button>
-        <input type="text" className="text-left form-control mr-sm-2" placeholder="Distance"
-          disabled/>
-        </form>
+    <form className="form-inline" id="calcForm" onSubmit={SinglePairOfLocations.get_distance}>
+        
+        <button className="btn btn-secondary mr-sm-2" disabled>From</button>
+        
+        <input type="text" className="text-right form-control mr-sm-2" placeholder="Location"
+         /*value={this.state.A_Raw_Coord} onChange={this.updateA}*//>
+        
+        <button className="btn btn-secondary mr-sm-2" disabled>To</button>
+        
+        <input type="text" className="text-right form-control mr-sm-2" placeholder="Location"
+          /*value={SinglePairOfLocations.state.B_Raw_Coord} onChange={SinglePairOfLocations.updateB}*//>
+        
+        <button className="btn btn-primary mr-sm-2" type="submit" value="submit">Submit</button>
+        
+        <input type="text" className="text-right form-control mr-sm-2" placeholder="Distance"
+          /*value={SinglePairOfLocations.state.dist} disabled*//>
+       
+        <button className="btn btn-secondary active" aria-pressed="true" value="M"> Miles </button>
+        <button className="btn btn-secondary active" aria-pressed="true" value="K"> Kilometers </button> 
+            
+     </form>
     );
   }
 }
