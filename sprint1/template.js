@@ -4,6 +4,7 @@ class SinglePairOfLocations extends React.Component {
     this.state = {
       /* if any other global variables are needed, add here */
       dist: "",
+      metric: "",
       /* these coord values will be in floating point form, with correct polarity (negative / positive) */
       A_Raw_Input: "",
       B_Raw_Input: "",
@@ -18,6 +19,7 @@ class SinglePairOfLocations extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.updateA = this.updateA.bind(this);
     this.updateB = this.updateB.bind(this);
+    this.updateMetric = this.updateMetric.bind(this);
   }
 
   /* updates A's coord (as string) value */
@@ -68,40 +70,35 @@ class SinglePairOfLocations extends React.Component {
     }
   }
 
+  updateMetric(event) {
+	var tempMetric = event.target.value;
+	this.setState({ metric : tempMetric});
+  }
+
   /* basic forms for entry (formerly seperate UI class) */
   render() {
     return (
-      <form className="form-inline" onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          className="text-left form-control mr-sm-2"
-          placeholder="Location 1"
-          value={this.state.A_Raw_Input}
-          onChange={this.updateA}
-        />
-
-        <input
-          type="text"
-          className="text-left form-control mr-sm-2"
-          placeholder="Location 2"
-          value={this.state.B_Raw_Input}
-          onChange={this.updateB}
-        />
-        <button
-          className="btn btn-primary mr-sm-2"
-          type="submit"
-          value="submit"
-        >
-          =
-        </button>
-        <input
-          type="text"
-          className="text-left form-control mr-sm-2"
-          placeholder="Distance"
-          value={this.state.dist}
-          disabled
-        />
-      </form>
+     <form className="form-inline" onSubmit={this.handleSubmit}>
+        
+        <button className="btn btn-secondary mr-sm-2" disabled>From</button>
+        
+        <input type="text" className="text-right form-control mr-sm-2" placeholder="Location 1"
+         value={this.state.A_Raw_Input} onChange={this.updateA}/>
+        
+        <button className="btn btn-secondary mr-sm-2" disabled>To</button>
+        
+        <input type="text" className="text-right form-control mr-sm-2" placeholder="Location 2"
+          value={this.state.B_Raw_Input} onChange={this.updateB}/>
+        
+        <button className="btn btn-primary mr-sm-2" type="submit" value="submit">=</button>
+        
+        <input type="text" className="text-right form-control mr-sm-2" placeholder="Distance"
+          value={this.state.dist} disabled/>
+       
+        <button className="btn btn-secondary active" aria-pressed="true" value="M" type="button" onClick={this.updateMetric}> Miles </button>
+        <button className="btn btn-secondary active" aria-pressed="true" value="K" type="button" onClick={this.updateMetric}> Kilometers </button>
+            
+     </form>
     );
   }
 }
