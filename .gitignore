@@ -1,0 +1,9 @@
+.idea/
+*.iml
+
+client/node_modules/
+client/public/
+client/*.log
+
+client_bundle/
+target/
