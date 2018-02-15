@@ -53,8 +53,8 @@ Story Points |  *64* | *0*
 
 Date | Tasks done  | Tasks in progress | Impediments 
 :--- | :--- | :--- | :--- 
-*date* | *@task only* | *@task only* | none
- | | | 
+*2/13* | *1* | *22* | re-evaluated task importance.
+*2/15* | *2* | *21* | none
  
 
 ## Review
