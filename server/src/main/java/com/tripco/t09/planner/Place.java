@@ -84,4 +84,28 @@ public class Place {
     return (double)Math.round((degrees + (minutes / 60) + (seconds / 3600)) * 100000d) / 100000d;
   }
 
+  /**
+   * Takes a single decimal coordinate and checks to see if it is within the 37N and 41N boundaries
+   *  of the Colorado southern and northern border
+   * @params Double containing the coordinate
+   * @return boolean indicating if the coordinate is within the boundaries.
+   *  true = within boundaries, false = outside of boundaries
+   */
+  public boolean verifyLatitudeCoordinates(double coordinate){
+    if(coordinate > 102.05 && coordinate < 109.05){
+      return true;
+    }
+    return false;
+  }
+
+  // Same as verifyLatitudeCoordinates, but takes longitudinal coordinates and tests
+  //  them against the east and west Colorado borders at 102.05W and 109.05W
+  public boolean verifyLongitudeCoordinates(double coordinate){
+    if(coordinate > 37 && coordinate < 41){
+      return true;
+    }
+    return false;
+  }
+
 }
+
