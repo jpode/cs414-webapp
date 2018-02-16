@@ -48,9 +48,9 @@ public class TestPlace {
 
   @Test
   public void testLatCoordinateVerification(){
-    assert(place.verifyLatitudeCoordinates(105) == true);
-    assert(place.verifyLatitudeCoordinates(100) == false);
-    assert(place.verifyLatitudeCoordinates(110) == false);
+    assert(place.verifyLatitudeCoordinates(-105) == true);
+    assert(place.verifyLatitudeCoordinates(-100) == false);
+    assert(place.verifyLatitudeCoordinates(-110) == false);
   }
 
 }
