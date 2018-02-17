@@ -23,7 +23,6 @@ public class TestPlace {
     place = new Place();
   }
 
-
   @Test
   public void testTrue() {
     // assertTrue checks if a statement is true
@@ -38,6 +37,20 @@ public class TestPlace {
   @Test
   public void testStringToCoordinate() {
     assert(15.03417 == place.stringToCoordinate("15°2\'3\"N"));
+  }
+
+  @Test
+  public void testLongCoordinateVerification(){
+    assert(place.verifyLongitudeCoordinates(38) == true);
+    assert(place.verifyLongitudeCoordinates(36) == false);
+    assert(place.verifyLongitudeCoordinates(42) == false);
+  }
+
+  @Test
+  public void testLatCoordinateVerification(){
+    assert(place.verifyLatitudeCoordinates(-105) == true);
+    assert(place.verifyLatitudeCoordinates(-100) == false);
+    assert(place.verifyLatitudeCoordinates(-110) == false);
   }
 
 }
