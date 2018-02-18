@@ -44,5 +44,5 @@ public class TestTrip {
         1.0);
     assertEquals(10700, trip.distanceHelper(-33.4, -70.666667, 35.652832, 139.839478), 1.0);
   }
- 
+
 }

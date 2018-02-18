@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import com.tripco.t09.server.HTTP;
 import spark.Request;
 import java.util.ArrayList;
+import java.lang.Math;
 
 /**
  * The Trip class supports TFFI so it can easily be converted to/from Json by Gson.
@@ -59,6 +60,25 @@ public class Trip {
     dist.add(19);
 
     return dist;
+  }
+
+  //follows chord length formula given here:
+  // https://en.wikipedia.org/wiki/Great-circle_distance#From_chord_length
+  public double distanceHelper(double ptA_LAT, double ptA_LONG, double ptB_LAT, double ptB_LONG) {
+    //converting to radians:
+    ptA_LAT = Math.toRadians(ptA_LAT);
+    ptA_LONG = Math.toRadians(ptA_LONG);
+    ptB_LAT = Math.toRadians(ptB_LAT);
+    ptB_LONG = Math.toRadians(ptB_LONG);
+
+    double x = (Math.cos(ptB_LAT) * Math.cos(ptB_LONG)) - (Math.cos(ptA_LAT) * Math.cos(ptA_LONG));
+    double y = (Math.cos(ptB_LAT) * Math.sin(ptB_LONG)) - (Math.cos(ptA_LAT) * Math.sin(ptA_LONG));
+    double z = Math.sin(ptB_LAT) - Math.sin(ptA_LAT);
+    double c = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
+    double central_angle = 2 * Math.asin(c / 2);
+    double distance = 3959 * central_angle;
+    return distance;
+
   }
 
 }
