@@ -37,4 +37,13 @@ public class TestTrip {
     // Call the equals() method of the first object on the second object.
     assertEquals(expectedDistances, trip.distances);
   }
+
+  @Test
+  public void testDistanceHelper() {
+    trip.plan();
+    assertEquals(7304, trip.distanceHelper(49.246292, -123.116226, -41.31666667, 174.76666667),
+        2.0);
+    assertEquals(10700, trip.distanceHelper(-33.4, -70.666667, 35.652832, 139.839478), 2.0);
+  }
+
 }
