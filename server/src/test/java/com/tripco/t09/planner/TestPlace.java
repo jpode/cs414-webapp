@@ -37,6 +37,16 @@ public class TestPlace {
   @Test
   public void testStringToCoordinate() {
     assert(15.03417 == place.stringToCoordinate("15°2\'3\"N"));
+    assertEquals(49.246292, place.stringToCoordinate("49° 14' 46.6512\" N"), .001);
+    assertEquals(-123.116226, place.stringToCoordinate("123° 6' 58.4136\" W"), .001);
+    assertEquals(-41.31666667, place.stringToCoordinate("41°19'S"), .001);
+    assertEquals(174.76666667, place.stringToCoordinate("174°46'E\""), .001);
+    assertEquals(-33.4, place.stringToCoordinate("33°24'S\""), .001);
+    assertEquals(-70.66666667, place.stringToCoordinate("70°40'W"), .001);
+    assertEquals(35.652832, place.stringToCoordinate("35° 39' 10.1952\" N"), .001);
+    assertEquals(139.839478, place.stringToCoordinate("139° 50' 22.1208\" E"), .001);
+
+
   }
 
   @Test
