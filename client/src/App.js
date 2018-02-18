@@ -7,8 +7,8 @@ class App extends Component {
   constructor (props){
     super(props);
     this.state = {
-      number: "00",
-      name: "Double Aughts"
+      number: "09",
+      name: "OVER NINE THOUSAND!?"
     }
   }
 
