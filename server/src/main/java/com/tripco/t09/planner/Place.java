@@ -11,9 +11,6 @@ public class Place {
   public String latitude;
   public String longitude;
 
-  public double numLatitude;
-  public double numLongitude;
-
   /**
    * Takes a single string coordinate of various types, if the coordinate is already in
    *  proper decimal format it will simply return. Otherwise the method will call

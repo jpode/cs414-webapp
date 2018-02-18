@@ -70,14 +70,16 @@ public class Trip {
   private ArrayList<Integer> legDistances() {
 
     ArrayList<Integer> dist = new ArrayList<Integer>();
+    int singleDist = 0;
+    int i;
 
-    // hardcoded example
-    dist.add(12);
-    dist.add(23);
-    dist.add(34);
-    dist.add(45);
-    dist.add(65);
-    dist.add(19);
+    for(i = 0; i < places.size() - 1; i++){
+      singleDist = getDistance(places.get(i), places.get(i+1),);
+      dist.add(singleDist);
+    }
+
+    singleDist = getDistance(places.get(i), places.get(0));
+    dist.add(singleDist);
 
     return dist;
   }
