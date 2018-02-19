@@ -15,6 +15,10 @@ class Itinerary extends Component {
 
     console.log(this.props.trip);
 
+    for(var i = 0; i < this.props.trip.distances.length; i++){
+      distance += this.props.trip.distances[i];
+    }
+
     return {distance, units, dests, dists};
   }
 
