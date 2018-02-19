@@ -1,0 +1,77 @@
+[
+
+	{
+		"id": "pbarstad",
+		"name": "105 West Brewing Company",
+		"municipality": "Castle Rock",
+		"latitude": "39°22'51\" N",
+		"longitude": "104°52'06\" W",
+		"elevation": "6430.4"
+	},
+	{
+		"id": "jgoing",
+		"name": "300 Suns Brewing",
+		"municipality": "Longmont",
+		"latitude": "40°09'34\" N",
+		"longitude": "105°06'07\" W",
+		"elevation": "5249"
+	},
+	{
+		"id": "benalperim",
+		"name": "4B's Brewery",
+		"municipality": "Cedaredge",
+		"latitude": "38°54'02\" N",
+		"longitude": "107°55'33\" W",
+		"elevation": "6220"
+	},
+
+	{
+
+		"id": "marcelaf",
+		"name": "7 Hermits Brewing Company",
+		"municipality": "Eagle",
+		"latitude": "39°38'27\" N",
+		"longitude": "106°49'49\" W",
+		"elevation": "6791"
+	},
+	{
+		"id": "smegana",
+		"name": "Alpine Dog Brewery",
+		"municipality": "Denver",
+		"latitude": "39°44'43\" N",
+		"longitude": "104°58'33\" W",
+		"elevation": "5282"
+	},
+	{
+		"id": "hottar",
+		"name": "Amicas Pizza & Microbrewery",
+		"municipality": "Salida",
+		"latitude": "38°32'25\" N",
+		"longitude": "105°59'54\" W",
+		"elevation": "7067"
+	},
+	{
+		"id": "amalott",
+		"name": "Anheuser Busch",
+		"municipality": "Fort Collins",
+		"latitude": "40°37'2.93\" N",
+		"longitude": "105°0'18.49\" W",
+		"elevation": "5125"
+	},
+	{
+		"id": "coldren",
+		"name": "Aspen Brewing Company",
+		"municipality": "Aspen",
+		"latitude": "39°11'24\" N",
+		"longitude": "106°49'06\" W",
+		"elevation": "8000"
+	},
+	{
+		"id": "Smagisano",
+		"name": "Avery Brewing Company",
+		"municipality": "Boulder",
+		"latitude": "40°3'45\" N",
+		"longitude": "105°12'17\" W",
+		"elevation": "5183"
+	}
+]
