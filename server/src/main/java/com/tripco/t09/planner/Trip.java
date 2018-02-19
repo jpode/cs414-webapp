@@ -65,6 +65,10 @@ public class Trip {
   /**
    * Returns the distances between consecutive places,
    * including the return to the starting point to make a round trip.
+   * The first entry in the return array will be a zero. This method
+   * may remove locations if their coordinates do not match the
+   * Colorado boundaries. If all the locations in the places
+   * array are removed, the return array will have no values.
    * @return
    */
   private ArrayList<Integer> legDistances() {
@@ -136,6 +140,10 @@ public class Trip {
 
       singleDist = distanceHelper(ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG);
       dist.add(singleDist);
+    }
+
+    if(places.size() == 0){
+      dist.clear();
     }
 
     return dist;
