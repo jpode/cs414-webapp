@@ -10,7 +10,7 @@ import React, {Component} from 'react';
 class Destinations extends Component {
   constructor(props) {
     super(props);
-    var count = 0;
+    this.count = 0;
     this.loadTFFI = this.loadTFFI.bind(this);
   }
 
@@ -24,12 +24,8 @@ class Destinations extends Component {
     reader.readAsText(event.target.files[0]);
 
     reader.onload = function(event){
-      console.log("Parsing file in onload function")
 
       var tffi = JSON.parse(event.target.result);
-
-      console.log("tffi = " + tffi);
-      console.log("Calling updateTrip");
 
       this.props.updateTrip(tffi);
       this.count = this.props.trip.places.length;

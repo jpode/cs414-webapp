@@ -13,7 +13,7 @@ class Application extends Component {
       trip: { // default TFFI
         type: "trip",
         title: "Trip_1",
-        options : {distance: "miles"},
+        options : {distance: "miles", optimization : "none"},
         places: [],
         distances: [],
         map: "<svg width=\"1920\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:svg=\"http://www.w3.org/2000/svg\"><g></g></svg>"
@@ -24,11 +24,30 @@ class Application extends Component {
   }
 
   updateTrip(tffi){
-    console.log("current tffi: ");
-    console.log(this.state);
-    console.log("updateTrip to new tffi: ");
-    this.setState({trip:tffi});
-    console.log(this.state);
+    var new_tffi = this.state.trip;
+
+    if(typeof tffi.type != "undefined"){
+      new_tffi.type = tffi.type;
+    }
+    if(typeof tffi.title != "undefined"){
+      new_tffi.title = tffi.title;
+    }
+    if(typeof tffi.options != "undefined"){
+      new_tffi.options = tffi.options;
+    }
+    if(typeof tffi.places != "undefined"){
+      new_tffi.places = tffi.places;
+    }
+    if(typeof tffi.distances != "undefined"){
+      new_tffi.distances = tffi.distances;
+    }
+    if(typeof tffi.map != "undefined"){
+      new_tffi.map = tffi.map;
+    }
+
+    console.log(new_tffi);
+    this.setState({trip:new_tffi});
+
   }
 
   updateOptions(options){
