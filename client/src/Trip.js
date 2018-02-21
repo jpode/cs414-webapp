@@ -13,6 +13,7 @@ class Trip extends Component {
 
     this.plan = this.plan.bind(this);
     this.saveTFFI = this.saveTFFI.bind(this);
+
   }
 
   /* Sends a request to the server with the destinations and options.
@@ -22,17 +23,11 @@ class Trip extends Component {
   fetchResponse(){
     // need to get the request body from the trip in state object.
     let requestBody = {
-        "type"    : "trip",
-        "title"   : "PLANNING",
-        "options" : {
-          "distance":"miles",
-          "optimization":"none"
-        },
-        "places"  : [
-          {"id":"dnvr", "name":"Denver", "latitude": "-104.9903", "longitude": "39.7392"},
-          {"id":"bldr", "name":"Boulder", "latitude": "-105.2705", "longitude": "40.0150"},
-        ]
-      };
+      "type"    : this.props.trip.type,
+      "title"   : this.props.trip.title,
+      "options" : this.props.trip.options,
+      "places"  : this.props.trip.places
+    };
 
     console.log(process.env.SERVICE_URL);
     console.log(requestBody);
@@ -47,8 +42,10 @@ class Trip extends Component {
     try {
       let serverResponse = await this.fetchResponse();
       let tffi = await serverResponse.json();
+
       console.log(tffi);
       this.props.updateTrip(tffi);
+
     } catch(err) {
       console.error(err);
     }
