@@ -29,12 +29,8 @@ class Trip extends Component {
           "optimization":"none"
         },
         "places"  : [
-          {"id":"dnvr", "name":"Denver", "latitude": "", "longitude": ""},
-          {"id":"bldr", "name":"Boulder", "latitude": "", "longitude": ""},
-          {"id":"foco", "name":"Fort Collins", "latitude": "", "longitude": ""},
-          {"id":"grly", "name":"Greeley", "latitude": "", "longitude": ""},
-          {"id":"fomo", "name":"Fort Morgan", "latitude": "", "longitude": ""},
-          {"id":"frst", "name":"Firestone", "latitude": "", "longitude": ""}
+          {"id":"dnvr", "name":"Denver", "latitude": "-104.9903", "longitude": "39.7392"},
+          {"id":"bldr", "name":"Boulder", "latitude": "-105.2705", "longitude": "40.0150"},
         ]
       };
 
