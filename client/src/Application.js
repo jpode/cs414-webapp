@@ -42,7 +42,6 @@ class Application extends Component {
       new_tffi.distances = tffi.distances;
     }
     if(typeof tffi.map != "undefined" && tffi.map != ""){
-      console.log("Map defined");
       new_tffi.map = tffi.map;
     }
 
