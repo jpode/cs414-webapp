@@ -32,7 +32,7 @@ class Trip extends Component {
     console.log(process.env.SERVICE_URL);
     console.log(requestBody);
 
-    return fetch(process.env.SERVICE_URL + '/plan', {
+    return fetch('http://' + location.host + '/plan', {
       method:"POST",
       body: JSON.stringify(requestBody)
     });
