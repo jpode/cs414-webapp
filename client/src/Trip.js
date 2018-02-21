@@ -27,7 +27,7 @@ class Trip extends Component {
       "title"   : this.props.trip.title,
       "options" : this.props.trip.options,
       "places"  : this.props.trip.places
-      };
+    };
 
     console.log(process.env.SERVICE_URL);
     console.log(requestBody);
