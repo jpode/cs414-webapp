@@ -12,7 +12,7 @@ class Application extends Component {
     this.state = {
       trip: { // default TFFI
         type: "trip",
-        title: "Trip_1",
+        title: "",
         options : {distance: "miles", optimization : "none"},
         places: [],
         distances: [],
