@@ -15,28 +15,18 @@ class Itinerary extends Component {
     let dists = [];
 
     if(typeof this.props.trip.options.distance != "undefined") {
-      console.log("1");
       units = this.props.trip.options.distance;
     }
 
     if(typeof this.props.trip.distances != "undefined") {
       dists = this.props.trip.distances.map((item) => <td>{item}</td>);
       dists.unshift(<td>{0}</td>)
-      console.log("2");
     }
-
-    console.log("2.1");
 
     if(typeof this.props.trip.places[0] != "undefined") {
-      console.log("3");
       dests = this.props.trip.places.map((item) => <td>{item.name}</td>);
       dests.push(<td>{this.props.trip.places[0].name}</td>);
-      console.log("4");
     }
-
-    console.log("5");
-    console.log(dests);
-    console.log(dists);
 
     return {distance, units, dests, dists};
   }
