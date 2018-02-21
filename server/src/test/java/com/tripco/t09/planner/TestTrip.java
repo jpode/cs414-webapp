@@ -55,7 +55,7 @@ public class TestTrip {
     trip.plan();
 
     ArrayList<Integer> expectedDistances = new ArrayList<Integer>();
-    Collections.addAll(expectedDistances, 0, 20, 20);
+    Collections.addAll(expectedDistances, 20, 20);
     // Call the equals() method of the first object on the second object.
     assertEquals(expectedDistances, trip.distances);
   }
