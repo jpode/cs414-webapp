@@ -7,6 +7,7 @@ import React, {Component} from 'react';
 class Map extends Component {
   constructor(props){
     super(props);
+    console.log("Rendering map: " + this.props.trip.map);
   }
 
   render() {

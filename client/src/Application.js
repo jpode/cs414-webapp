@@ -26,22 +26,23 @@ class Application extends Component {
   updateTrip(tffi){
     var new_tffi = this.state.trip;
 
-    if(typeof tffi.type != "undefined"){
+    if(typeof tffi.type != "undefined" && tffi.type != ""){
       new_tffi.type = tffi.type;
     }
-    if(typeof tffi.title != "undefined"){
+    if(typeof tffi.title != "undefined" && tffi.title != ""){
       new_tffi.title = tffi.title;
     }
-    if(typeof tffi.options != "undefined"){
+    if(typeof tffi.options != "undefined" && tffi.options != {}){
       new_tffi.options = tffi.options;
     }
-    if(typeof tffi.places != "undefined"){
+    if(typeof tffi.places != "undefined" && tffi.places != []){
       new_tffi.places = tffi.places;
     }
-    if(typeof tffi.distances != "undefined"){
+    if(typeof tffi.distances != "undefined" && tffi.distances != []){
       new_tffi.distances = tffi.distances;
     }
-    if(typeof tffi.map != "undefined"){
+    if(typeof tffi.map != "undefined" && tffi.map != ""){
+      console.log("Map defined");
       new_tffi.map = tffi.map;
     }
 
