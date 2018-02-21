@@ -10,7 +10,6 @@ import React, {Component} from 'react';
 class Destinations extends Component {
   constructor(props) {
     super(props);
-    this.count = 0;
     this.loadTFFI = this.loadTFFI.bind(this);
   }
 
@@ -26,9 +25,7 @@ class Destinations extends Component {
     reader.onload = function(event){
 
       var tffi = JSON.parse(event.target.result);
-
       this.props.updateTrip(tffi);
-      this.count = this.props.trip.places.length;
 
     }.bind(this);
   }
@@ -46,7 +43,7 @@ class Destinations extends Component {
             <div className="form-group" role="group">
                 <input type="file" className="form-control-file" onChange={this.loadTFFI} id="tffifile" />
             </div>
-            <h5>There are {this.count} destinations. </h5>
+            <h5>There are {this.props.trip.places.length} destinations. </h5>
           </div>
         </div>
     )
