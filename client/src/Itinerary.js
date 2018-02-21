@@ -18,7 +18,7 @@ class Itinerary extends Component {
       units = this.props.trip.options.distance;
     }
 
-    if(typeof this.props.trip.distances != "undefined") {
+    if(typeof this.props.trip.distances != "undefined" && this.props.trip.distances.length > 0) {
       dists = this.props.trip.distances.map((item) => <td>{item}</td>);
       dists.unshift(<td>{0}</td>)
     }
