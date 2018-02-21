@@ -10,6 +10,7 @@ import React, {Component} from 'react';
 class Destinations extends Component {
   constructor(props) {
     super(props);
+    var count = 0;
     this.loadTFFI = this.loadTFFI.bind(this);
   }
 
@@ -18,11 +19,27 @@ class Destinations extends Component {
     // now you need to read the file and create a JSON.
     // then you need to set the trip property
     // this.props.updateTrip(??);
+
+    var reader = new FileReader();
+    reader.readAsText(event.target.files[0]);
+
+    reader.onload = function(event){
+      console.log("Parsing file in onload function")
+
+      var tffi = JSON.parse(event.target.result);
+
+      console.log("tffi = " + tffi);
+      console.log("Calling updateTrip");
+
+      this.props.updateTrip(tffi);
+      this.count = this.props.trip.places.length;
+
+    }.bind(this);
   }
 
   render() {
     // need to clean up the button
-    const count = 99; // need to count the number in the trip
+    // need to count the number in the trip
     return (
         <div id="destinations" className="card">
           <div className="card-header bg-info text-white">
@@ -33,7 +50,7 @@ class Destinations extends Component {
             <div className="form-group" role="group">
                 <input type="file" className="form-control-file" onChange={this.loadTFFI} id="tffifile" />
             </div>
-            <h5>There are {count} destinations. </h5>
+            <h5>There are {this.count} destinations. </h5>
           </div>
         </div>
     )

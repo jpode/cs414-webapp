@@ -13,6 +13,8 @@ class Trip extends Component {
 
     this.plan = this.plan.bind(this);
     this.saveTFFI = this.saveTFFI.bind(this);
+    this.renderItinerary = this.renderItinerary.bind(this);
+
   }
 
   /* Sends a request to the server with the destinations and options.
@@ -51,8 +53,10 @@ class Trip extends Component {
     try {
       let serverResponse = await this.fetchResponse();
       let tffi = await serverResponse.json();
-      console.log(tffi);
+
       this.props.updateTrip(tffi);
+      console.log("plan() called");
+      console.log(tffi);
     } catch(err) {
       console.error(err);
     }
@@ -61,6 +65,10 @@ class Trip extends Component {
   /* Saves the map and itinerary to the local file system.
    */
   saveTFFI(){
+  }
+
+  renderItinerary(){
+    return (<Itinerary trip={this.props.trip} />);
   }
 
   /* Renders the buttons, map, and itinerary.

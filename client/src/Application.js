@@ -12,7 +12,7 @@ class Application extends Component {
     this.state = {
       trip: { // default TFFI
         type: "trip",
-        title: "",
+        title: "Trip_1",
         options : {distance: "miles"},
         places: [],
         distances: [],
@@ -24,9 +24,11 @@ class Application extends Component {
   }
 
   updateTrip(tffi){
-    console.log("updateTrip");
-    console.log(tffi);
+    console.log("current tffi: ");
+    console.log(this.state);
+    console.log("updateTrip to new tffi: ");
     this.setState({trip:tffi});
+    console.log(this.state);
   }
 
   updateOptions(options){
