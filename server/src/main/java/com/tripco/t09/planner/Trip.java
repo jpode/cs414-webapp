@@ -49,6 +49,13 @@ public class Trip {
     StringBuffer stringBuffer = new StringBuffer();
     String line;
     try {
+    // calculates and fomats the coordinates of the leg of the trip
+    String leg = "";
+    for(int i=0;i<places.size();++i) {
+      double A= convertCoordinate(places.get(i).latitude);
+      double B = convertCoordinate(places.get(i).longitude);
+      leg += A +"," + B + " ";
+    }
       while ( (line = br.readLine()) != null) {
         stringBuffer.append(line);
         stringBuffer.append("\n");
