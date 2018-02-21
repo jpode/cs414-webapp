@@ -96,9 +96,16 @@ public class Trip {
     double z = Math.sin(ptB_LAT) - Math.sin(ptA_LAT);
     double c = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
     double central_angle = 2 * Math.asin(c / 2);
-    double distance = 3959 * central_angle;
-    return distance;
 
+    try {
+      if (this.options.distance.compareTo("miles") == 0) {
+        return Math.round(3959 * central_angle);
+      } else {
+        return Math.round(6371 * central_angle);
+      }
+    } catch(NullPointerException e){
+      return Math.round(3959 * central_angle);
+    }
   }
 
 }

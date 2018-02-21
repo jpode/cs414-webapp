@@ -24,7 +24,7 @@ class Trip extends Component {
     let requestBody = {
         "type"    : "trip",
         "title"   : "PLANNING",
-        "options" : { 
+        "options" : {
           "distance":"miles",
           "optimization":"none"
         },
@@ -35,7 +35,7 @@ class Trip extends Component {
           {"id":"grly", "name":"Greeley", "latitude": "", "longitude": ""},
           {"id":"fomo", "name":"Fort Morgan", "latitude": "", "longitude": ""},
           {"id":"frst", "name":"Firestone", "latitude": "", "longitude": ""}
-          ]
+        ]
       };
 
     console.log(process.env.SERVICE_URL);
