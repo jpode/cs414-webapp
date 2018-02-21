@@ -54,7 +54,7 @@ public class Trip {
     for(int i=0;i<=places.size();++i) {
       double A= convertCoordinate(places.get(i).latitude);
       double B = convertCoordinate(places.get(i).longitude);
-      leg = A +"," + B + " ";
+      leg += A +"," + B + " ";
     }
       while ( (line = br.readLine()) != null) {
         stringBuffer.append(line);
