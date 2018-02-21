@@ -77,6 +77,37 @@ public class Trip {
     int singleDist = 0;
     int i;
     double ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG;
+
+    if(places.size() > 0) {
+      for (i = 0; i < places.size() - 1; i++) {
+
+        ptA_LAT = convertCoordinate(places.get(i).latitude);
+        ptA_LONG = convertCoordinate(places.get(i).longitude);
+        ptB_LAT = convertCoordinate(places.get(i + 1).latitude);
+        ptB_LONG = convertCoordinate(places.get(i + 1).longitude);
+
+        //Add distance to dist array
+        singleDist = distanceHelper(ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG);
+        dist.add(singleDist);
+      }
+
+      //Add the return leg distance
+      ptA_LAT = convertCoordinate(places.get(i).latitude);
+      ptA_LONG = convertCoordinate(places.get(i).longitude);
+      ptB_LAT = convertCoordinate(places.get(0).latitude);
+      ptB_LONG = convertCoordinate(places.get(0).longitude);
+
+      singleDist = distanceHelper(ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG);
+      dist.add(singleDist);
+    }
+    return dist;
+
+    //BELOW: implementation with coordinate error checking. To be used in Sprint 3
+    /*
+    ArrayList<Integer> dist = new ArrayList<Integer>();
+    int singleDist = 0;
+    int i;
+    double ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG;
     boolean removed_ptA = false;
     boolean removed_ptB = false;
 
@@ -100,6 +131,7 @@ public class Trip {
        * Verify if two current places are located inside Colorado
        * If they are not, then remove the place from the places array.
        */
+    /*
 
       if(!verifyLatitudeCoordinates(ptA_LAT) || !verifyLongitudeCoordinates(ptA_LONG)) {
         System.out.println("Coordinates for location " + places.get(i).name + " are outside of Colorado boundaries");
@@ -131,6 +163,8 @@ public class Trip {
      * If places have been removed and there is one or zero places remaining, there
      * will be no values;
      */
+
+    /*
     if(places.size() > 1) {
       ptA_LAT = convertCoordinate(places.get(i).latitude);
       ptA_LONG = convertCoordinate(places.get(i).longitude);
@@ -143,6 +177,7 @@ public class Trip {
       dist.clear();
     }
     return dist;
+    */
   }
 
   //follows chord length formula given here:
