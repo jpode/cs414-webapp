@@ -51,7 +51,7 @@ public class Trip {
     try {
     // calculates and fomats the coordinates of the leg of the trip
     String leg = "";
-    for(int i=0;i<=places.size();++i) {
+    for(int i=0;i<places.size();++i) {
       double A= convertCoordinate(places.get(i).latitude);
       double B = convertCoordinate(places.get(i).longitude);
       leg += A +"," + B + " ";
