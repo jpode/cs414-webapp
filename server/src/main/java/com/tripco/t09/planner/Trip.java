@@ -336,9 +336,10 @@ public class Trip {
       double x = convertCoordinate(value);
       System.out.println("     LAT IS: " + x);
 
-      // Latitude Formula = 35 + (-1(178 * (37 - value))
+
+      // Latitude Formula = 747 - (178 * (value - 37))
       result = 747 - (178 * (x - 37));
-      System.out.println("     LAT RESULT IS: " + result);
+
       return result;
   }
 
@@ -346,10 +347,10 @@ public class Trip {
   public double convertLongSVG(String value) {
       double result;
       double y = convertCoordinate(value);
-      System.out.println("Long is: " + y);
-      // Longitude Formula = 34 + (142.142857 * (-102 + value))
+
+      // Longitude Formula = 1029 + (142 * (value + 102.05))
       result = 1029 + (142 * (y + 102.05));
-      System.out.println("LONG RESULT IS: " + result);
+
       return result;
   }
 
