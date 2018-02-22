@@ -52,7 +52,16 @@ class Application extends Component {
 
   updateOptions(options){
     console.log(options);
-    // update the options in the trip.
+    var new_tffi = this.state.trip;
+    if(options === "miles") {
+        new_tffi.options.distance = "miles";
+    }
+    else if(options === "kilometers"){
+        new_tffi.options.distance = "kilometers";
+    }
+    console.log(new_tffi);
+    this.setState({trip:new_tffi});
+
   }
 
   render() {
