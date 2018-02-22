@@ -62,14 +62,14 @@ Date | Tasks done  | Tasks in progress | Impediments
 ## Review
 
 #### Completed epics in Sprint Backlog 
-* *Build a responsive, mobile first web application*:  *comments*
-* *Plan trips in the state of Colorado*: **
-* *Let the user load a file with destinations*: **
-* *Show a map of the round trip*: **
-* *Plan the trip in the destination order the user provided*: **
-* *Let the user save their trip*: **
-* *Show an itinerary of the round trip*: **
-* *Give the user the option of miles and kilometers for the unit of distance*: **
+* *Build a responsive, mobile first web application*:
+* *Plan trips in the state of Colorado*:
+* *Let the user load a file with destinations*:
+* *Show a map of the round trip*:
+* *Plan the trip in the destination order the user provided*:
+* *Let the user save their trip*:
+* *Show an itinerary of the round trip*:
+* *Give the user the option of miles and kilometers for the unit of distance*:
 
 #### Incomplete epics in Sprint Backlog 
 * *None*: *We finished every Epic that we planned for in Sprint 2*
