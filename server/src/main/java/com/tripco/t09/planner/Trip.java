@@ -52,14 +52,23 @@ public class Trip {
     // calculates and formats the coordinates of the leg of the trip (Polyline)
     String points = "\n<svg width=\"1066.6073\" height=\"783.0824\" xmlns=\"http://www.w3.org/2000/svg\">\n<g>\n";
     points += "<polyline points=\"";
+    double start_A = 0;
+    double start_B = 0;
     for(int i = 0; i < places.size(); i++) {
       double A = convertLatSVG(places.get(i).latitude);
       double B = convertLongSVG(places.get(i).longitude);
-
+      if (i == 0){
+          start_A = A;
+          start_B = B;
+      }
       if (i == places.size()-1) {
-          points += A + "," + B;
+          points += B + "," + A + " ";
+          //round trip implementation:
+          start_A = convertLatSVG(places.get(0).latitude);
+          start_B = convertLongSVG(places.get(0).longitude);
+          points += start_B + "," + start_A;
       }else {
-          points += A + "," + B + " ";
+          points += B + "," + A + " ";
       }
     }
     points += "\" fill=\"none\" stroke-width=\"3\" stroke=\"black\" />\n</g>\n</svg>\n";
@@ -74,7 +83,6 @@ public class Trip {
       //stringBuffer.append(points);
 
       is.close();
-
       System.out.println(stringBuffer.toString());
 
       return stringBuffer.toString();
@@ -119,6 +127,7 @@ public class Trip {
       ptA_LONG = convertCoordinate(places.get(i).longitude);
       ptB_LAT = convertCoordinate(places.get(0).latitude);
       ptB_LONG = convertCoordinate(places.get(0).longitude);
+
 
       singleDist = distanceHelper(ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG);
       dist.add(singleDist);
@@ -325,6 +334,8 @@ public class Trip {
   public double convertLatSVG(String value) {
       double result;
       double x = convertCoordinate(value);
+      System.out.println("     LAT IS: " + x);
+
 
       // Latitude Formula = 747 - (178 * (value - 37))
       result = 747 - (178 * (x - 37));
