@@ -326,8 +326,8 @@ public class Trip {
       double result;
       double x = convertCoordinate(value);
 
-      // Latitude Formula = 35 + (-1(178 * (37 - value))
-      result = 35 + ((37 - x) * (-178));
+      // Latitude Formula = 747 - (178 * (value - 37))
+      result = 747 - (178 * (x - 37));
 
       return result;
   }
@@ -337,8 +337,8 @@ public class Trip {
       double result;
       double y = convertCoordinate(value);
 
-      // Longitude Formula = 34 + (142.142857 * (-102 + value))
-      result = 34 + ((142.142857) * (-102 - y));
+      // Longitude Formula = 1029 + (142 * (value + 102.05))
+      result = 1029 + (142 * (y + 102.05));
 
       return result;
   }
