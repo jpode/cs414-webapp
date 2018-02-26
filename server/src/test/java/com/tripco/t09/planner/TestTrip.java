@@ -69,22 +69,17 @@ public class TestTrip {
 
   @Test
   public void testConvertCoordinate() {
-    assert(10.8333 == trip.convertCoordinate("10.8333"));
-  }
-
-  @Test
-  public void testStringToCoordinate() {
-    assert(15.03417 == trip.stringToCoordinate("15°2\'3\"N"));
-    assertEquals(49.246292, trip.stringToCoordinate("49° 14' 46.6512\" N"), .001);
-    assertEquals(-123.116226, trip.stringToCoordinate("123° 6' 58.4136\" W"), .001);
-    assertEquals(-41.31666667, trip.stringToCoordinate("41°19'S"), .001);
-    assertEquals(174.76666667, trip.stringToCoordinate("174°46'E"), .001);
-    assertEquals(-33.4, trip.stringToCoordinate("33°24'S"), .001);
-    assertEquals(-70.66666667, trip.stringToCoordinate("70°40'W"), .001);
-    assertEquals(35.652832, trip.stringToCoordinate("35° 39' 10.1952\" N"), .001);
-    assertEquals(139.839478, trip.stringToCoordinate("139° 50' 22.1208\" E"), .001);
-
-
+    assertEquals(49.246292, trip.convertCoordinate("49° 14' 46.6512\" N"), .001);
+    assertEquals(-123.116226, trip.convertCoordinate("123° 6' 58.4136\" W"), .001);
+    assertEquals(-41.31666667, trip.convertCoordinate("41°19'S"), .001);
+    assertEquals(174.76666667, trip.convertCoordinate("174°46'E"), .001);
+    assertEquals(-33.4, trip.convertCoordinate("33°24'S"), .001);
+    assertEquals(-70.66666667, trip.convertCoordinate("70°40'W"), .001);
+    assertEquals(35.652832, trip.convertCoordinate("35° 39' 10.1952\" N"), .001);
+    assertEquals(139.839478, trip.convertCoordinate("139° 50' 22.1208\" E"), .001);
+    assertEquals(10.8333, trip.convertCoordinate("10.8333"), .001);
+    assertEquals(-5, trip.convertCoordinate("-5"), .001);
+    assertEquals(1509.1589, trip.convertCoordinate("1509.1589"), .001);
   }
 
   @Test
