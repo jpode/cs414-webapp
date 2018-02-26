@@ -12,6 +12,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.lang.Math;
+import java.util.Arrays;
+
 
 /**
  * The Trip class supports TFFI so it can easily be converted to/from Json by Gson.
@@ -214,72 +216,39 @@ public class Trip {
   }
 
   /**
-   * Takes a single string coordinate of various types, if the coordinate is already in
-   *  proper decimal format it will simply return. Otherwise the method will call
-   *   stringToCoordinate to convert the coordinate.
-   * @params String containing the coordinate
-   * @return double containing the string coordinate converted to decimal coordinate
-   */
-  public double convertCoordinate(String value) {
-    double result;
-    try {
-      result = Double.parseDouble(value);
-    } catch (NumberFormatException e) {
-      /*Coordinate is not already in number format*/
-      result = stringToCoordinate(value);
-    }
-
-    return result;
-
-  }
-
-  /**
    * Takes a single string coordinate of various types and converts it to a decimal value.
-   *  Assumes that the string is of a correct coordinate input type.
    * @params String containing the coordinate
    * @return double containing the string coordinate converted to decimal coordinate
    */
-  public double stringToCoordinate(String value){
-    String coordinate;
+  public double convertCoordinate(String value){
+    ArrayList<String> coordinate;
     double degrees = 0;
     double minutes = 0;
     double seconds = 0;
-    double result;
+    int isNegative = 1;
 
+    //Replaces given string coordinate values into an arraylist
 
-    //Replaces all degrees, minutes, and seconds symbols with empty spaces to allow the
-    // string to be parsed into double values.
+    coordinate = new ArrayList<String>(Arrays.asList(value.split("[°\'\"′″\\s+]")));
 
-    coordinate = value.replaceAll("[°\'\"′″]", " " );
-
-    int counter = 0;
-    int last = 0;
-
-    // Parses the new string and reads in the values of the coordinates
-    for(int i = 0; i < coordinate.length(); i++){
-      if(coordinate.charAt(i) == ' ' && last != i){
-        if(counter == 0) {
-          degrees = Double.parseDouble(coordinate.substring(last, i));
-          last = i+1;
-          counter++;
-        } else if(counter == 1){
-          minutes = Double.parseDouble(coordinate.substring(last, i));
-          last = i+1;
-          counter++;
-        } else if(counter == 2){
-          seconds = Double.parseDouble(coordinate.substring(last, i));
-          last = i+1;
-          counter++;
-        }
-      }
+    if(coordinate.contains("S") || coordinate.contains("W")) {
+      isNegative = -1;
     }
 
-    // Checks to see if the value should be negated
-    if(coordinate.indexOf('S') != -1 || coordinate.indexOf('W') != -1){
-      return -1 * (double)Math.round((degrees + (minutes / 60) + (seconds / 3600)) * 100000d) / 100000d;
+    coordinate.removeAll(Arrays.asList("N", "S", "E", "W", "", " ", null));
+
+    if(coordinate.size() > 0){
+      degrees = Double.parseDouble(coordinate.get(0));
+    }
+    if(coordinate.size() > 1){
+      minutes = Double.parseDouble(coordinate.get(1));
+    }
+    if(coordinate.size() > 2){
+      seconds = Double.parseDouble(coordinate.get(2));
     }
 
-    return (double)Math.round((degrees + (minutes / 60) + (seconds / 3600)) * 100000d) / 100000d;
+    return isNegative * (double)Math.round((degrees + (minutes / 60) + (seconds / 3600)) * 100000d) / 100000d;
+
   }
 
   /**
