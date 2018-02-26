@@ -51,18 +51,42 @@ public class Trip {
     StringBuffer stringBuffer = new StringBuffer();
     String line;
     try {
-    // calculates and fomats the coordinates of the leg of the trip
-    String leg = "";
-    for(int i=0;i<places.size();++i) {
-      double A= convertCoordinate(places.get(i).latitude);
-      double B = convertCoordinate(places.get(i).longitude);
-      leg += A +"," + B + " ";
+    // calculates and formats the coordinates of the leg of the trip (Polyline)
+    String points = "\n<svg width=\"1066.6073\" height=\"783.0824\" xmlns=\"http://www.w3.org/2000/svg\">\n<g>\n";
+    points += "<polyline points=\"";
+    double start_A = 0;
+    double start_B = 0;
+    for(int i = 0; i < places.size(); i++) {
+      double A = convertLatSVG(places.get(i).latitude);
+      double B = convertLongSVG(places.get(i).longitude);
+      if (i == 0){
+          start_A = A;
+          start_B = B;
+      }
+      if (i == places.size()-1) {
+          points += B + "," + A + " ";
+          //round trip implementation:
+          start_A = convertLatSVG(places.get(0).latitude);
+          start_B = convertLongSVG(places.get(0).longitude);
+          points += start_B + "," + start_A;
+      }else {
+          points += B + "," + A + " ";
+      }
     }
+    points += "\" fill=\"none\" stroke-width=\"3\" stroke=\"black\" />\n</g>\n</svg>\n";
+
+
       while ( (line = br.readLine()) != null) {
         stringBuffer.append(line);
         stringBuffer.append("\n");
       }
+
+      stringBuffer.insert(stringBuffer.length()-8, points);
+      //stringBuffer.append(points);
+
       is.close();
+      System.out.println(stringBuffer.toString());
+
       return stringBuffer.toString();
     } catch (IOException ioe) {
       System.out.println("ERROR: colorado.svg failed to be read by BufferedReader in Trip.java.");
@@ -105,6 +129,7 @@ public class Trip {
       ptA_LONG = convertCoordinate(places.get(i).longitude);
       ptB_LAT = convertCoordinate(places.get(0).latitude);
       ptB_LONG = convertCoordinate(places.get(0).longitude);
+
 
       singleDist = distanceHelper(ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG);
       dist.add(singleDist);
@@ -272,6 +297,30 @@ public class Trip {
       return true;
     }
     return false;
+  }
+
+  // Converting our Latitude to SVG values for Polyline on Map
+  public double convertLatSVG(String value) {
+      double result;
+      double x = convertCoordinate(value);
+      System.out.println("     LAT IS: " + x);
+
+
+      // Latitude Formula = 747 - (178 * (value - 37))
+      result = 747 - (178 * (x - 37));
+
+      return result;
+  }
+
+  // Converting our Longitude to SVG values for Polyline on Map
+  public double convertLongSVG(String value) {
+      double result;
+      double y = convertCoordinate(value);
+
+      // Longitude Formula = 1029 + (142 * (value + 102.05))
+      result = 1029 + (142 * (y + 102.05));
+
+      return result;
   }
 
 }
