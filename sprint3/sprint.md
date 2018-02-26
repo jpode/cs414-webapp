@@ -3,16 +3,20 @@
 ## Goal
 
 ### A mobile, responsive map and itinerary!
+### Shorter trips, and more places to go!
+### Cleaner Code, with improved Coverage!
+### Allow reverse order!
+
 ### Sprint Leader: *Jacob Servaty*
 
 ## Definition of Done
 
-* Web application ready for demo and potential customer release.
+* Web application deployed on the production server (kiwis.cs.colostate.edu:31409)
 * Sprint Review and Restrospectives completed (sprint.md).
-* Product Increment release `v2.0` created on GitHub with appropriate version number and name, a description based on the Release Notes template, and the arhived files.
-* Version in pom.xml should be `<version>2.0.0</version>`.
+* Product Increment release `v3.0` created on GitHub with appropriate version number and name, a description based on the Release Notes template, and the arhived files.
+* Version in pom.xml should be `<version>3.0.0</version>`.
 * Javadoc and unit tests for public methods.
-* ~~Coverage at least 50% overall and for each class.~~
+* Coverage at least 50% overall and for each class.
 
 ## Policies
 
@@ -30,21 +34,21 @@
 
 Epics planned for this release.
 
-* *## 139 Clean Code*
-* *## 140 Code Coverage*
-* *## 141 Build a trip from existing information*
-* *## 142 Design a trip from scratch/manually*
-* *## 68 Give the user an option to view a shorter trip*
-* *## 66 Let the user reverse the order of the trip*
+* *#139 Clean Code*
+* *#140 Code Coverage*
+* *#141 Build a trip from existing information*
+* *#142 Design a trip from scratch/manually*
+* *#159 Give the user an option to view a shorter trip*
+* *#162 Let the user reverse the order of the trip*
 
-*Include a discussion of planning decisions made based on your velocity from previous sprints.*
+In Sprint2 we began with around 38/39 initial tasks to complete, and we've started with a similar amount for Sprint3. If our velocity stays the same, then we should keep our predictable pace.
 
 ## Metrics
 
 Statistic | Planned | Completed
 --- | ---: | ---:
-Tasks |  *value*   | *value* 
-Story Points |  *value*  | *value* 
+Tasks |  *16*   | *0* 
+Story Points |  *39*  | *0* 
 
 ## Daily Scrums
 
