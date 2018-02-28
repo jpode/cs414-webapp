@@ -34,8 +34,11 @@ public class Trip {
    */
   public void plan() {
 
-    this.map = svg();
-    this.distances = legDistances();
+    verifyPlaces();
+    if(places.size() > 1) {
+      this.map = svg();
+      this.distances = legDistances();
+    }
 
   }
 
@@ -85,7 +88,7 @@ public class Trip {
       //stringBuffer.append(points);
 
       is.close();
-      System.out.println(stringBuffer.toString());
+      //System.out.println(stringBuffer.toString());
 
       return stringBuffer.toString();
     } catch (IOException ioe) {
@@ -111,107 +114,35 @@ public class Trip {
     int i;
     double ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG;
 
-    if(places.size() > 0) {
-      for (i = 0; i < places.size() - 1; i++) {
+    for(i = 0; i < places.size(); i++){
 
-        ptA_LAT = convertCoordinate(places.get(i).latitude);
-        ptA_LONG = convertCoordinate(places.get(i).longitude);
+      ptA_LAT = convertCoordinate(places.get(i).latitude);
+      ptA_LONG = convertCoordinate(places.get(i).longitude);
+
+      if(i != places.size() - 1) {
         ptB_LAT = convertCoordinate(places.get(i + 1).latitude);
         ptB_LONG = convertCoordinate(places.get(i + 1).longitude);
-
-        //Add distance to dist array
-        singleDist = distanceHelper(ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG);
-        dist.add(singleDist);
+      } else {
+        ptB_LAT = convertCoordinate(places.get(0).latitude);
+        ptB_LONG = convertCoordinate(places.get(0).longitude);
       }
-
-      //Add the return leg distance
-      ptA_LAT = convertCoordinate(places.get(i).latitude);
-      ptA_LONG = convertCoordinate(places.get(i).longitude);
-      ptB_LAT = convertCoordinate(places.get(0).latitude);
-      ptB_LONG = convertCoordinate(places.get(0).longitude);
-
 
       singleDist = distanceHelper(ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG);
       dist.add(singleDist);
+
     }
-    return dist;
+      return dist;
 
-    //BELOW: implementation with coordinate error checking. To be used in Sprint 3
-    /*
-    ArrayList<Integer> dist = new ArrayList<Integer>();
-    int singleDist = 0;
-    int i;
-    double ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG;
-    boolean removed_ptA = false;
-    boolean removed_ptB = false;
+  }
 
-    for(i = 0; i < places.size() - 1; i++){
-     //If any places have been removed for incorrect coordinates, the index will need to be adjusted as the array will shrink
-      if(removed_ptA){
-        i--;
-      }
-      if(removed_ptB){
-        i--;
-      }
-      removed_ptA = false;
-      removed_ptB = false;
-
-      ptA_LAT = convertCoordinate(places.get(i).latitude);
-      ptA_LONG = convertCoordinate(places.get(i).longitude);
-      ptB_LAT = convertCoordinate(places.get(i+1).latitude);
-      ptB_LONG = convertCoordinate(places.get(i+1).longitude);
-
-      /*
-       * Verify if two current places are located inside Colorado
-       * If they are not, then remove the place from the places array.
-       */
-    /*
-
-      if(!verifyLatitudeCoordinates(ptA_LAT) || !verifyLongitudeCoordinates(ptA_LONG)) {
+  private void verifyPlaces(){
+    for(int i = 0; i < places.size(); i++){
+      if(!verifyLatitudeCoordinates(convertCoordinate(places.get(i).latitude)) || !verifyLongitudeCoordinates(convertCoordinate(places.get(i).longitude))){
         System.out.println("Coordinates for location " + places.get(i).name + " are outside of Colorado boundaries");
         places.remove(i);
-        removed_ptA = true;
-      }
-
-      if(!verifyLatitudeCoordinates(ptB_LAT) || !verifyLongitudeCoordinates(ptB_LONG)) {
-        //If place ptA has been removed, then the array shrinks so that ptB is now where ptA was
-        if(removed_ptA){
-          System.out.println("Coordinates for location " + places.get(i).name + " are outside of Colorado boundaries");
-          places.remove(i);
-        } else {
-          System.out.println("Coordinates for location " + places.get(i+1).name + " are outside of Colorado boundaries");
-          places.remove(i + 1);
-        }
-        removed_ptB = true;
-      }
-
-      //Add distance to dist array
-      if(!removed_ptA && !removed_ptB) {
-        singleDist = distanceHelper(ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG);
-        dist.add(singleDist);
+        i--;
       }
     }
-
-    /*
-     * Calculate a distance for the return; from the last location back to the first
-     * If places have been removed and there is one or zero places remaining, there
-     * will be no values;
-     */
-
-    /*
-    if(places.size() > 1) {
-      ptA_LAT = convertCoordinate(places.get(i).latitude);
-      ptA_LONG = convertCoordinate(places.get(i).longitude);
-      ptB_LAT = convertCoordinate(places.get(0).latitude);
-      ptB_LONG = convertCoordinate(places.get(0).longitude);
-
-      singleDist = distanceHelper(ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG);
-      dist.add(singleDist);
-    } else {
-      dist.clear();
-    }
-    return dist;
-    */
   }
 
   //follows chord length formula given here:
@@ -277,22 +208,22 @@ public class Trip {
   }
 
   /**
-   * Takes a single decimal coordinate and checks to see if it is within the 102.05W and 109.05W boundaries
+   * Takes a single decimal longitudinal coordinate and checks to see if it is within the 102.05W and 109.05W boundaries
    *  of the Colorado eastern and western border
    * @params Double containing the coordinate
    * @return boolean indicating if the coordinate is within the boundaries.
    *  true = within boundaries, false = outside of boundaries
    */
-  public boolean verifyLatitudeCoordinates(double coordinate){
+  public boolean verifyLongitudeCoordinates(double coordinate){
     if(coordinate < -102.05 && coordinate > -109.05){
       return true;
     }
     return false;
   }
 
-  // Same as verifyLatitudeCoordinates, but takes longitudinal coordinates and tests
-  //  them against the south and north Colorado borders at 37N and 41N
-  public boolean verifyLongitudeCoordinates(double coordinate){
+  // Same as verifyLongitudeCoordinates, but takes a latitudinal coordinate and tests
+  //  it against the south and north Colorado borders at 37N and 41N
+  public boolean verifyLatitudeCoordinates(double coordinate){
     if(coordinate > 37 && coordinate < 41){
       return true;
     }
@@ -303,7 +234,7 @@ public class Trip {
   public double convertLatSVG(String value) {
       double result;
       double x = convertCoordinate(value);
-      System.out.println("     LAT IS: " + x);
+      //System.out.println("     LAT IS: " + x);
 
 
       // Latitude Formula = 747 - (178 * (value - 37))
