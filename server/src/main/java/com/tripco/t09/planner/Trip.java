@@ -55,28 +55,38 @@ public class Trip {
     String line;
     try {
     // calculates and formats the coordinates of the leg of the trip (Polyline)
-    String points = "\n<svg width=\"1066.6073\" height=\"783.0824\" xmlns=\"http://www.w3.org/2000/svg\">\n<g>\n";
-    points += "<polyline points=\"";
-    double start_A = 0;
-    double start_B = 0;
-    for(int i = 0; i < places.size(); i++) {
-      double A = convertLatSVG(places.get(i).latitude);
-      double B = convertLongSVG(places.get(i).longitude);
-      if (i == 0){
+      String path = "\n<svg width=\"1066.6073\" height=\"783.0824\" xmlns=\"http://www.w3.org/2000/svg\">\n<g>\n";
+      path += "<polyline points=\"";
+      String points = "";
+      double start_A = 0;
+      double start_B = 0;
+      for(int i = 0; i < places.size(); i++) {
+        String newPoint = "";
+        double A = convertLatSVG(places.get(i).latitude);
+        double B = convertLongSVG(places.get(i).longitude);
+        if (i == 0){
           start_A = A;
           start_B = B;
-      }
-      if (i == places.size()-1) {
-          points += B + "," + A + " ";
+        }
+        if (i == places.size()-1) {
+          path += B + "," + A + " ";
           //round trip implementation:
           start_A = convertLatSVG(places.get(0).latitude);
           start_B = convertLongSVG(places.get(0).longitude);
-          points += start_B + "," + start_A;
-      }else {
-          points += B + "," + A + " ";
+          path += start_B + "," + start_A;
+          newPoint += "<circle cx=\"" + B + "\" cy=\"" + A + "\" r=\"5\" stroke=\"black\" stroke-width=\"3\" fill=\"blue\" />";
+        }else {
+          path += B + "," + A + " ";
+          newPoint += "<circle cx=\"" + B + "\" cy=\"" + A + "\" ";
+          if(i == 0)
+            newPoint += "r=\"8\" stroke=\"black\" stroke-width=\"3\" fill=\"red\" />";
+          else
+            newPoint += "r=\"5\" stroke=\"black\" stroke-width=\"3\" fill=\"blue\" />";
+        }
+        points += newPoint + "\n";
       }
-    }
-    points += "\" fill=\"none\" stroke-width=\"3\" stroke=\"black\" />\n</g>\n</svg>\n";
+      path += "\" fill=\"none\" stroke-width=\"3\" stroke=\"black\" />\n";
+      path += points + "</g>\n</svg>\n";
 
 
       while ( (line = br.readLine()) != null) {
