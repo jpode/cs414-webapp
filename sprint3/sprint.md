@@ -54,7 +54,7 @@ Story Points |  *39*  | *0*
 
 Date | Tasks done  | Tasks in progress | Impediments 
 :--- | :--- | :--- | :--- 
-*date* | *@task only* | *@task only* | none
+*2/28* | *6* | *12* | none
  | | | 
  
 
