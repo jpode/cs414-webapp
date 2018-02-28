@@ -54,6 +54,7 @@ public class Trip {
     StringBuffer stringBuffer = new StringBuffer();
     String line;
     try {
+
     // calculates and formats the coordinates of the leg of the trip (Polyline)
       String path = "\n<svg width=\"1066.6073\" height=\"783.0824\" xmlns=\"http://www.w3.org/2000/svg\">\n<g>\n";
       path += "<polyline points=\"";
@@ -94,9 +95,10 @@ public class Trip {
         stringBuffer.append("\n");
       }
 
-      stringBuffer.insert(stringBuffer.length()-8, points);
-      //stringBuffer.append(points);
 
+      stringBuffer.insert(stringBuffer.length()-8, path);
+      //stringBuffer.append(points);
+      System.out.println(stringBuffer.toString());
       is.close();
       //System.out.println(stringBuffer.toString());
 
@@ -141,7 +143,7 @@ public class Trip {
       dist.add(singleDist);
 
     }
-      return dist;
+    return dist;
 
   }
 
@@ -242,26 +244,26 @@ public class Trip {
 
   // Converting our Latitude to SVG values for Polyline on Map
   public double convertLatSVG(String value) {
-      double result;
-      double x = convertCoordinate(value);
-      //System.out.println("     LAT IS: " + x);
+    double result;
+    double x = convertCoordinate(value);
+    //System.out.println("     LAT IS: " + x);
 
 
-      // Latitude Formula = 747 - (178 * (value - 37))
-      result = 747 - (178 * (x - 37));
+    // Latitude Formula = 747 - (178 * (value - 37))
+    result = 747 - (178 * (x - 37));
 
-      return result;
+    return result;
   }
 
   // Converting our Longitude to SVG values for Polyline on Map
   public double convertLongSVG(String value) {
-      double result;
-      double y = convertCoordinate(value);
+    double result;
+    double y = convertCoordinate(value);
 
-      // Longitude Formula = 1029 + (142 * (value + 102.05))
-      result = 1029 + (142 * (y + 102.05));
+    // Longitude Formula = 1029 + (142 * (value + 102.05))
+    result = 1029 + (142 * (y + 102.05));
 
-      return result;
+    return result;
   }
 
 }
