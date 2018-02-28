@@ -54,7 +54,8 @@ public class Trip {
     StringBuffer stringBuffer = new StringBuffer();
     String line;
     try {
-      // calculates and formats the coordinates of the leg of the trip (Polyline)
+
+    // calculates and formats the coordinates of the leg of the trip (Polyline)
       String path = "\n<svg width=\"1066.6073\" height=\"783.0824\" xmlns=\"http://www.w3.org/2000/svg\">\n<g>\n";
       path += "<polyline points=\"";
       String points = "";
