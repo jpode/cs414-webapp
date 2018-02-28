@@ -7,6 +7,8 @@ import spark.Response;
 import spark.Spark;
 import static spark.Spark.*;
 
+import java.util.Arrays;
+
 
 /** A simple micro-server for the web.  Just what we need, nothing more.
  *
@@ -16,6 +18,8 @@ public class MicroServer {
   private int    port;
   private String name;
   private String path = "/public";
+
+  private String[] opts = new String[3];
 
   /** Creates a micro-server to load static files and provide REST APIs.
    *
@@ -93,8 +97,13 @@ public class MicroServer {
   private String plan(Request request, Response response) {
 
     response.type("application/json");
+    //Clear the stored optimizations
+    Arrays.fill(opts, null);
 
-    return (new Plan(request)).getTrip();
+    Plan plan = new Plan(request);
+    plan.planTrip();
+
+    return (plan.getTrip());
   }
 
   /** A REST API that returns the team information associated with the server.
@@ -108,5 +117,42 @@ public class MicroServer {
     response.type("text/plain");
 
     return name;
+  }
+
+  /** A REST API that returns an optimized order of trips
+   *  The result of the optimization is stored until the
+   *  file is changed. This allows quick switching between
+   *  optimizations.
+   * @param request
+   * @param response
+   * @return
+   */
+  private String optimize(Request request, Response response) {
+    response.type("application/json");
+    String result = "";
+
+    Plan plan = new Plan(request);
+    int optLvl;
+
+    try{
+      optLvl = Integer.parseInt(plan.optimizationLevel());
+
+      if(opts[optLvl + 1] != null){
+        result = opts[optLvl + 1];
+      } else {
+        plan.planTrip();
+        result = plan.getTrip();
+        opts[optLvl + 1] = result;
+      }
+
+      return result;
+
+    } catch (NumberFormatException e){
+      System.out.println("Invalid optimization type; should be an integer.");
+    }
+
+    plan.planTrip();
+    result = plan.getTrip();
+    return result;
   }
 }
