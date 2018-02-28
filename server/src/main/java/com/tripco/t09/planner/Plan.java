@@ -36,13 +36,19 @@ public class Plan {
     Gson gson = new Gson();
     trip = gson.fromJson(requestBody, Trip.class);
 
-    // plan the trip.
-    trip.plan();
-
     // log something.
     System.out.println(trip.title);
   }
 
+  public String optimizationLevel(){
+    return trip.options.optimization;
+  }
+
+  // plan the trip.
+
+  public void planTrip(){
+    trip.plan();
+  }
   /** Handles the response for a Trip object.
    * Does the conversion from a Java class to a Json string.*
    */
@@ -50,4 +56,5 @@ public class Plan {
     Gson gson = new Gson();
     return gson.toJson(trip);
   }
+
 }
