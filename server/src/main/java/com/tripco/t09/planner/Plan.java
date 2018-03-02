@@ -40,7 +40,7 @@ public class Plan {
     System.out.println(trip.title);
   }
 
-  public String optimizationLevel(){
+  public Double optimizationLevel(){
     return trip.options.optimization;
   }
 
