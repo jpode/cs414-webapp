@@ -13,7 +13,7 @@ class Application extends Component {
       trip: { // default TFFI
         type: "trip",
         title: "",
-        options : {distance: "miles", optimization : "none"},
+        options : {distance: "miles", optimization : 0},
         places: [],
         distances: [],
         map: "<svg width=\"1920\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:svg=\"http://www.w3.org/2000/svg\"><g></g></svg>"
@@ -51,18 +51,12 @@ class Application extends Component {
   }
 
   updateOptions(options){
-    console.log(options);
     var new_tffi = this.state.trip;
-    if(options === "miles") {
-        new_tffi.options.distance = "miles";
-    }
-    else if(options === "kilometers"){
-        new_tffi.options.distance = "kilometers";
-    }
-    console.log(new_tffi);
+    new_tffi.options = options;
     this.setState({trip:new_tffi});
 
   }
+
 
   render() {
     return(

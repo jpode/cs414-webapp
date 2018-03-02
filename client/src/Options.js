@@ -8,12 +8,30 @@ import React, {Component} from 'react';
 class Options extends Component{
   constructor(props) {
     super(props);
-    this.changeOption = this.changeOption.bind(this);
+    this.state = {
+      sliderval : 0
+    }
+
+
+    this.handleSlider = this.handleSlider.bind(this);
+    this.changeDistance = this.changeDistance.bind(this);
+
+
   }
 
-  changeOption(arg) {
-    console.log(arg);
-    this.props.updateOptions(arg);
+  handleSlider(event){
+    this.setState({sliderval : event.target.value});
+
+    var newOption = this.props.options;
+    newOption.optimization = event.target.value;
+    this.props.updateOptions(newOption);
+
+  }
+
+  changeDistance(arg) {
+    var newOption = this.props.options;
+    newOption.distance = arg;
+    this.props.updateOptions(newOption);
   }
 
 
@@ -26,13 +44,18 @@ class Options extends Component{
             Options
           </div>
           <div className="card-body">
-            <p>Highlight the options you wish to use.</p>
+            <p>Select the options you want to add to your trip.</p>
+            <div>
+              <p>&nbsp;&nbsp;Level of Optimization</p>
+              <p><small><i>&nbsp;&nbsp;Warning: optimized trips can take time to generate. Please be patient when selecting high levels of optimization.</i></small></p>
+              <sup>Less</sup> &nbsp;&nbsp; <input type="range" name="optimization" value={this.state.sliderval} onChange={this.handleSlider} min="0" max="1" step=".01" /> &nbsp;&nbsp; <sup>More</sup>
+            </div>
             <div className="btn-group btn-group-toggle" data-toggle="buttons">
               <label className={"btn btn-outline-dark".concat((this.props.options.distance === "miles") ? " active" : "")}>
-                <input type="radio" id="miles" name="distance" value="on" onClick={() => { this.changeOption("miles") }} /> Miles
+                <input type="radio" id="miles" name="distance" value="on" onClick={() => { this.changeDistance("miles") }} /> Miles
               </label>
               <label className={"btn btn-outline-dark".concat((this.props.options.distance === "kilometers") ? " active" : "")}>
-                <input type="radio" id="kilometers" name="distance" value="on" onClick={() => { this.changeOption("kilometers") }} /> Kilometers
+                <input type="radio" id="kilometers" name="distance" value="on" onClick={() => { this.changeDistance("kilometers") }} /> Kilometers
               </label>
             </div>
           </div>
