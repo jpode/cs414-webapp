@@ -132,27 +132,27 @@ public class MicroServer {
     String result = "";
 
     Plan plan = new Plan(request);
+    double optDouble;
     int optLvl;
 
-    try{
-      optLvl = Integer.parseInt(plan.optimizationLevel());
+    optDouble = plan.optimizationLevel();
 
-      if(opts[optLvl + 1] != null){
-        result = opts[optLvl + 1];
-      } else {
-        plan.planTrip();
-        result = plan.getTrip();
-        opts[optLvl + 1] = result;
-      }
-
-      return result;
-
-    } catch (NumberFormatException e){
-      System.out.println("Invalid optimization type; should be an integer.");
+    if(optDouble == 0){
+      optLvl = 0;
+    } else if(optDouble < .5){
+      optLvl = 1;
+    } else {
+      optLvl = 2;
     }
 
-    plan.planTrip();
-    result = plan.getTrip();
+    if(opts[optLvl] != null){
+      result = opts[optLvl];
+    } else {
+      plan.planTrip();
+      result = plan.getTrip();
+      opts[optLvl] = result;
+    }
+
     return result;
   }
 }
