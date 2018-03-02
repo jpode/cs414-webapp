@@ -20,7 +20,6 @@ class Application extends Component {
       }
     }
     this.updateTrip = this.updateTrip.bind(this);
-    this.updateOptions = this.updateOptions.bind(this);
   }
 
   updateTrip(tffi){
@@ -50,20 +49,12 @@ class Application extends Component {
 
   }
 
-  updateOptions(options){
-    var new_tffi = this.state.trip;
-    new_tffi.options = options;
-    this.setState({trip:new_tffi});
-
-  }
-
-
   render() {
     return(
         <div id="application" className="container">
           <div className="row">
             <div className="col-12">
-                <Options options={this.state.trip.options} updateOptions={this.updateOptions}/>
+                <Options trip={this.state.trip} updateTrip={this.updateTrip}/>
             </div>
             <div className="col-12">
                 <Destinations trip={this.state.trip} updateTrip={this.updateTrip}/>
