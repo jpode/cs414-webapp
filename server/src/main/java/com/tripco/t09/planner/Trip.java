@@ -98,7 +98,7 @@ public class Trip {
 
       stringBuffer.insert(stringBuffer.length()-8, path);
       //stringBuffer.append(points);
-      System.out.println(stringBuffer.toString());
+      //System.out.println(stringBuffer.toString());
       is.close();
       //System.out.println(stringBuffer.toString());
 

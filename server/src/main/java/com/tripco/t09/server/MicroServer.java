@@ -44,6 +44,7 @@ public class MicroServer {
     get("/team", this::team);
     // client is sending data, so a HTTP POST is used instead of a GET
     post("/plan", this::plan);
+    post("/optimize", this::optimize);
 
     System.out.println("\n\nServer running on port: " + this.port + "\n\n");
   }
@@ -103,6 +104,14 @@ public class MicroServer {
     Plan plan = new Plan(request);
     plan.planTrip();
 
+    opts[0] = plan.getTrip();
+
+    if(getOptLvl(plan) > 0){
+      plan.optimize();
+      opts[getOptLvl(plan)] = plan.getTrip();
+    }
+
+
     return (plan.getTrip());
   }
 
@@ -119,19 +128,36 @@ public class MicroServer {
     return name;
   }
 
-  /** A REST API that returns an optimized order of trips
-   *  The result of the optimization is stored until the
+  /** A REST API that returns an optimized order of the trip
+   *  The result of the optimization is cached until the
    *  file is changed. This allows quick switching between
    *  optimizations.
    * @param request
    * @param response
    * @return
    */
+
   private String optimize(Request request, Response response) {
     response.type("application/json");
     String result = "";
-
+    int optLvl;
     Plan plan = new Plan(request);
+
+    optLvl = getOptLvl(plan);
+
+    if(opts[optLvl] != null){
+      result = opts[optLvl];
+    } else {
+      System.out.println("No cached optimization.");
+      plan.optimize();
+      result = plan.getTrip();
+      opts[optLvl] = result;
+    }
+
+    return result;
+  }
+
+  private int getOptLvl(Plan plan){
     double optDouble;
     int optLvl;
 
@@ -144,15 +170,6 @@ public class MicroServer {
     } else {
       optLvl = 2;
     }
-
-    if(opts[optLvl] != null){
-      result = opts[optLvl];
-    } else {
-      plan.planTrip();
-      result = plan.getTrip();
-      opts[optLvl] = result;
-    }
-
-    return result;
+    return optLvl;
   }
 }
