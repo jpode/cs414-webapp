@@ -106,17 +106,18 @@ public class Trip {
    * @return totalDist
    */
 
-  public int sumDistances(ArrayList<Place> new_places) {
+  public int sumDistances(ArrayList<Place> newPlaces) {
     int totalDist = 0;
-    Place A, B;
-    for (int i = 0; i < new_places.size(); i++) {
-      A = places.get(i);
-      if (i != new_places.size() - 1) {
-        B = places.get(i + 1);
+    Place aa;
+    Place bb;
+    for (int i = 0; i < newPlaces.size(); i++) {
+      aa = places.get(i);
+      if (i != newPlaces.size() - 1) {
+        bb = places.get(i + 1);
       } else {
-        B = places.get(0);
+        bb = places.get(0);
       }
-      totalDist += distBetweenTwoPlaces(A, B);
+      totalDist += distBetweenTwoPlaces(aa, bb);
     }
     return totalDist;
   }
@@ -245,15 +246,16 @@ public class Trip {
 
     ArrayList<Integer> dist = new ArrayList<Integer>();
 //    distArr = new int[places.size()][places.size()];
-    Place A, B;
+    Place aa;
+    Place bb;
     for (int i = 0; i < places.size(); i++) {
-      A = places.get(i);
+      aa = places.get(i);
       if(i != places.size() - 1) {
-        B = places.get(i + 1);
+        bb = places.get(i + 1);
       } else {
-        B = places.get(0);
+        bb = places.get(0);
       }
-      dist.add(distBetweenTwoPlaces(A, B));
+      dist.add(distBetweenTwoPlaces(aa, bb));
 
 //      if(i == places.size() - 1){
 //        distArr[i][0] = singleDist;
@@ -267,12 +269,12 @@ public class Trip {
     return dist;
   }
 
-  private int distBetweenTwoPlaces(Place A, Place B) {
+  private int distBetweenTwoPlaces(Place aa, Place bb) {
     double ptALat, ptALong, ptBLat, ptBLong;
-    ptALat = convertCoordinate(A.latitude);
-    ptALong = convertCoordinate(A.longitude);
-    ptBLat = convertCoordinate(B.latitude);
-    ptBLong = convertCoordinate(B.longitude);
+    ptALat = convertCoordinate(aa.latitude);
+    ptALong = convertCoordinate(aa.longitude);
+    ptBLat = convertCoordinate(bb.latitude);
+    ptBLong = convertCoordinate(bb.longitude);
     return distanceHelper(ptALat, ptALong, ptBLat, ptBLong);
   }
 
