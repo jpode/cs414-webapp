@@ -270,11 +270,10 @@ public class Trip {
   }
 
   private int distBetweenTwoPlaces(Place aa, Place bb) {
-    double ptALat, ptALong, ptBLat, ptBLong;
-    ptALat = convertCoordinate(aa.latitude);
-    ptALong = convertCoordinate(aa.longitude);
-    ptBLat = convertCoordinate(bb.latitude);
-    ptBLong = convertCoordinate(bb.longitude);
+    double ptALat = convertCoordinate(aa.latitude);
+    double ptALong = convertCoordinate(aa.longitude);
+    double ptBLat = convertCoordinate(bb.latitude);
+    double ptBLong = convertCoordinate(bb.longitude);
     return distanceHelper(ptALat, ptALong, ptBLat, ptBLong);
   }
 
