@@ -108,24 +108,15 @@ public class Trip {
 
   public int sumDistances(ArrayList<Place> new_places) {
     int totalDist = 0;
+    Place A, B;
     for (int i = 0; i < new_places.size(); i++) {
-      double ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG;
-
-      for (i = 0; i < new_places.size(); i++) {
-
-        ptA_LAT = convertCoordinate(new_places.get(i).latitude);
-        ptA_LONG = convertCoordinate(new_places.get(i).longitude);
-
-        if (i != new_places.size() - 1) {
-          ptB_LAT = convertCoordinate(new_places.get(i + 1).latitude);
-          ptB_LONG = convertCoordinate(new_places.get(i + 1).longitude);
-        } else {
-          ptB_LAT = convertCoordinate(new_places.get(0).latitude);
-          ptB_LONG = convertCoordinate(new_places.get(0).longitude);
-        }
-
-        totalDist += distanceHelper(ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG);
+      A = places.get(i);
+      if (i != new_places.size() - 1) {
+        B = places.get(i + 1);
+      } else {
+        B = places.get(0);
       }
+      totalDist += distBetweenTwoPlaces(A, B);
     }
     return totalDist;
   }
@@ -140,16 +131,12 @@ public class Trip {
   public Place nearestNeighborHelper(Place start, ArrayList<Place> minRoute) {
     Place next = start; // in case there is only one location, shortest route is start-start
     int minDist = Integer.MAX_VALUE;
-    double startLat = convertCoordinate(start.latitude);
-    double startLong = convertCoordinate(start.longitude);
     for (int i = 0; i < places.size(); ++i) {
       Place temp = places.get(i);
       if (minRoute.contains(temp)) {
         continue;
       }
-      double tempLat = convertCoordinate(temp.latitude);
-      double tempLong = convertCoordinate(temp.longitude);
-      int tempDist = distanceHelper(startLat, startLong, tempLat, tempLong);
+      int tempDist = distBetweenTwoPlaces(start, temp);
       if (tempDist < minDist) {
         next = temp;
         minDist = tempDist;
@@ -258,25 +245,15 @@ public class Trip {
 
     ArrayList<Integer> dist = new ArrayList<Integer>();
 //    distArr = new int[places.size()][places.size()];
-    int singleDist = 0;
-    int i;
-    double ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG;
-
-    for(i = 0; i < places.size(); i++){
-
-      ptA_LAT = convertCoordinate(places.get(i).latitude);
-      ptA_LONG = convertCoordinate(places.get(i).longitude);
-
+    Place A, B;
+    for (int i = 0; i < places.size(); i++) {
+      A = places.get(i);
       if(i != places.size() - 1) {
-        ptB_LAT = convertCoordinate(places.get(i + 1).latitude);
-        ptB_LONG = convertCoordinate(places.get(i + 1).longitude);
+        B = places.get(i + 1);
       } else {
-        ptB_LAT = convertCoordinate(places.get(0).latitude);
-        ptB_LONG = convertCoordinate(places.get(0).longitude);
+        B = places.get(0);
       }
-
-      singleDist = distanceHelper(ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG);
-      dist.add(singleDist);
+      dist.add(distBetweenTwoPlaces(A, B));
 
 //      if(i == places.size() - 1){
 //        distArr[i][0] = singleDist;
@@ -288,8 +265,17 @@ public class Trip {
 //      }
     }
     return dist;
-
   }
+
+  private int distBetweenTwoPlaces(Place A, Place B) {
+    double ptALat, ptALong, ptBLat, ptBLong;
+    ptALat = convertCoordinate(A.latitude);
+    ptALong = convertCoordinate(A.longitude);
+    ptBLat = convertCoordinate(B.latitude);
+    ptBLong = convertCoordinate(B.longitude);
+    return distanceHelper(ptALat, ptALong, ptBLat, ptBLong);
+  }
+
 
   private void verifyPlaces(){
     for(int i = 0; i < places.size(); i++){
