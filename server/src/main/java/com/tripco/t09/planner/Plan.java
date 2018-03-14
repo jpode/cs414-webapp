@@ -47,33 +47,22 @@ public class Plan {
   // Plan the trip
   public void planTrip(){
       trip.plan();
-    if (trip.optimizationLevel != 0) {
-      trip.optimize();
+    if (trip.options.optimization != 0) {
+      optimize();
     }
   }
 
   /**
-   * Optimize can be called directly through changing slider on UI, or indirectly through planTrip()
-   * above. optimize() is the entry function for nearest neighbor, 2opt, and 3opt optimizations
-   * methods, all defined in Trip.java.
-   *
-   * NOTE: IF ADDITIONAL OPTIMIZATIONS ARE ADDED OR REMOVED, THIS METHOD WILL HAVE TO BE ALTERED TO
-   * REFLECT DIFFERENT VALUES ON UI SLIDER (CURRENTLY 3 OPTIONS, MAX VALUE = 1, SO .333 IS VALUE BY
-   * WHICH SLIDER STEPS CURRENTLY. MAY NOT ALWAYS BE THE CASE).
+   * Plan.optimize() exists only to redirect to trip.optimize(). It works as a go-between for
+   * MicroServer.java, which contains objects of type Plan, and Trip.java, which contains the
+   * actual data to be optimized (places etc.). As the MicroServer call to Plan.optimize() will
+   * always first call the Plan.java constructor, which initializes a new trip object, only minor
+   * and likely unnecessary error checking was added to Trip's optimize method.
    */
 
   public void optimize() {
-    System.out.println("Optimizing trip with level " + trip.optimizationLevel());
-    if (trip.optimizationLevel() == 0) {
-      trip.plan();
-    } else if (trip.optimizationLevel() < 0.35) {
-      trip.planNearestNeighbor();
-    } else if (trip.optimizationLevel() < 0.7) {
-      trip.plan2Opt();
-    } else {
-      trip.plan3Opt();
-    }
-
+    System.out.println("Optimizing trip with level " + trip.options.optimization);
+    trip.optimize();
   }
   /** Handles the response for a Trip object.
    * Does the conversion from a Java class to a Json string.*

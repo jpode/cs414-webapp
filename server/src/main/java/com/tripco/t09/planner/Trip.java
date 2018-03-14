@@ -43,6 +43,30 @@ public class Trip {
   }
 
   /**
+   * Optimize can be called directly through changing slider on UI, or indirectly through planTrip()
+   * above. optimize() is the entry function for nearest neighbor, 2opt, and 3opt optimizations
+   * methods, all defined in Trip.java.
+   *
+   * NOTE: IF ADDITIONAL OPTIMIZATIONS ARE ADDED OR REMOVED, THIS METHOD WILL HAVE TO BE ALTERED TO
+   * REFLECT DIFFERENT VALUES ON UI SLIDER (CURRENTLY 3 OPTIONS, MAX VALUE = 1, SO .333 IS VALUE BY
+   * WHICH SLIDER STEPS CURRENTLY. MAY NOT ALWAYS BE THE CASE).
+   */
+
+  public void optimize() {
+    System.out.println("Optimizing trip with level " + this.options.optimization);
+    if (this.options.optimization == 0) {
+      this.plan();
+    } else if (this.options.optimization < 0.35) {
+      this.planNearestNeighbor();
+    } else if (this.options.optimization < 0.7) {
+      this.plan2Opt();
+    } else {
+      this.plan3Opt();
+    }
+
+  }
+
+  /**
    * Top level method that does planning for nearest neighbor optimization. Currently will override
    * any previously calculated SVG map or distances array.
    */
