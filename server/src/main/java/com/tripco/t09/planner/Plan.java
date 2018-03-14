@@ -44,24 +44,35 @@ public class Plan {
     return trip.options.optimization;
   }
 
-  // Plan the trip
+  /**
+   * The planTrip method is the entry point / method to planning any trip. Called from 
+   * Plan Constructor, and passes control to Trip.java's plan method.
+   */
+  
   public void planTrip(){
       trip.plan();
+    if (trip.options.optimization != 0) {
+      optimize();
+    }
   }
 
-  // Optimize the trip Will not work if trip has no distances. this is intended to prevent optimization
-  // on a file that has not been planned yet.
-  public void optimize(){
+  /**
+   * Plan.optimize() exists only to redirect to trip.optimize(). It works as a go-between for
+   * MicroServer.java, which contains objects of type Plan, and Trip.java, which contains the
+   * actual data to be optimized (places etc.). As the MicroServer call to Plan.optimize() will
+   * always first call the Plan.java constructor, which initializes a new trip object, only minor
+   * and likely unnecessary error checking was added to Trip's optimize method.
+   */
+
+  public void optimize() {
     System.out.println("Optimizing trip with level " + trip.options.optimization);
-    /*
-    if(trip.distances.size() > 0){
-      trip.optimize();
-    }
-    */
+    trip.optimize();
   }
   /** Handles the response for a Trip object.
    * Does the conversion from a Java class to a Json string.*
    */
+
+
   public String getTrip () {
     Gson gson = new Gson();
     return gson.toJson(trip);

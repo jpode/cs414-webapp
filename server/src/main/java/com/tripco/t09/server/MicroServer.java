@@ -157,6 +157,10 @@ public class MicroServer {
     return result;
   }
 
+  /**
+   * this will need to be edited to account for third optimization level, if original (unoptimized)
+   * is to be saved as well.
+   */
   private int getOptLvl(Plan plan){
     double optDouble;
     int optLvl;

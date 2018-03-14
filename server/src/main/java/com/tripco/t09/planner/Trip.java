@@ -43,6 +43,57 @@ public class Trip {
   }
 
   /**
+   * Optimize can be called directly through changing slider on UI, or indirectly through planTrip()
+   * above. optimize() is the entry function for nearest neighbor, 2opt, and 3opt optimizations
+   * methods, all defined in Trip.java.
+   * NOTE: IF ADDITIONAL OPTIMIZATIONS ARE ADDED OR REMOVED, THIS METHOD WILL HAVE TO BE ALTERED TO
+   * REFLECT DIFFERENT VALUES ON UI SLIDER (CURRENTLY 3 OPTIONS, MAX VALUE = 1, SO .333 IS VALUE BY
+   * WHICH SLIDER STEPS CURRENTLY. MAY NOT ALWAYS BE THE CASE).
+   */
+
+  public void optimize() {
+    System.out.println("Optimizing trip with level " + this.options.optimization);
+    if (this.options.optimization == 0) {
+      this.plan();
+    } else if (this.options.optimization < 0.35) {
+      this.planNearestNeighbor();
+    } else if (this.options.optimization < 0.7) {
+      this.plan2Opt();
+    } else {
+      this.plan3Opt();
+    }
+
+  }
+
+  /**
+   * Top level method that does planning for nearest neighbor optimization. Currently will override
+   * any previously calculated SVG map or distances array.
+   */
+
+  public void planNearestNeighbor() {
+
+  }
+
+  /**
+   * Top level method that does planning for 2-Opt optimization. Currently will override any
+   * previously calculated SVG map or distances array.
+   */
+
+  public void plan2Opt() {
+
+  }
+
+  /**
+   * Top level method that does planning for 3-Opt optimization. Currently will override any
+   * previously calculated SVG map or distances array.
+   */
+
+  public void plan3Opt() {
+
+  }
+
+
+  /**
    * Returns an SVG containing the background and the legs of the trip.
    * @return
    */
@@ -227,19 +278,13 @@ public class Trip {
    *  true = within boundaries, false = outside of boundaries
    */
   public boolean verifyLongitudeCoordinates(double coordinate){
-    if(coordinate < -102.05 && coordinate > -109.05){
-      return true;
-    }
-    return false;
+    return coordinate < -102.05 && coordinate > -109.05;
   }
 
   // Same as verifyLongitudeCoordinates, but takes a latitudinal coordinate and tests
   //  it against the south and north Colorado borders at 37N and 41N
   public boolean verifyLatitudeCoordinates(double coordinate){
-    if(coordinate > 37 && coordinate < 41){
-      return true;
-    }
-    return false;
+    return coordinate > 37 && coordinate < 41;
   }
 
   // Converting our Latitude to SVG values for Polyline on Map
