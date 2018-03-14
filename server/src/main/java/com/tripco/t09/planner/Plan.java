@@ -44,7 +44,11 @@ public class Plan {
     return trip.options.optimization;
   }
 
-  // Plan the trip
+  /**
+   * The planTrip method is the entry point / method to planning any trip. Called from 
+   * Plan Constructor, and passes control to Trip.java's plan method.
+   */
+  
   public void planTrip(){
       trip.plan();
     if (trip.options.optimization != 0) {
