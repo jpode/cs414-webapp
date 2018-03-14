@@ -11,8 +11,13 @@ class Trip extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      userTitle : ""
+    };
+
     this.plan = this.plan.bind(this);
     this.saveTFFI = this.saveTFFI.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   /* Sends a request to the server with the destinations and options.
@@ -22,22 +27,16 @@ class Trip extends Component {
   fetchResponse(){
     // need to get the request body from the trip in state object.
     let requestBody = {
-        "type"    : "trip",
-        "title"   : "PLANNING",
-        "options" : {
-          "distance":"miles",
-          "optimization":"none"
-        },
-        "places"  : [
-          {"id":"dnvr", "name":"Denver", "latitude": "-104.9903", "longitude": "39.7392"},
-          {"id":"bldr", "name":"Boulder", "latitude": "-105.2705", "longitude": "40.0150"},
-        ]
-      };
+      "type"    : this.props.trip.type,
+      "title"   : this.state.userTitle,
+      "options" : this.props.trip.options,
+      "places"  : this.props.trip.places
+    };
 
     console.log(process.env.SERVICE_URL);
     console.log(requestBody);
 
-    return fetch(process.env.SERVICE_URL + '/plan', {
+    return fetch('http://' + location.host + '/plan', {
       method:"POST",
       body: JSON.stringify(requestBody)
     });
@@ -47,8 +46,10 @@ class Trip extends Component {
     try {
       let serverResponse = await this.fetchResponse();
       let tffi = await serverResponse.json();
+
       console.log(tffi);
       this.props.updateTrip(tffi);
+
     } catch(err) {
       console.error(err);
     }
@@ -57,12 +58,27 @@ class Trip extends Component {
   /* Saves the map and itinerary to the local file system.
    */
   saveTFFI(){
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.props.trip)));
+    element.setAttribute('download', this.state.userTitle + ".json");
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+  }
+
+  handleSubmit(event){
+    this.setState({userTitle : event.target.value});
   }
 
   /* Renders the buttons, map, and itinerary.
    * The title should be specified before the plan or save buttons are valid.
    */
   render(){
+    const hasTitle = this.state.userTitle.length > 0;
     return(
         <div id="trip" className="card">
           <div className="card-header bg-info text-white">
@@ -72,11 +88,11 @@ class Trip extends Component {
             <p>Give your trip a title before planning or saving.</p>
             <div className="input-group" role="group">
               <span className="input-group-btn">
-              <button className="btn btn-primary " onClick={this.plan} type="button">Plan</button>
+              <button disabled = {!hasTitle} className="btn btn-primary " onClick={this.plan} type="button">Plan</button>
             </span>
-              <input type="text" className="form-control" placeholder="Trip title..."/>
+              <input type="text" className="form-control" onChange = {this.handleSubmit} placeholder="Trip title..."/>
               <span className="input-group-btn">
-              <button className="btn btn-primary " onClick={this.saveTFFI} type="button">Save</button>
+              <button disabled = {!hasTitle} className="btn btn-primary " onClick={this.saveTFFI} type="button">Save</button>
             </span>
             </div>
             <Map trip={this.props.trip} />

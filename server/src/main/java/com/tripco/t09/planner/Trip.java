@@ -12,6 +12,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.lang.Math;
+import java.util.Arrays;
+
 
 /**
  * The Trip class supports TFFI so it can easily be converted to/from Json by Gson.
@@ -32,8 +34,11 @@ public class Trip {
    */
   public void plan() {
 
-    this.map = svg();
-    this.distances = legDistances();
+    verifyPlaces();
+    if(places.size() > 1) {
+      this.map = svg();
+      this.distances = legDistances();
+    }
 
   }
 
@@ -49,11 +54,54 @@ public class Trip {
     StringBuffer stringBuffer = new StringBuffer();
     String line;
     try {
+
+    // calculates and formats the coordinates of the leg of the trip (Polyline)
+      String path = "\n<svg width=\"1066.6073\" height=\"783.0824\" xmlns=\"http://www.w3.org/2000/svg\">\n<g>\n";
+      path += "<polyline points=\"";
+      String points = "";
+      double start_A = 0;
+      double start_B = 0;
+      for(int i = 0; i < places.size(); i++) {
+        String newPoint = "";
+        double A = convertLatSVG(places.get(i).latitude);
+        double B = convertLongSVG(places.get(i).longitude);
+        if (i == 0){
+          start_A = A;
+          start_B = B;
+        }
+        if (i == places.size()-1) {
+          path += B + "," + A + " ";
+          //round trip implementation:
+          start_A = convertLatSVG(places.get(0).latitude);
+          start_B = convertLongSVG(places.get(0).longitude);
+          path += start_B + "," + start_A;
+          newPoint += "<circle cx=\"" + B + "\" cy=\"" + A + "\" r=\"5\" stroke=\"black\" stroke-width=\"3\" fill=\"blue\" />";
+        }else {
+          path += B + "," + A + " ";
+          newPoint += "<circle cx=\"" + B + "\" cy=\"" + A + "\" ";
+          if(i == 0)
+            newPoint += "r=\"8\" stroke=\"black\" stroke-width=\"3\" fill=\"red\" />";
+          else
+            newPoint += "r=\"5\" stroke=\"black\" stroke-width=\"3\" fill=\"blue\" />";
+        }
+        points += newPoint + "\n";
+      }
+      path += "\" fill=\"none\" stroke-width=\"3\" stroke=\"black\" />\n";
+      path += points + "</g>\n</svg>\n";
+
+
       while ( (line = br.readLine()) != null) {
         stringBuffer.append(line);
         stringBuffer.append("\n");
       }
+
+
+      stringBuffer.insert(stringBuffer.length()-8, path);
+      //stringBuffer.append(points);
+      //System.out.println(stringBuffer.toString());
       is.close();
+      //System.out.println(stringBuffer.toString());
+
       return stringBuffer.toString();
     } catch (IOException ioe) {
       System.out.println("ERROR: colorado.svg failed to be read by BufferedReader in Trip.java.");
@@ -77,72 +125,36 @@ public class Trip {
     int singleDist = 0;
     int i;
     double ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG;
-    boolean removed_ptA = false;
-    boolean removed_ptB = false;
 
-    for(i = 0; i < places.size() - 1; i++){
-     //If any places have been removed for incorrect coordinates, the index will need to be adjusted as the array will shrink
-      if(removed_ptA){
-        i--;
-      }
-      if(removed_ptB){
-        i--;
-      }
-      removed_ptA = false;
-      removed_ptB = false;
+    for(i = 0; i < places.size(); i++){
 
       ptA_LAT = convertCoordinate(places.get(i).latitude);
       ptA_LONG = convertCoordinate(places.get(i).longitude);
-      ptB_LAT = convertCoordinate(places.get(i+1).latitude);
-      ptB_LONG = convertCoordinate(places.get(i+1).longitude);
 
-      /*
-       * Verify if two current places are located inside Colorado
-       * If they are not, then remove the place from the places array.
-       */
-
-      if(!verifyLatitudeCoordinates(ptA_LAT) || !verifyLongitudeCoordinates(ptA_LONG)) {
-        System.out.println("Coordinates for location " + places.get(i).name + " are outside of Colorado boundaries");
-        places.remove(i);
-        removed_ptA = true;
+      if(i != places.size() - 1) {
+        ptB_LAT = convertCoordinate(places.get(i + 1).latitude);
+        ptB_LONG = convertCoordinate(places.get(i + 1).longitude);
+      } else {
+        ptB_LAT = convertCoordinate(places.get(0).latitude);
+        ptB_LONG = convertCoordinate(places.get(0).longitude);
       }
-
-      if(!verifyLatitudeCoordinates(ptB_LAT) || !verifyLongitudeCoordinates(ptB_LONG)) {
-        //If place ptA has been removed, then the array shrinks so that ptB is now where ptA was
-        if(removed_ptA){
-          System.out.println("Coordinates for location " + places.get(i).name + " are outside of Colorado boundaries");
-          places.remove(i);
-        } else {
-          System.out.println("Coordinates for location " + places.get(i+1).name + " are outside of Colorado boundaries");
-          places.remove(i + 1);
-        }
-        removed_ptB = true;
-      }
-
-      //Add distance to dist array
-      if(!removed_ptA && !removed_ptB) {
-        singleDist = distanceHelper(ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG);
-        dist.add(singleDist);
-      }
-    }
-
-    /*
-     * Calculate a distance for the return; from the last location back to the first
-     * If places have been removed and there is one or zero places remaining, there
-     * will be no values;
-     */
-    if(places.size() > 1) {
-      ptA_LAT = convertCoordinate(places.get(i).latitude);
-      ptA_LONG = convertCoordinate(places.get(i).longitude);
-      ptB_LAT = convertCoordinate(places.get(0).latitude);
-      ptB_LONG = convertCoordinate(places.get(0).longitude);
 
       singleDist = distanceHelper(ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG);
       dist.add(singleDist);
-    } else {
-      dist.clear();
+
     }
     return dist;
+
+  }
+
+  private void verifyPlaces(){
+    for(int i = 0; i < places.size(); i++){
+      if(!verifyLatitudeCoordinates(convertCoordinate(places.get(i).latitude)) || !verifyLongitudeCoordinates(convertCoordinate(places.get(i).longitude))){
+        System.out.println("Coordinates for location " + places.get(i).name + " are outside of Colorado boundaries");
+        places.remove(i);
+        i--;
+      }
+    }
   }
 
   //follows chord length formula given here:
@@ -172,95 +184,86 @@ public class Trip {
   }
 
   /**
-   * Takes a single string coordinate of various types, if the coordinate is already in
-   *  proper decimal format it will simply return. Otherwise the method will call
-   *   stringToCoordinate to convert the coordinate.
-   * @params String containing the coordinate
-   * @return double containing the string coordinate converted to decimal coordinate
-   */
-  public double convertCoordinate(String value) {
-    double result;
-    try {
-      result = Double.parseDouble(value);
-    } catch (NumberFormatException e) {
-      /*Coordinate is not already in number format*/
-      result = stringToCoordinate(value);
-    }
-
-    return result;
-
-  }
-
-  /**
    * Takes a single string coordinate of various types and converts it to a decimal value.
-   *  Assumes that the string is of a correct coordinate input type.
    * @params String containing the coordinate
    * @return double containing the string coordinate converted to decimal coordinate
    */
-  public double stringToCoordinate(String value){
-    String coordinate;
+  public double convertCoordinate(String value){
+    ArrayList<String> coordinate;
     double degrees = 0;
     double minutes = 0;
     double seconds = 0;
-    double result;
+    int isNegative = 1;
 
+    //Replaces given string coordinate values into an arraylist
 
-    //Replaces all degrees, minutes, and seconds symbols with empty spaces to allow the
-    // string to be parsed into double values.
+    coordinate = new ArrayList<String>(Arrays.asList(value.split("[°\'\"′″\\s+]")));
 
-    coordinate = value.replaceAll("[°\'\"′″]", " " );
-
-    int counter = 0;
-    int last = 0;
-
-    // Parses the new string and reads in the values of the coordinates
-    for(int i = 0; i < coordinate.length(); i++){
-      if(coordinate.charAt(i) == ' ' && last != i){
-        if(counter == 0) {
-          degrees = Double.parseDouble(coordinate.substring(last, i));
-          last = i+1;
-          counter++;
-        } else if(counter == 1){
-          minutes = Double.parseDouble(coordinate.substring(last, i));
-          last = i+1;
-          counter++;
-        } else if(counter == 2){
-          seconds = Double.parseDouble(coordinate.substring(last, i));
-          last = i+1;
-          counter++;
-        }
-      }
+    if(coordinate.contains("S") || coordinate.contains("W")) {
+      isNegative = -1;
     }
 
-    // Checks to see if the value should be negated
-    if(coordinate.indexOf('S') != -1 || coordinate.indexOf('W') != -1){
-      return -1 * (double)Math.round((degrees + (minutes / 60) + (seconds / 3600)) * 100000d) / 100000d;
+    coordinate.removeAll(Arrays.asList("N", "S", "E", "W", "", " ", null));
+
+    if(coordinate.size() > 0){
+      degrees = Double.parseDouble(coordinate.get(0));
+    }
+    if(coordinate.size() > 1){
+      minutes = Double.parseDouble(coordinate.get(1));
+    }
+    if(coordinate.size() > 2){
+      seconds = Double.parseDouble(coordinate.get(2));
     }
 
-    return (double)Math.round((degrees + (minutes / 60) + (seconds / 3600)) * 100000d) / 100000d;
+    return isNegative * (double)Math.round((degrees + (minutes / 60) + (seconds / 3600)) * 100000d) / 100000d;
+
   }
 
   /**
-   * Takes a single decimal coordinate and checks to see if it is within the 102.05W and 109.05W boundaries
+   * Takes a single decimal longitudinal coordinate and checks to see if it is within the 102.05W and 109.05W boundaries
    *  of the Colorado eastern and western border
    * @params Double containing the coordinate
    * @return boolean indicating if the coordinate is within the boundaries.
    *  true = within boundaries, false = outside of boundaries
    */
-  public boolean verifyLatitudeCoordinates(double coordinate){
+  public boolean verifyLongitudeCoordinates(double coordinate){
     if(coordinate < -102.05 && coordinate > -109.05){
       return true;
     }
     return false;
   }
 
-  // Same as verifyLatitudeCoordinates, but takes longitudinal coordinates and tests
-  //  them against the south and north Colorado borders at 37N and 41N
-  public boolean verifyLongitudeCoordinates(double coordinate){
+  // Same as verifyLongitudeCoordinates, but takes a latitudinal coordinate and tests
+  //  it against the south and north Colorado borders at 37N and 41N
+  public boolean verifyLatitudeCoordinates(double coordinate){
     if(coordinate > 37 && coordinate < 41){
       return true;
     }
     return false;
+  }
+
+  // Converting our Latitude to SVG values for Polyline on Map
+  public double convertLatSVG(String value) {
+    double result;
+    double x = convertCoordinate(value);
+    //System.out.println("     LAT IS: " + x);
+
+
+    // Latitude Formula = 747 - (178 * (value - 37))
+    result = 747 - (178 * (x - 37));
+
+    return result;
+  }
+
+  // Converting our Longitude to SVG values for Polyline on Map
+  public double convertLongSVG(String value) {
+    double result;
+    double y = convertCoordinate(value);
+
+    // Longitude Formula = 1029 + (142 * (value + 102.05))
+    result = 1029 + (142 * (y + 102.05));
+
+    return result;
   }
 
 }

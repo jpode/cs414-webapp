@@ -7,6 +7,8 @@ import spark.Response;
 import spark.Spark;
 import static spark.Spark.*;
 
+import java.util.Arrays;
+
 
 /** A simple micro-server for the web.  Just what we need, nothing more.
  *
@@ -16,6 +18,8 @@ public class MicroServer {
   private int    port;
   private String name;
   private String path = "/public";
+
+  private String[] opts = new String[3];
 
   /** Creates a micro-server to load static files and provide REST APIs.
    *
@@ -40,6 +44,7 @@ public class MicroServer {
     get("/team", this::team);
     // client is sending data, so a HTTP POST is used instead of a GET
     post("/plan", this::plan);
+    post("/optimize", this::optimize);
 
     System.out.println("\n\nServer running on port: " + this.port + "\n\n");
   }
@@ -93,8 +98,21 @@ public class MicroServer {
   private String plan(Request request, Response response) {
 
     response.type("application/json");
+    //Clear the stored optimizations
+    Arrays.fill(opts, null);
 
-    return (new Plan(request)).getTrip();
+    Plan plan = new Plan(request);
+    plan.planTrip();
+
+    opts[0] = plan.getTrip();
+
+    if(getOptLvl(plan) > 0){
+      plan.optimize();
+      opts[getOptLvl(plan)] = plan.getTrip();
+    }
+
+
+    return (plan.getTrip());
   }
 
   /** A REST API that returns the team information associated with the server.
@@ -108,5 +126,50 @@ public class MicroServer {
     response.type("text/plain");
 
     return name;
+  }
+
+  /** A REST API that returns an optimized order of the trip
+   *  The result of the optimization is cached until the
+   *  file is changed. This allows quick switching between
+   *  optimizations.
+   * @param request
+   * @param response
+   * @return
+   */
+
+  private String optimize(Request request, Response response) {
+    response.type("application/json");
+    String result = "";
+    int optLvl;
+    Plan plan = new Plan(request);
+
+    optLvl = getOptLvl(plan);
+
+    if(opts[optLvl] != null){
+      result = opts[optLvl];
+    } else {
+      System.out.println("No cached optimization.");
+      plan.optimize();
+      result = plan.getTrip();
+      opts[optLvl] = result;
+    }
+
+    return result;
+  }
+
+  private int getOptLvl(Plan plan){
+    double optDouble;
+    int optLvl;
+
+    optDouble = plan.optimizationLevel();
+
+    if(optDouble == 0){
+      optLvl = 0;
+    } else if(optDouble < .5){
+      optLvl = 1;
+    } else {
+      optLvl = 2;
+    }
+    return optLvl;
   }
 }

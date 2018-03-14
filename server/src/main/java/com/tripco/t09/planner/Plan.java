@@ -36,13 +36,29 @@ public class Plan {
     Gson gson = new Gson();
     trip = gson.fromJson(requestBody, Trip.class);
 
-    // plan the trip.
-    trip.plan();
-
     // log something.
-    System.out.println(trip.title);
+    System.out.println("Title = " + trip.title);
   }
 
+  public Double optimizationLevel(){
+    return trip.options.optimization;
+  }
+
+  // Plan the trip
+  public void planTrip(){
+      trip.plan();
+  }
+
+  // Optimize the trip Will not work if trip has no distances. this is intended to prevent optimization
+  // on a file that has not been planned yet.
+  public void optimize(){
+    System.out.println("Optimizing trip with level " + trip.options.optimization);
+    /*
+    if(trip.distances.size() > 0){
+      trip.optimize();
+    }
+    */
+  }
   /** Handles the response for a Trip object.
    * Does the conversion from a Java class to a Json string.*
    */
@@ -50,4 +66,5 @@ public class Plan {
     Gson gson = new Gson();
     return gson.toJson(trip);
   }
+
 }
