@@ -43,6 +43,34 @@ public class Trip {
   }
 
   /**
+   * Top level method that does planning for nearest neighbor optimization. Currently will override
+   * any previously calculated SVG map or distances array.
+   */
+
+  public void planNearestNeighbor() {
+
+  }
+
+  /**
+   * Top level method that does planning for 2-Opt optimization. Currently will override any
+   * previously calculated SVG map or distances array.
+   */
+
+  public void plan2Opt() {
+
+  }
+
+  /**
+   * Top level method that does planning for 3-Opt optimization. Currently will override any
+   * previously calculated SVG map or distances array.
+   */
+
+  public void plan3Opt() {
+
+  }
+
+
+  /**
    * Returns an SVG containing the background and the legs of the trip.
    * @return
    */
@@ -227,19 +255,13 @@ public class Trip {
    *  true = within boundaries, false = outside of boundaries
    */
   public boolean verifyLongitudeCoordinates(double coordinate){
-    if(coordinate < -102.05 && coordinate > -109.05){
-      return true;
-    }
-    return false;
+    return coordinate < -102.05 && coordinate > -109.05;
   }
 
   // Same as verifyLongitudeCoordinates, but takes a latitudinal coordinate and tests
   //  it against the south and north Colorado borders at 37N and 41N
   public boolean verifyLatitudeCoordinates(double coordinate){
-    if(coordinate > 37 && coordinate < 41){
-      return true;
-    }
-    return false;
+    return coordinate > 37 && coordinate < 41;
   }
 
   // Converting our Latitude to SVG values for Polyline on Map

@@ -47,21 +47,39 @@ public class Plan {
   // Plan the trip
   public void planTrip(){
       trip.plan();
-  }
-
-  // Optimize the trip Will not work if trip has no distances. this is intended to prevent optimization
-  // on a file that has not been planned yet.
-  public void optimize(){
-    System.out.println("Optimizing trip with level " + trip.options.optimization);
-    /*
-    if(trip.distances.size() > 0){
+    if (trip.optimizationLevel != 0) {
       trip.optimize();
     }
-    */
+  }
+
+  /**
+   * Optimize can be called directly through changing slider on UI, or indirectly through planTrip()
+   * above. optimize() is the entry function for nearest neighbor, 2opt, and 3opt optimizations
+   * methods, all defined in Trip.java.
+   *
+   * NOTE: IF ADDITIONAL OPTIMIZATIONS ARE ADDED OR REMOVED, THIS METHOD WILL HAVE TO BE ALTERED TO
+   * REFLECT DIFFERENT VALUES ON UI SLIDER (CURRENTLY 3 OPTIONS, MAX VALUE = 1, SO .333 IS VALUE BY
+   * WHICH SLIDER STEPS CURRENTLY. MAY NOT ALWAYS BE THE CASE).
+   */
+
+  public void optimize() {
+    System.out.println("Optimizing trip with level " + trip.optimizationLevel());
+    if (trip.optimizationLevel() == 0) {
+      trip.plan();
+    } else if (trip.optimizationLevel() < 0.35) {
+      trip.planNearestNeighbor();
+    } else if (trip.optimizationLevel() < 0.7) {
+      trip.plan2Opt();
+    } else {
+      trip.plan3Opt();
+    }
+
   }
   /** Handles the response for a Trip object.
    * Does the conversion from a Java class to a Json string.*
    */
+
+
   public String getTrip () {
     Gson gson = new Gson();
     return gson.toJson(trip);
