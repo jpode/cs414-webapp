@@ -54,16 +54,17 @@ public class Trip {
 
   public void optimize() {
     System.out.println("Optimizing trip with level " + this.options.optimization);
+    verifyPlaces();
     if (this.options.optimization == 0) {
       this.plan();
     } else if (this.options.optimization < 0.35) {
-      this.planNearestNeighbor();
+      this.places = this.planNearestNeighbor();
     } else if (this.options.optimization < 0.7) {
       this.plan2Opt();
     } else {
       this.plan3Opt();
     }
-
+    this.plan();
   }
 
   /**
@@ -71,32 +72,27 @@ public class Trip {
    * any previously calculated SVG map or distances array.
    */
 
-  public void planNearestNeighbor() {
+  public ArrayList<Place> planNearestNeighbor() {
     ArrayList<Place> tempMinRoute = new ArrayList<Place>();
-    ArrayList<Place> finalMinRoute = places;
-    Place current;
-    int finalMinDist;
-
+    ArrayList<Place> finalMinRoute = new ArrayList<Place>(places);
     // set initial minimum distance to unoptimized sum of distances
-    finalMinDist = sumDistances(finalMinRoute);
-
+    int finalMinDist = sumDistances(finalMinRoute);
     // calculate nearestNeighbor for each starting city
     for (int i = 0; i < places.size(); ++i) {
       tempMinRoute.clear();
-      tempMinRoute.add(places.get(i));   // starting city
-      current = places.get(i);
-      for (int j = 1; j < places.size(); ++j) {
+      Place current = places.get(i); // starting city
+      for (int j = 0; j < places.size(); ++j) {
+        tempMinRoute.add(current);  // add city to potential minimum route
         Place next = nearestNeighborHelper(current, tempMinRoute);  // get next city
-        tempMinRoute.add(next);     // add next closest city to route
         current = next;     // repeat with this new city
       }
       int tempMinDist = sumDistances(tempMinRoute);   // find tot. round-trip distance of new route
-      if (tempMinDist < finalMinDist) {     // if less than current, set as new min
-        finalMinRoute = tempMinRoute;
+      if (tempMinDist < finalMinDist) {     // if less than current, set as new min (dist & route)
+        finalMinRoute = new ArrayList<Place>(tempMinRoute);
         finalMinDist = tempMinDist;
       }
     }
-    this.places = finalMinRoute;
+    return finalMinRoute;
   }
 
   /**
@@ -111,11 +107,11 @@ public class Trip {
     Place aa;
     Place bb;
     for (int i = 0; i < newPlaces.size(); i++) {
-      aa = places.get(i);
+      aa = newPlaces.get(i);
       if (i != newPlaces.size() - 1) {
-        bb = places.get(i + 1);
+        bb = newPlaces.get(i + 1);
       } else {
-        bb = places.get(0);
+        bb = newPlaces.get(0);
       }
       totalDist += distBetweenTwoPlaces(aa, bb);
     }
@@ -130,7 +126,7 @@ public class Trip {
    */
 
   public Place nearestNeighborHelper(Place start, ArrayList<Place> minRoute) {
-    Place next = start; // in case there is only one location, shortest route is start-start
+    Place next = new Place();
     int minDist = Integer.MAX_VALUE;
     for (int i = 0; i < places.size(); ++i) {
       Place temp = places.get(i);
@@ -245,7 +241,6 @@ public class Trip {
   private ArrayList<Integer> legDistances() {
 
     ArrayList<Integer> dist = new ArrayList<Integer>();
-//    distArr = new int[places.size()][places.size()];
     Place aa;
     Place bb;
     for (int i = 0; i < places.size(); i++) {
@@ -256,15 +251,6 @@ public class Trip {
         bb = places.get(0);
       }
       dist.add(distBetweenTwoPlaces(aa, bb));
-
-//      if(i == places.size() - 1){
-//        distArr[i][0] = singleDist;
-//        distArr[0][i] = singleDist;
-//      }
-//      else {
-//        distArr[i][i + 1] = singleDist;
-//        distArr[i+1][i] = singleDist;
-//      }
     }
     return dist;
   }
