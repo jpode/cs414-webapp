@@ -111,8 +111,9 @@ public class MicroServer {
       opts[getOptLvl(plan)] = plan.getTrip();
     }
 
-
-    return (plan.getTrip());
+    response.body(plan.getTrip());
+    response.status(200);
+    return plan.getTrip();
   }
 
   /** A REST API that returns the team information associated with the server.
