@@ -194,10 +194,64 @@ public class TestTrip {
     expectedOrder.add(placeE);    // then littleton
 
     assertEquals(expectedOrder, trip.places);
-
-
   }
 
+  @Test
+  public void test2Opt() {
+    ArrayList<Place> testPlaces = new ArrayList<Place>();
+    Option option = new Option();
+    option.distance = "miles";
+    option.optimization = 0.66;
+    trip.options = option;
+
+    Place placeA = new Place();
+    placeA.id = "foco";
+    placeA.name = "Fort Collins";
+    placeA.latitude = "40° 35' 06\" N";
+    placeA.longitude = "105° 05' 03\" W";
+
+    Place placeE = new Place();
+    placeE.id = "litl";
+    placeE.name = "Littleton";
+    placeE.latitude = "39° 36' 49\" N";
+    placeE.longitude = "105° 01' 00\" W";
+
+    Place placeC = new Place();
+    placeC.id = "grly";
+    placeC.name = "Greeley";
+    placeC.latitude = "40° 25' 23\" N";
+    placeC.longitude = "104° 42' 32\" W";
+
+    Place placeD = new Place();
+    placeD.id = "auro";
+    placeD.name = "Aurora";
+    placeD.latitude = "39° 43' 32\" N";
+    placeD.longitude = "104° 49' 32\" W";
+
+    Place placeB = new Place();
+    placeB.id = "lgmt";
+    placeB.name = "Longmont";
+    placeB.latitude = "40° 10' 01\" N";
+    placeB.longitude = "105° 06' 06\" W";
+
+    testPlaces.add(placeA);
+    testPlaces.add(placeE);
+    testPlaces.add(placeC);
+    testPlaces.add(placeD);
+    testPlaces.add(placeB);
+
+    trip.places = testPlaces;
+    trip.plan();
+    trip.optimize();
+
+    ArrayList<Place> expectedOrder = new ArrayList<Place>();
+    expectedOrder.add(placeA);    // fort collins
+    expectedOrder.add(placeC);    // then greeley
+    expectedOrder.add(placeD);    // then aurora
+    expectedOrder.add(placeE);    // then littleton
+    expectedOrder.add(placeB);    // then longmont
+    assertEquals(expectedOrder, trip.places);
+  }
 
 
 }

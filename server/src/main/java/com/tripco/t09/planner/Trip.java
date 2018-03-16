@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.tripco.t09.server.HTTP;
+import java.util.LinkedList;
 import spark.Request;
 
 import java.io.BufferedReader;
@@ -28,6 +29,10 @@ public class Trip {
   public ArrayList<Integer> distances;
   public String map;
   //public int[][] distArr;
+  // notes for memoization: how should indexes be handled? We could do it by index in places,
+  // but we would have to account for optimizations changing order of places (which is when we
+  // would utilize it)... Could try to implement it by latitude / longitude, but then it would
+  // likely have to be a string to prevent false matches, which would create problems of its own...
 
   /** The top level method that does planning.
    * At this point it just adds the map and distances for the places in order.
@@ -57,10 +62,19 @@ public class Trip {
     verifyPlaces();
     if (this.options.optimization == 0) {
       this.plan();
+      return;
     } else if (this.options.optimization < 0.35) {
       this.places = this.planNearestNeighbor();
+      System.out.println("Optimized Round Trip Distance: " + sumDistances(places));
     } else if (this.options.optimization < 0.7) {
-      this.plan2Opt();
+      if (places.size() < 4) {
+        System.out.println("2Opt Optimization requires a minimum of 4 places. Please add places "
+            + "or consider another optimization method");
+        this.plan();
+        return;
+      }
+      this.places = this.plan2Opt();
+      System.out.println("Optimized Round Trip Distance: " + sumDistances(places));
     } else {
       this.plan3Opt();
     }
@@ -147,8 +161,41 @@ public class Trip {
    * previously calculated SVG map or distances array.
    */
 
-  public void plan2Opt() {
+  //currently not working
+  public ArrayList<Place> plan2Opt() {
+    LinkedList<Place> route = new LinkedList<>(places);
+    route.add(route.get(0));  // for round trip algorithm
+    boolean improvement = true;
+    while (improvement) {
+      improvement = false;
+      for (int i = 0; i < route.size() - 3; ++i) {
+        for (int k = i + 2; k < route.size() - 1; ++k) {
+          int delta = -distBetweenTwoPlaces(route.get(i), route.get(i + 1))
+              - distBetweenTwoPlaces(route.get(k), route.get(k + 1))
+              + distBetweenTwoPlaces(route.get(i), route.get(k))
+              + distBetweenTwoPlaces(route.get(i + 1), route.get(k + 1));
+          if (delta < 0) {
+            reverse2Opt(route, i + 1, k);
+            improvement = true;
+          }
+        }
+      }
+    }
+    route.remove(route.size() - 1); // remove first element again
+    return new ArrayList<>(route);
+  }
 
+  // unverified / untested
+  public void reverse2Opt(LinkedList<Place> route, int i1, int k) {
+    while (i1 < k) {
+      Place temp = route.get(i1);
+      route.remove(i1);
+      route.add(i1, route.get(k - 1));
+      route.remove(k);
+      route.add(k, temp);
+      i1++;
+      k--;
+    }
   }
 
   /**
