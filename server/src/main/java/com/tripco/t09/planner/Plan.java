@@ -35,6 +35,7 @@ public class Plan {
     // convert the body of the request to a Java class.
     Gson gson = new Gson();
     trip = gson.fromJson(requestBody, Trip.class);
+    //trip.distArr = new int[trip.places.size()][trip.places.size()];
 
     // log something.
     System.out.println("Title = " + trip.title);
