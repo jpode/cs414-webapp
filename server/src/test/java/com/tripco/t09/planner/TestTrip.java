@@ -176,11 +176,11 @@ public class TestTrip {
     placeB.latitude = "40° 10' 01\" N";
     placeB.longitude = "105° 06' 06\" W";
 
-    testPlaces.add(placeA);
-    testPlaces.add(placeE);
-    testPlaces.add(placeC);
-    testPlaces.add(placeD);
-    testPlaces.add(placeB);
+    testPlaces.add(placeE); // Littleton
+    testPlaces.add(placeD); // Aurora
+    testPlaces.add(placeA); // Fort Collins
+    testPlaces.add(placeC); // Greeley
+    testPlaces.add(placeB); // Longmont
 
     trip.places = testPlaces;
     trip.plan();

@@ -60,21 +60,18 @@ public class Trip {
   public void optimize() {
     System.out.println("Optimizing trip with level " + this.options.optimization);
     verifyPlaces();
-    if (this.options.optimization == 0) {
-      this.plan();
-      return;
-    } else if (this.options.optimization < 0.35) {
+    if (this.options.optimization < 0.35 && this.options.optimization != 0) {
       this.places = this.planNearestNeighbor();
       System.out.println("Optimized Round Trip Distance: " + sumDistances(places));
     } else if (this.options.optimization < 0.7) {
       if (places.size() < 4) {
         System.out.println("2Opt Optimization requires a minimum of 4 places. Please add places "
             + "or consider another optimization method");
-        this.plan();
-        return;
+        this.places = this.planNearestNeighbor();   // perform lesser optimization if can't do 2Opt
+      } else {
+        this.places = this.plan2Opt();
+        System.out.println("Optimized Round Trip Distance: " + sumDistances(places));
       }
-      this.places = this.plan2Opt();
-      System.out.println("Optimized Round Trip Distance: " + sumDistances(places));
     } else {
       this.plan3Opt();
     }
@@ -160,7 +157,7 @@ public class Trip {
    * Top level method that does planning for 2-Opt optimization. Currently will override any
    * previously calculated SVG map or distances array.
    */
-  
+
   public ArrayList<Place> plan2Opt() {
     LinkedList<Place> route = new LinkedList<>(places);
     route.add(route.get(0));  // for round trip algorithm
@@ -169,10 +166,7 @@ public class Trip {
       improvement = false;
       for (int i = 0; i < route.size() - 3; ++i) {
         for (int k = i + 2; k < route.size() - 1; ++k) {
-          int delta = -distBetweenTwoPlaces(route.get(i), route.get(i + 1))
-              - distBetweenTwoPlaces(route.get(k), route.get(k + 1))
-              + distBetweenTwoPlaces(route.get(i), route.get(k))
-              + distBetweenTwoPlaces(route.get(i + 1), route.get(k + 1));
+          int delta = get2OptDelta(route, i, k);
           if (delta < 0) {
             reverse2Opt(route, i + 1, k);
             improvement = true;
@@ -184,16 +178,26 @@ public class Trip {
     return new ArrayList<>(route);
   }
 
-  // unverified / untested
-  public void reverse2Opt(LinkedList<Place> route, int i1, int k) {
-    while (i1 < k) {
+  public int get2OptDelta(LinkedList<Place> route, int i1, int k1) {
+    int delta = -distBetweenTwoPlaces(route.get(i1), route.get(i1 + 1))
+        - distBetweenTwoPlaces(route.get(k1), route.get(k1 + 1))
+        + distBetweenTwoPlaces(route.get(i1), route.get(k1))
+        + distBetweenTwoPlaces(route.get(i1 + 1), route.get(k1 + 1));
+    return delta;
+  }
+
+  /**
+   * This function is a helper function for the 2Opt optimization.
+   */
+  public void reverse2Opt(LinkedList<Place> route, int i1, int k1) {
+    while (i1 < k1) {
       Place temp = route.get(i1);
       route.remove(i1);
-      route.add(i1, route.get(k - 1));
-      route.remove(k);
-      route.add(k, temp);
+      route.add(i1, route.get(k1 - 1));
+      route.remove(k1);
+      route.add(k1, temp);
       i1++;
-      k--;
+      k1--;
     }
   }
 
