@@ -260,13 +260,23 @@ public class Trip {
     double central_angle = 2 * Math.asin(c / 2);
 
     try {
-      if (this.options.distance.compareTo("miles") == 0) {
-        return (int)Math.round(3959 * central_angle);
+      if (this.options.distance.compareTo("user defined") == 0) {
+        double rad;
+        try {
+          rad = Double.parseDouble(this.options.userRadius);
+        } catch (NumberFormatException e) {
+          rad = 3959;
+        }
+        return (int) Math.round(rad * central_angle);
+      } else if (this.options.distance.compareTo("kilometers") == 0) {
+        return (int) Math.round(6371 * central_angle);
+      } else if (this.options.distance.compareTo("nautical miles") == 0) {
+        return (int) Math.round(3440.0695 * central_angle);
       } else {
-        return (int)Math.round(6371 * central_angle);
+        return (int) Math.round(3959 * central_angle);
       }
-    } catch(NullPointerException e){
-      return (int)Math.round(3959 * central_angle);
+    } catch (NullPointerException e) {
+      return (int) Math.round(3959 * central_angle);
     }
   }
 
