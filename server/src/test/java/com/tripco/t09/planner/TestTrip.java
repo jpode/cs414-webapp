@@ -253,5 +253,47 @@ public class TestTrip {
     assertEquals(expectedOrder, trip.places);
   }
 
+  @Test
+  public void test2OptPart2() {
+    ArrayList<Place> testPlaces = new ArrayList<Place>();
+    Option option = new Option();
+    option.distance = "miles";
+    option.optimization = 0.66;
+    trip.options = option;
+
+    Place placeA = new Place();
+    placeA.id = "foco";
+    placeA.name = "Fort Collins";
+    placeA.latitude = "40° 35' 06\" N";
+    placeA.longitude = "105° 05' 03\" W";
+
+    Place placeE = new Place();
+    placeE.id = "litl";
+    placeE.name = "Littleton";
+    placeE.latitude = "39° 36' 49\" N";
+    placeE.longitude = "105° 01' 00\" W";
+
+    Place placeC = new Place();
+    placeC.id = "grly";
+    placeC.name = "Greeley";
+    placeC.latitude = "40° 25' 23\" N";
+    placeC.longitude = "104° 42' 32\" W";
+
+    testPlaces.add(placeE); // Littleton
+    testPlaces.add(placeA); // Fort Collins
+    testPlaces.add(placeC); // Greeley
+
+    trip.places = testPlaces;
+    trip.plan();
+    trip.optimize();
+
+    ArrayList<Place> expectedOrder = new ArrayList<Place>();
+    expectedOrder.add(placeE);    // littleton
+    expectedOrder.add(placeA);    // then fort collins
+    expectedOrder.add(placeC);    // then greeley
+
+    assertEquals(expectedOrder, trip.places);
+
+  }
 
 }

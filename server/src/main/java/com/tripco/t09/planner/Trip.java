@@ -64,14 +64,8 @@ public class Trip {
       this.places = this.planNearestNeighbor();
       System.out.println("Optimized Round Trip Distance: " + sumDistances(places));
     } else if (this.options.optimization < 0.7) {
-      if (places.size() < 4) {
-        System.out.println("2Opt Optimization requires a minimum of 4 places. Please add places "
-            + "or consider another optimization method");
-        this.places = this.planNearestNeighbor();   // perform lesser optimization if can't do 2Opt
-      } else {
         this.places = this.plan2Opt();
         System.out.println("Optimized Round Trip Distance: " + sumDistances(places));
-      }
     } else {
       this.plan3Opt();
     }
@@ -159,6 +153,11 @@ public class Trip {
    */
 
   public ArrayList<Place> plan2Opt() {
+    if (places.size() < 4) {
+      System.out.println("2Opt Optimization requires a minimum of 4 places. Using NearestNeighbor");
+      this.places = this.planNearestNeighbor();   // perform lesser optimization if can't do 2Opt
+    }
+
     LinkedList<Place> route = new LinkedList<>(places);
     route.add(route.get(0));  // for round trip algorithm
     boolean improvement = true;
