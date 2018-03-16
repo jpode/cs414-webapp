@@ -1,5 +1,9 @@
 package com.tripco.t09.planner;
 
+/**
+ * This class is used solely to consolidate the specific information required for Trip.type =
+ * "config" requests.
+ */
 public class Config {
 
   public String type;

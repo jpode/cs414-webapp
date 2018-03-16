@@ -104,9 +104,26 @@ public class TestTrip {
 
   @Test
   public void testDistanceHelper() {
+    Option option = new Option();
     assertEquals(7304, trip.distanceHelper(49.246292, -123.116226, -41.31666667, 174.76666667),
         2.0);
     assertEquals(10700, trip.distanceHelper(-33.4, -70.666667, 35.652832, 139.839478), 2.0);
+
+    //checking nautical miles
+    option.distance = "nautical miles";
+    trip.options = option;
+    assertEquals(6347, trip.distanceHelper(49.246292, -123.116226, -41.31666667, 174.76666667),
+        2.0);
+    assertEquals(9298, trip.distanceHelper(-33.4, -70.666667, 35.652832, 139.839478), 2.0);
+
+    //checking user-defined distance units (meters)
+    option.distance = "user defined";
+    option.userRadius = "6371393";
+    option.userUnit = "meters";
+    trip.options = option;
+    assertEquals(11755560, trip.distanceHelper(49.246292, -123.116226, -41.31666667, 174.76666667),
+        2.0);
+    assertEquals(17221481, trip.distanceHelper(-33.4, -70.666667, 35.652832, 139.839478), 2.0);
   }
 
   @Test

@@ -94,7 +94,7 @@ public class MicroServer {
    */
   private String config(Request request, Response response) {
     response.type("application/json");
-    Plan plan = new Plan();
+    Plan plan = new Plan(request);
     return (plan.config());
   }
 

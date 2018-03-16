@@ -71,9 +71,6 @@ public class Trip {
    * Optimize can be called directly through changing slider on UI, or indirectly through planTrip()
    * above. optimize() is the entry function for nearest neighbor, 2opt, and 3opt optimizations
    * methods, all defined in Trip.java.
-   * NOTE: IF ADDITIONAL OPTIMIZATIONS ARE ADDED OR REMOVED, THIS METHOD WILL HAVE TO BE ALTERED TO
-   * REFLECT DIFFERENT VALUES ON UI SLIDER (CURRENTLY 3 OPTIONS, MAX VALUE = 1, SO .333 IS VALUE BY
-   * WHICH SLIDER STEPS CURRENTLY. MAY NOT ALWAYS BE THE CASE).
    */
 
   public void optimize() {

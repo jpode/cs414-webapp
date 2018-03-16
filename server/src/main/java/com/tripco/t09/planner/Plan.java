@@ -41,16 +41,9 @@ public class Plan {
   }
 
   /**
-   * This constructor is used for config "get" requests to "/config" REST API
-   */
-  public Plan() {
-  }
-
-  /**
    * This returns the configuration TFFI (JSON format) for config requests to "/config" REST API
    */
   public String config() {
-    Trip trip = new Trip();
     String config = trip.config();
     return config;
   }
