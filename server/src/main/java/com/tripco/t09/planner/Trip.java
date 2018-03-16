@@ -160,8 +160,7 @@ public class Trip {
    * Top level method that does planning for 2-Opt optimization. Currently will override any
    * previously calculated SVG map or distances array.
    */
-
-  //currently not working
+  
   public ArrayList<Place> plan2Opt() {
     LinkedList<Place> route = new LinkedList<>(places);
     route.add(route.get(0));  // for round trip algorithm
