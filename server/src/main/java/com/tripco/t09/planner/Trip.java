@@ -66,6 +66,16 @@ public class Trip {
    * to be implemented!
    */
   public String config() {
+    // first, ensure values were initialized with (at minimum) defaults
+    if (this.options == null) {
+      this.options = new Option();
+    }
+    if (this.version == 0) {
+      this.version = 2;
+    }
+    if (this.type == null) {
+      this.type = "config";
+    }
     Config config = new Config(this);
     Gson gson = new Gson();
     return gson.toJson(config);

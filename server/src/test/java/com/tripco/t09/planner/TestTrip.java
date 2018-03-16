@@ -362,14 +362,21 @@ public class TestTrip {
   }
 
   @Test
-  public void testUnititializedTrip() {
+  public void testUninitializedTrip() {
     try {
       trip.plan();
     } catch (Exception e) {
       String expectedMessage = "Places is empty / has not been initialized (verifyPlaces())";
       assertEquals(expectedMessage, e.getMessage());
     }
-
   }
 
+  @Test
+  public void testConfigRequest() {
+    assertEquals("{\"type\":\"config\",\"version\":2,\"optimization\":2}", trip.config());
+    trip.options = new Option();
+    trip.version = 1;
+    trip.type = "config";
+    assertEquals("{\"type\":\"config\",\"version\":1,\"optimization\":2}", trip.config());
+  }
 }
