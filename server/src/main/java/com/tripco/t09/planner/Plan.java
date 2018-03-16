@@ -35,14 +35,34 @@ public class Plan {
     // convert the body of the request to a Java class.
     Gson gson = new Gson();
     trip = gson.fromJson(requestBody, Trip.class);
-    //trip.distArr = new int[trip.places.size()][trip.places.size()];
 
     // log something.
     System.out.println("Title = " + trip.title);
   }
 
+  /**
+   * This constructor is used for config "get" requests to "/config" REST API
+   */
+  public Plan() {
+  }
+
+  /**
+   * This returns the configuration TFFI (JSON format) for config requests to "/config" REST API
+   */
+  public String config() {
+    Trip trip = new Trip();
+    String config = trip.config();
+    return config;
+  }
+
   public Double optimizationLevel(){
-    return trip.options.optimization;
+    Double optLevel;
+    try {
+      optLevel = Double.parseDouble(trip.options.optimization);
+    } catch (NumberFormatException e) {
+      optLevel = 0.0;
+    }
+    return optLevel;
   }
 
 
@@ -52,9 +72,12 @@ public class Plan {
    */
   
   public void planTrip(){
+    if (trip.type == "trip") {
       trip.plan();
-    if (trip.options.optimization != 0) {
-      optimize();
+    } else if (trip.type == "query") {
+      trip.query();
+    } else if (trip.type == "config") {
+      trip.config();
     }
   }
 

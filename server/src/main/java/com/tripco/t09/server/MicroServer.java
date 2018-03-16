@@ -42,6 +42,7 @@ public class MicroServer {
     get("/echo", this::echo);
     get("/hello/:name", this::hello);
     get("/team", this::team);
+    get("/config", this::config);
     // client is sending data, so a HTTP POST is used instead of a GET
     post("/plan", this::plan);
     post("/optimize", this::optimize);
@@ -88,6 +89,14 @@ public class MicroServer {
     return Greeting.html(request.params(":name"));
   }
 
+  /**
+   * A REST API that returns configuration information.
+   */
+  private String config(Request request, Response response) {
+    response.type("application/json");
+    Plan plan = new Plan();
+    return (plan.config());
+  }
 
   /** A REST API to support trip planning.
    *

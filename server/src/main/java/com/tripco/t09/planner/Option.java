@@ -6,7 +6,10 @@ package com.tripco.t09.planner;
  */
 public class Option {
 
-  public String distance;
-  public Double optimization;
+  public String distance = "miles";
+  public String optimization = "0.0";
+  public String userUnit = "nautical miles";
+  public String userRadius = "3440.0695";
+  public int numOfOptimizations = 2;
 
 }

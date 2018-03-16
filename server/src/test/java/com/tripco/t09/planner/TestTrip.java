@@ -143,7 +143,8 @@ public class TestTrip {
     ArrayList<Place> testPlaces = new ArrayList<Place>();
     Option option = new Option();
     option.distance = "miles";
-    option.optimization = 0.33;
+    option.optimization = "0.5";
+    option.numOfOptimizations = 2;
     trip.options = option;
 
     Place placeA = new Place();
@@ -201,7 +202,8 @@ public class TestTrip {
     ArrayList<Place> testPlaces = new ArrayList<Place>();
     Option option = new Option();
     option.distance = "miles";
-    option.optimization = 0.66;
+    option.optimization = "1.0";
+    option.numOfOptimizations = 2;
     trip.options = option;
 
     Place placeA = new Place();
@@ -258,7 +260,8 @@ public class TestTrip {
     ArrayList<Place> testPlaces = new ArrayList<Place>();
     Option option = new Option();
     option.distance = "miles";
-    option.optimization = 0.66;
+    option.optimization = "1.0";
+    option.numOfOptimizations = 2;
     trip.options = option;
 
     Place placeA = new Place();
@@ -280,8 +283,8 @@ public class TestTrip {
     placeC.longitude = "104° 42' 32\" W";
 
     testPlaces.add(placeE); // Littleton
-    testPlaces.add(placeA); // Fort Collins
     testPlaces.add(placeC); // Greeley
+    testPlaces.add(placeA); // Fort Collins
 
     trip.places = testPlaces;
     trip.plan();
@@ -289,8 +292,8 @@ public class TestTrip {
 
     ArrayList<Place> expectedOrder = new ArrayList<Place>();
     expectedOrder.add(placeE);    // littleton
-    expectedOrder.add(placeA);    // then fort collins
     expectedOrder.add(placeC);    // then greeley
+    expectedOrder.add(placeA);    // then fort collins
 
     assertEquals(expectedOrder, trip.places);
 

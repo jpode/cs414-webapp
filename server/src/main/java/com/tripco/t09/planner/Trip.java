@@ -22,13 +22,15 @@ import java.util.Arrays;
  */
 public class Trip {
   // The variables in this class should reflect TFFI.
+  public int version;
   public String type;
+  public String query;
   public String title;
   public Option options;
   public ArrayList<Place> places;
   public ArrayList<Integer> distances;
   public String map;
-  public Optimization opt;
+
   //public int[][] distArr;
   // notes for memoization: how should indexes be handled? We could do it by index in places,
   // but we would have to account for optimizations changing order of places (which is when we
@@ -50,6 +52,22 @@ public class Trip {
   }
 
   /**
+   * to be implemented!
+   */
+  public void query() {
+
+  }
+
+  /**
+   * to be implemented!
+   */
+  public String config() {
+    Config config = new Config(this);
+    Gson gson = new Gson();
+    return gson.toJson(config);
+  }
+
+  /**
    * Optimize can be called directly through changing slider on UI, or indirectly through planTrip()
    * above. optimize() is the entry function for nearest neighbor, 2opt, and 3opt optimizations
    * methods, all defined in Trip.java.
@@ -59,17 +77,29 @@ public class Trip {
    */
 
   public void optimize() {
-    opt = new Optimization(this);
+    if (options.numOfOptimizations == 0.0)   // to prevent divide by 0 later on
+    {
+      this.plan();
+    }
+    Optimization opt = new Optimization(this);
     System.out.println("Optimizing trip with level " + this.options.optimization);
     verifyPlaces();
-    if (this.options.optimization < 0.35 && this.options.optimization != 0) {
-      this.places = this.opt.planNearestNeighbor();
+    Double optLevel;
+    try {      // in case this.options.optimization is "none" (version 1)
+      optLevel = Double.parseDouble(this.options.optimization);
+    } catch (NumberFormatException e) {
+      this.plan();
+      return;
+    }  // if "none", just plan trip
+    double optPartition = 1.0 / (double) (options.numOfOptimizations) + .01;
+    if (optLevel < (optPartition) && optLevel != 0) {
+      this.places = opt.planNearestNeighbor();
       System.out.println("Optimized Round Trip Distance: " + sumDistances(places));
-    } else if (this.options.optimization < 0.7) {
-      this.places = this.opt.plan2Opt();
+    } else if (optLevel < (2 * optPartition)) {
+      this.places = opt.plan2Opt();
         System.out.println("Optimized Round Trip Distance: " + sumDistances(places));
-    } else {
-      this.opt.plan3Opt();
+    } else if (optLevel < (3 * optPartition)) {
+      opt.plan3Opt();
     }
     this.plan();
   }
