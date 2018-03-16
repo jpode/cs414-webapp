@@ -157,7 +157,6 @@ public class Trip {
       System.out.println("2Opt Optimization requires a minimum of 4 places. Using NearestNeighbor");
       this.places = this.planNearestNeighbor();   // perform lesser optimization if can't do 2Opt
     }
-
     LinkedList<Place> route = new LinkedList<>(places);
     route.add(route.get(0));  // for round trip algorithm
     boolean improvement = true;
@@ -177,6 +176,10 @@ public class Trip {
     return new ArrayList<>(route);
   }
 
+  /**
+   * This method calculates and returns Delta for 2Opt optimization. Mostly here to reduce cognitive
+   * complexity for Plan2Opt method and provide some abstraction. Follows typical 2Opt algorithm.
+   */
   public int get2OptDelta(LinkedList<Place> route, int i1, int k1) {
     int delta = -distBetweenTwoPlaces(route.get(i1), route.get(i1 + 1))
         - distBetweenTwoPlaces(route.get(k1), route.get(k1 + 1))
