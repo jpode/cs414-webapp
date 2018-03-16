@@ -44,9 +44,13 @@ public class Trip {
   public void plan() {
 
     verifyPlaces();
-    if(places.size() > 1) {
-      this.map = svg();
-      this.distances = legDistances();
+    try {
+      if (places.size() > 1) {
+        this.map = svg();
+        this.distances = legDistances();
+      }
+    } catch (NullPointerException e) {
+      return;
     }
 
   }
@@ -232,12 +236,19 @@ public class Trip {
 
 
   private void verifyPlaces(){
-    for(int i = 0; i < places.size(); i++){
-      if(!verifyLatitudeCoordinates(convertCoordinate(places.get(i).latitude)) || !verifyLongitudeCoordinates(convertCoordinate(places.get(i).longitude))){
-        System.out.println("Coordinates for location " + places.get(i).name + " are outside of Colorado boundaries");
-        places.remove(i);
-        i--;
+    try {
+      for (int i = 0; i < places.size(); i++) {
+        if (!verifyLatitudeCoordinates(convertCoordinate(places.get(i).latitude))
+            || !verifyLongitudeCoordinates(convertCoordinate(places.get(i).longitude))) {
+          System.out.println("Coordinates for location " + places.get(i).name
+              + " are outside of Colorado boundaries");
+          places.remove(i);
+          i--;
+        }
       }
+    } catch (NullPointerException e) {
+      System.out.println("Places is empty / has not been initialized (verifyPlaces())");
+      return;
     }
   }
 
@@ -263,6 +274,8 @@ public class Trip {
           rad = Double.parseDouble(this.options.userRadius);
         } catch (NumberFormatException e) {
           rad = 3959;
+          this.options.userUnit = "miles";
+          System.out.println("Unable to parse User-Defined radius");
         }
         return (int) Math.round(rad * central_angle);
       } else if (this.options.distance.compareTo("kilometers") == 0) {
