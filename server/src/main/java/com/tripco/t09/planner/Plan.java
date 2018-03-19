@@ -41,7 +41,10 @@ public class Plan {
   }
 
   public Double optimizationLevel(){
-    return trip.options.optimization;
+    if(trip.options.optimization != null){
+      return trip.options.optimization;
+    }
+    return (double)0;
   }
 
   /**
@@ -50,8 +53,8 @@ public class Plan {
    */
   
   public void planTrip(){
-      trip.plan();
-    if (trip.options.optimization != 0) {
+    trip.plan();
+    if (trip.options.optimization != null && trip.options.optimization != 0) {
       optimize();
     }
   }
@@ -78,4 +81,16 @@ public class Plan {
     return gson.toJson(trip);
   }
 
+  /*
+   * Returns a status code back to Microserver. Basic error checking for the supplied JSON.
+   * Currently returns a 400: Bad Request if any essential JSON information is missing, otherwise
+   * returns 200: OK
+   */
+
+  public int getStatus(){
+    if(trip.places.size() == 0 || trip.options.distance == null || trip.title == null || trip.type == null){
+      return 400;
+    }
+    return 200;
+  }
 }

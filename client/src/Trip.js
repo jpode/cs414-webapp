@@ -52,11 +52,12 @@ class Trip extends Component {
         console.log(tffi);
         this.props.updateTrip(tffi);
       } else {
-
+        alert("Error " + serverResponse.status + ": " + serverResponse.statusText);
       }
 
     } catch(err) {
       console.error(err);
+      alert(err);
     }
   }
 

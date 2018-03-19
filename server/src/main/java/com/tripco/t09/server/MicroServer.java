@@ -112,7 +112,8 @@ public class MicroServer {
     }
 
     response.body(plan.getTrip());
-    response.status(200);
+    response.status(plan.getStatus());
+
     return plan.getTrip();
   }
 
