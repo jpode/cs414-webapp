@@ -27,6 +27,7 @@ public class Trip {
   public ArrayList<Place> places;
   public ArrayList<Integer> distances;
   public String map;
+  //public int[][] distArr;
 
   /** The top level method that does planning.
    * At this point it just adds the map and distances for the places in order.
@@ -53,16 +54,17 @@ public class Trip {
 
   public void optimize() {
     System.out.println("Optimizing trip with level " + this.options.optimization);
+    verifyPlaces();
     if (this.options.optimization == 0) {
       this.plan();
     } else if (this.options.optimization < 0.35) {
-      this.planNearestNeighbor();
+      this.places = this.planNearestNeighbor();
     } else if (this.options.optimization < 0.7) {
       this.plan2Opt();
     } else {
       this.plan3Opt();
     }
-
+    this.plan();
   }
 
   /**
@@ -70,8 +72,74 @@ public class Trip {
    * any previously calculated SVG map or distances array.
    */
 
-  public void planNearestNeighbor() {
+  public ArrayList<Place> planNearestNeighbor() {
+    ArrayList<Place> tempMinRoute = new ArrayList<Place>();
+    ArrayList<Place> finalMinRoute = new ArrayList<Place>(places);
+    // set initial minimum distance to unoptimized sum of distances
+    int finalMinDist = sumDistances(finalMinRoute);
+    // calculate nearestNeighbor for each starting city
+    for (int i = 0; i < places.size(); ++i) {
+      tempMinRoute.clear();
+      Place current = places.get(i); // starting city
+      for (int j = 0; j < places.size(); ++j) {
+        tempMinRoute.add(current);  // add city to potential minimum route
+        Place next = nearestNeighborHelper(current, tempMinRoute);  // get next city
+        current = next;     // repeat with this new city
+      }
+      int tempMinDist = sumDistances(tempMinRoute);   // find tot. round-trip distance of new route
+      if (tempMinDist < finalMinDist) {     // if less than current, set as new min (dist & route)
+        finalMinRoute = new ArrayList<Place>(tempMinRoute);
+        finalMinDist = tempMinDist;
+      }
+    }
+    return finalMinRoute;
+  }
 
+  /**
+   * This method calculates the sum of distances between consecutive points in an ArrayList
+   * containing type Place objects (Round-Trip Distance).
+   *
+   * @return totalDist
+   */
+
+  public int sumDistances(ArrayList<Place> newPlaces) {
+    int totalDist = 0;
+    Place aa;
+    Place bb;
+    for (int i = 0; i < newPlaces.size(); i++) {
+      aa = newPlaces.get(i);
+      if (i != newPlaces.size() - 1) {
+        bb = newPlaces.get(i + 1);
+      } else {
+        bb = newPlaces.get(0);
+      }
+      totalDist += distBetweenTwoPlaces(aa, bb);
+    }
+    return totalDist;
+  }
+
+  /**
+   * This method finds the next closest city to the parameter "start" city that is not already
+   * included in the route (minRoute).
+   *
+   * @return next
+   */
+
+  public Place nearestNeighborHelper(Place start, ArrayList<Place> minRoute) {
+    Place next = new Place();
+    int minDist = Integer.MAX_VALUE;
+    for (int i = 0; i < places.size(); ++i) {
+      Place temp = places.get(i);
+      if (minRoute.contains(temp)) {
+        continue;
+      }
+      int tempDist = distBetweenTwoPlaces(start, temp);
+      if (tempDist < minDist) {
+        next = temp;
+        minDist = tempDist;
+      }
+    }
+    return next;
   }
 
   /**
@@ -95,7 +163,7 @@ public class Trip {
 
   /**
    * Returns an SVG containing the background and the legs of the trip.
-   * @return
+   * @return SVG
    */
   private String svg() {
 
@@ -173,30 +241,28 @@ public class Trip {
   private ArrayList<Integer> legDistances() {
 
     ArrayList<Integer> dist = new ArrayList<Integer>();
-    int singleDist = 0;
-    int i;
-    double ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG;
-
-    for(i = 0; i < places.size(); i++){
-
-      ptA_LAT = convertCoordinate(places.get(i).latitude);
-      ptA_LONG = convertCoordinate(places.get(i).longitude);
-
+    Place aa;
+    Place bb;
+    for (int i = 0; i < places.size(); i++) {
+      aa = places.get(i);
       if(i != places.size() - 1) {
-        ptB_LAT = convertCoordinate(places.get(i + 1).latitude);
-        ptB_LONG = convertCoordinate(places.get(i + 1).longitude);
+        bb = places.get(i + 1);
       } else {
-        ptB_LAT = convertCoordinate(places.get(0).latitude);
-        ptB_LONG = convertCoordinate(places.get(0).longitude);
+        bb = places.get(0);
       }
-
-      singleDist = distanceHelper(ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG);
-      dist.add(singleDist);
-
+      dist.add(distBetweenTwoPlaces(aa, bb));
     }
     return dist;
-
   }
+
+  private int distBetweenTwoPlaces(Place aa, Place bb) {
+    double ptALat = convertCoordinate(aa.latitude);
+    double ptALong = convertCoordinate(aa.longitude);
+    double ptBLat = convertCoordinate(bb.latitude);
+    double ptBLong = convertCoordinate(bb.longitude);
+    return distanceHelper(ptALat, ptALong, ptBLat, ptBLong);
+  }
+
 
   private void verifyPlaces(){
     for(int i = 0; i < places.size(); i++){

@@ -66,7 +66,13 @@ public class Plan {
 
   public void optimize() {
     System.out.println("Optimizing trip with level " + trip.options.optimization);
-    trip.optimize();
+    if (trip.places.size() < 2) {
+      System.out.println("Cannot Optimize for a single location trip");
+      trip.plan();
+    } else {
+      trip.optimize();
+    }
+
   }
   /** Handles the response for a Trip object.
    * Does the conversion from a Java class to a Json string.*
