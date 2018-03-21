@@ -5,8 +5,20 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-/*Still yet to be implemented*/
+import java.util.ArrayList;
+
+/**
+ * The Database class supports TFFI so it can easily be converted to/from Json by Gson.
+ *
+ */
+
 public class Database {
+  // The variables in this class should reflect TFFI.
+  public int version;
+  public String type;
+  public String query;
+  public ArrayList<Place> places;
+
   // db configuration information
   private final static String myDriver = "com.mysql.jdbc.Driver";
   private final static String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
@@ -14,6 +26,7 @@ public class Database {
   private final static String count = "";
   private final static String search = "";
   // Arguments contain the username and password for the database
+  // Database.main(new String[]{"lburford","830664143"}); is an example to call the db
   public static void main(String[] args){
     try {
       Class.forName(myDriver);
