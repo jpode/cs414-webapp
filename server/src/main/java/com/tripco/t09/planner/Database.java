@@ -12,26 +12,26 @@ import java.util.ArrayList;
  */
 
 public class Database {
-
-  // db configuration information
-  private final static String myDriver = "com.mysql.jdbc.Driver";
-  private final static String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
-  // SQL queries to count the number of records and to retrieve the data
-  private final static String count = "";
-  private final static String search = "";
-
   // The variables in this class should reflect TFFI.
   public int version;
   public String type;
   public String query;
   public ArrayList<Place> places;
 
+  // db configuration information
+  private static final String myDriver = "com.mysql.jdbc.Driver";
+  private static final String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
+  // SQL queries to count the number of records and to retrieve the data
+  private static final String count = "";
+  private static final String search = "";
+
+
   /**
    * Arguments contain the username and password for the database
    *
    * @note Database.main(new String[]{"lburford","830664143"}); is an example to call the db
    */
-  public static void main (String[] args) {
+  public static void main(String[] args) {
     try {
       Class.forName(myDriver);
 // connect to the database and query
@@ -48,7 +48,7 @@ public class Database {
     }
   }
 
-  private static void printJson (ResultSet count, ResultSet query) throws SQLException {
+  private static void printJson(ResultSet count, ResultSet query) throws SQLException {
     System.out.printf("\n{\n");
     System.out.printf("\"type\": \"find\",\n");
     System.out.printf("\"title\": \"%s\",\n", search);
