@@ -160,6 +160,7 @@ public class MicroServer {
   }
 
   /**
+   * Converts the Double optimization value from the slider to a more usable integer
    * this will need to be edited to account for third optimization level, if original (unoptimized)
    * is to be saved as well.
    */
