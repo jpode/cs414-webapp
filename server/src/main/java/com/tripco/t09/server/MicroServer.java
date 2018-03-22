@@ -1,5 +1,6 @@
 package com.tripco.t09.server;
 
+import com.google.gson.Gson;
 import com.tripco.t09.planner.Plan;
 
 import spark.Request;
@@ -156,6 +157,19 @@ public class MicroServer {
     }
 
     return result;
+  }
+
+  /** A REST API to query the database.
+   *
+   * @param request
+   * @param response
+   * @return
+   */
+  private String query(Request request, Response response) {
+    response.type("application/json");
+    // convert the object to a Json string.
+    Gson gson = new Gson();
+    return (gson.toJson(new Plan(request)));
   }
 
   /**
