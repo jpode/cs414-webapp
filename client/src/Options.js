@@ -37,6 +37,7 @@ class Options extends Component{
     newTFFI.options.distance = arg;
 
     this.props.updateTrip(newTFFI);
+    this.plan();
   }
   //NOTE: need to implement nautical miles, and a way for users to define/name distance units
 
@@ -74,6 +75,49 @@ class Options extends Component{
       console.error(err);
     }
   }
+
+  /////////////////////////
+    fetchResponse2(){
+        // need to get the request body from the trip in state object.
+        let requestBody = {
+            "version"  : this.props.trip.version,
+            "type"     : this.props.trip.type,
+            "query"    : this.props.trip.version,
+            "title"    : this.state.userTitle,
+            "options"  : this.props.trip.options,
+            "places"   : this.props.trip.places,
+            "distances": this.props.trip.distances,
+            "map"      : this.props.trip.map
+        };
+        // unsure if map or distances should be included above! ^
+        console.log(process.env.SERVICE_URL);
+        console.log(requestBody);
+
+        return fetch('http://' + location.host + '/plan', {
+            method:"POST",
+            body: JSON.stringify(requestBody)
+        });
+    }
+
+    async plan(){
+        try {
+            let serverResponse = await this.fetchResponse2();
+            let tffi = await serverResponse.json();
+
+            console.log("Status " + serverResponse.status + ": " + serverResponse.statusText);
+            if(serverResponse.status >= 200 && serverResponse.status < 300) {
+                console.log(tffi);
+                this.props.updateTrip(tffi);
+            } else {
+                alert("Error " + serverResponse.status + ": " + serverResponse.statusText);
+            }
+
+        } catch(err) {
+            console.error(err);
+            alert(err);
+        }
+    }
+    ////////////
 
 
   render() {
