@@ -1,6 +1,7 @@
 package com.tripco.t09.server;
 
 import com.tripco.t09.planner.Plan;
+import com.tripco.t09.planner.Search;
 
 import spark.Request;
 import spark.Response;
@@ -157,6 +158,17 @@ public class MicroServer {
     }
 
     return result;
+  }
+
+  /** A REST API to query the database.
+   *
+   * @param request
+   * @param response
+   * @return
+   */
+  private String query(Request request, Response response) {
+    response.type("application/json");
+    return (new Search(request)).toString();
   }
 
   /**
