@@ -10,6 +10,10 @@ public class Config {
   public int version;
   public int optimization;
 
+  /**
+   * Returns the configuration trip object consisting of type, version, and # of optimizations.
+   * @param trip
+   */
   public Config(Trip trip) {
     this.type = trip.type;
     this.version = trip.version;
