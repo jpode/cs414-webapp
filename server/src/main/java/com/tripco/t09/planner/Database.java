@@ -27,7 +27,7 @@ public class Database {
 
 
   /**
-   * Arguments contain the username and password for the database
+   * Arguments contain the username and password for the database.
    *
    * @note Database.main(new String[]{"lburford","830664143"}); is an example to call the db
    */
