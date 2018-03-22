@@ -88,7 +88,6 @@ public class MicroServer {
     return Greeting.html(request.params(":name"));
   }
 
-
   /** A REST API to support trip planning.
    *
    * @param request

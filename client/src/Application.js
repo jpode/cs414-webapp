@@ -11,9 +11,11 @@ class Application extends Component {
     super(props);
     this.state = {
       trip: { // default TFFI
+        version: 2,
         type: "trip",
+        query: "",
         title: "",
-        options : {distance: "miles", optimization : 0},
+        options : {distance: "miles", optimization : "0.0", userUnit: "", userRadius: ""},
         places: [],
         distances: [],
         map: "<svg width=\"1920\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:svg=\"http://www.w3.org/2000/svg\"><g></g></svg>"
@@ -25,6 +27,9 @@ class Application extends Component {
   updateTrip(tffi){
     var new_tffi = this.state.trip;
 
+    if(typeof tffi.version != "undefined" && tffi.version != 0) {
+        new_tffi.version = tffi.version;
+    }
     if(typeof tffi.type != "undefined" && tffi.type != ""){
       new_tffi.type = tffi.type;
     }

@@ -26,16 +26,16 @@ class Options extends Component{
     var newTFFI = this.props.trip;
     newTFFI.options.optimization = event.target.value;
     this.props.updateTrip(newTFFI);
-    this.optimize();
 
   }
 
   changeDistance(arg) {
     var newTFFI = this.props.trip;
     newTFFI.options.distance = arg;
+
     this.props.updateTrip(newTFFI);
   }
-
+  //NOTE: need to implement nautical miles, and a way for users to define/name distance units
 
   /* Sends a request to the server with all state information except type.
  * Receives a response containing an optimized itinerary to update the
@@ -84,7 +84,7 @@ class Options extends Component{
             <div>
               <p>&nbsp;&nbsp;Level of Optimization</p>
               <p><small><i>&nbsp;&nbsp;Warning: optimized trips can take time to generate. Please be patient when selecting high levels of optimization.</i></small></p>
-              <sup>Less</sup> &nbsp;&nbsp; <input type="range" name="optimization" value={this.state.sliderval} onChange={this.handleSlider} min="0" max="1" step=".33" /> &nbsp;&nbsp; <sup>More</sup>
+              <sup>Less</sup> &nbsp;&nbsp; <input type="range" name="optimization" value={this.state.sliderval} onChange={this.handleSlider} min="0" max="1" step=".5" /> &nbsp;&nbsp; <sup>More</sup>
             </div>
             <div className="btn-group btn-group-toggle" data-toggle="buttons">
               <label className={"btn btn-outline-dark".concat((this.props.trip.options.distance === "miles") ? " active" : "")}>
@@ -92,6 +92,9 @@ class Options extends Component{
               </label>
               <label className={"btn btn-outline-dark".concat((this.props.trip.options.distance === "kilometers") ? " active" : "")}>
                 <input type="radio" id="kilometers" name="distance" value="on" onClick={() => { this.changeDistance("kilometers") }} /> Kilometers
+              </label>
+              <label className={"btn btn-outline-dark".concat((this.props.trip.options.distance === "nautical miles") ? " active" : "")}>
+                <input type="radio" id="nautical miles" name="distance" value="on" onClick={() => { this.changeDistance("nautical miles") }} /> Nautical Miles
               </label>
             </div>
           </div>

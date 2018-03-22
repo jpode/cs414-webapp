@@ -22,13 +22,15 @@ import java.util.Arrays;
  */
 public class Trip {
   // The variables in this class should reflect TFFI.
+  public int version;
   public String type;
+  public String query;
   public String title;
   public Option options;
   public ArrayList<Place> places;
   public ArrayList<Integer> distances;
   public String map;
-  public Optimization opt;
+
   //public int[][] distArr;
   // notes for memoization: how should indexes be handled? We could do it by index in places,
   // but we would have to account for optimizations changing order of places (which is when we
@@ -42,34 +44,73 @@ public class Trip {
   public void plan() {
 
     verifyPlaces();
-    if(places.size() > 1) {
-      this.map = svg();
-      this.distances = legDistances();
+    try {
+      if (places.size() > 1) {
+        this.map = svg();
+        this.distances = legDistances();
+      }
+    } catch (NullPointerException e) {
+      return;
     }
 
+  }
+
+  /**
+   * to be implemented!
+   */
+  public void query() {
+
+  }
+
+  /**
+   * to be implemented!
+   */
+  public String config() {
+    // first, ensure values were initialized with (at minimum) defaults
+    if (this.options == null) {
+      this.options = new Option();
+    }
+    if (this.version == 0) {
+      this.version = 2;
+    }
+    if (this.type == null) {
+      this.type = "config";
+    }
+    Config config = new Config(this);
+    Gson gson = new Gson();
+    return gson.toJson(config);
   }
 
   /**
    * Optimize can be called directly through changing slider on UI, or indirectly through planTrip()
    * above. optimize() is the entry function for nearest neighbor, 2opt, and 3opt optimizations
    * methods, all defined in Trip.java.
-   * NOTE: IF ADDITIONAL OPTIMIZATIONS ARE ADDED OR REMOVED, THIS METHOD WILL HAVE TO BE ALTERED TO
-   * REFLECT DIFFERENT VALUES ON UI SLIDER (CURRENTLY 3 OPTIONS, MAX VALUE = 1, SO .333 IS VALUE BY
-   * WHICH SLIDER STEPS CURRENTLY. MAY NOT ALWAYS BE THE CASE).
    */
 
   public void optimize() {
-    opt = new Optimization(this);
+    if (options.numOfOptimizations == 0.0)   // to prevent divide by 0 later on
+    {
+      this.plan();
+    }
+    Optimization opt = new Optimization(this);
     System.out.println("Optimizing trip with level " + this.options.optimization);
     verifyPlaces();
-    if (this.options.optimization < 0.35 && this.options.optimization != 0) {
-      this.places = this.opt.planNearestNeighbor();
+    Double optLevel;
+    try {      // in case this.options.optimization is "none" (version 1)
+      optLevel = Double.parseDouble(this.options.optimization);
+    } catch (NumberFormatException e) {
+      this.plan();
+      return;
+    }  // if "none", just plan trip
+    double optPartition = 1.0 / (double) (options.numOfOptimizations) + .01;
+    if (optLevel < (optPartition) && optLevel != 0) {
+      this.places = opt.planNearestNeighbor();
       System.out.println("Optimized Round Trip Distance: " + sumDistances(places));
-    } else if (this.options.optimization < 0.7) {
-      this.places = this.opt.plan2Opt();
+    } else if (optLevel < (2 * optPartition)) {
+      this.places = opt.plan2Opt();
         System.out.println("Optimized Round Trip Distance: " + sumDistances(places));
-    } else {
-      this.opt.plan3Opt();
+    } else if (optLevel < (3 * optPartition)) {
+      opt.plan3Opt();
     }
     this.plan();
   }
@@ -205,12 +246,19 @@ public class Trip {
 
 
   private void verifyPlaces(){
-    for(int i = 0; i < places.size(); i++){
-      if(!verifyLatitudeCoordinates(convertCoordinate(places.get(i).latitude)) || !verifyLongitudeCoordinates(convertCoordinate(places.get(i).longitude))){
-        System.out.println("Coordinates for location " + places.get(i).name + " are outside of Colorado boundaries");
-        places.remove(i);
-        i--;
+    try {
+      for (int i = 0; i < places.size(); i++) {
+        if (!verifyLatitudeCoordinates(convertCoordinate(places.get(i).latitude))
+            || !verifyLongitudeCoordinates(convertCoordinate(places.get(i).longitude))) {
+          System.out.println("Coordinates for location " + places.get(i).name
+              + " are outside of Colorado boundaries");
+          places.remove(i);
+          i--;
+        }
       }
+    } catch (NullPointerException e) {
+      System.out.println("Places is empty / has not been initialized (verifyPlaces())");
+      return;
     }
   }
 
@@ -230,13 +278,25 @@ public class Trip {
     double central_angle = 2 * Math.asin(c / 2);
 
     try {
-      if (this.options.distance.compareTo("miles") == 0) {
-        return (int)Math.round(3959 * central_angle);
+      if (this.options.distance.compareTo("user defined") == 0) {
+        double rad;
+        try {
+          rad = Double.parseDouble(this.options.userRadius);
+        } catch (NumberFormatException e) {
+          rad = 3959;
+          this.options.userUnit = "miles";
+          System.out.println("Unable to parse User-Defined radius");
+        }
+        return (int) Math.round(rad * central_angle);
+      } else if (this.options.distance.compareTo("kilometers") == 0) {
+        return (int) Math.round(6371 * central_angle);
+      } else if (this.options.distance.compareTo("nautical miles") == 0) {
+        return (int) Math.round(3440.0695 * central_angle);
       } else {
-        return (int)Math.round(6371 * central_angle);
+        return (int) Math.round(3959 * central_angle);
       }
-    } catch(NullPointerException e){
-      return (int)Math.round(3959 * central_angle);
+    } catch (NullPointerException e) {
+      return (int) Math.round(3959 * central_angle);
     }
   }
 

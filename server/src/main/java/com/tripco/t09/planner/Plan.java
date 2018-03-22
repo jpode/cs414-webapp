@@ -47,20 +47,33 @@ public class Plan {
    * Returns the optimization level if one is given, otherwise returns 0 indicating no optimization
    */
   public Double optimizationLevel(){
-    if(trip.options.optimization != null){
-      return trip.options.optimization;
+    Double optLevel;
+    if(trip.options.optimization == null)
+      return 0.0;
+    try {
+      optLevel = Double.parseDouble(trip.options.optimization);
+    } catch (NumberFormatException e) {
+      optLevel = 0.0;
     }
-    return (double)0;
+    return optLevel;
   }
+
 
   /**
    * The planTrip method is the entry point / method to planning any trip. Called from 
    * Plan Constructor, and passes control to Trip.java's plan method.
    */
+  
   public void planTrip(){
-    trip.plan();
-    if (trip.options.optimization != null && trip.options.optimization != 0) {
-      optimize();
+    if (trip.type == "trip") {
+      trip.plan();
+    } else if (trip.type == "query") {
+      trip.query();
+    } else if (trip.type == "config") {
+      trip.config();
+    }
+    else{
+      trip.plan();
     }
   }
 
@@ -71,6 +84,7 @@ public class Plan {
    * always first call the Plan.java constructor, which initializes a new trip object, only minor
    * and likely unnecessary error checking was added to Trip's optimize method.
    */
+
   public void optimize() {
     System.out.println("Optimizing trip with level " + trip.options.optimization);
     if (trip.places.size() < 2) {
@@ -83,8 +97,10 @@ public class Plan {
   }
 
   /** Handles the response for a Trip object.
-   * Does the conversion from a Java class to a Json string.
+   * Does the conversion from a Java class to a Json string.*
    */
+
+
   public String getTrip () {
     try {
       Gson gson = new Gson();
@@ -104,16 +120,18 @@ public class Plan {
    */
   public int getStatus(){
     //If there are no places or distance units
-    if(trip.places.size() == 0 || trip.options.distance == null){
-      return 400;
-    }
-    //If the title or type are not defined
-    if(trip.title == null || trip.type == null){
-      return 400;
-    }
-    //If the json was not correctly parsed
-    if(!jsonParsed){
-      return 400;
+    if(trip.type == "trip") {
+      if (trip.places.size() == 0 || trip.options.distance == null) {
+        return 400;
+      }
+      //If the title or type are not defined
+      if (trip.title == null || trip.type == null) {
+        return 400;
+      }
+      //If the json was not correctly parsed
+      if (!jsonParsed) {
+        return 400;
+      }
     }
     return 200;
   }
