@@ -47,11 +47,17 @@ class Trip extends Component {
       let serverResponse = await this.fetchResponse();
       let tffi = await serverResponse.json();
 
-      console.log(tffi);
-      this.props.updateTrip(tffi);
+      console.log("Status " + serverResponse.status + ": " + serverResponse.statusText);
+      if(serverResponse.status >= 200 && serverResponse.status < 300) {
+        console.log(tffi);
+        this.props.updateTrip(tffi);
+      } else {
+        alert("Error " + serverResponse.status + ": " + serverResponse.statusText);
+      }
 
     } catch(err) {
       console.error(err);
+      alert(err);
     }
   }
 

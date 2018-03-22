@@ -2,6 +2,7 @@ package com.tripco.t09.planner;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.tripco.t09.server.HTTP;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class Plan {
 
   private Trip trip;
+  private boolean jsonParsed = false;
 
   /** Handles trip planning request, creating a new trip object from the trip request.
    * Does the conversion from Json to a Java class before planning the trip.
@@ -41,18 +43,23 @@ public class Plan {
     System.out.println("Title = " + trip.title);
   }
 
+  /*
+   * Returns the optimization level if one is given, otherwise returns 0 indicating no optimization
+   */
   public Double optimizationLevel(){
-    return trip.options.optimization;
+    if(trip.options.optimization != null){
+      return trip.options.optimization;
+    }
+    return (double)0;
   }
 
   /**
    * The planTrip method is the entry point / method to planning any trip. Called from 
    * Plan Constructor, and passes control to Trip.java's plan method.
    */
-  
   public void planTrip(){
-      trip.plan();
-    if (trip.options.optimization != 0) {
+    trip.plan();
+    if (trip.options.optimization != null && trip.options.optimization != 0) {
       optimize();
     }
   }
@@ -64,7 +71,6 @@ public class Plan {
    * always first call the Plan.java constructor, which initializes a new trip object, only minor
    * and likely unnecessary error checking was added to Trip's optimize method.
    */
-
   public void optimize() {
     System.out.println("Optimizing trip with level " + trip.options.optimization);
     if (trip.places.size() < 2) {
@@ -75,14 +81,40 @@ public class Plan {
     }
 
   }
+
   /** Handles the response for a Trip object.
-   * Does the conversion from a Java class to a Json string.*
+   * Does the conversion from a Java class to a Json string.
    */
-
-
   public String getTrip () {
-    Gson gson = new Gson();
-    return gson.toJson(trip);
+    try {
+      Gson gson = new Gson();
+      jsonParsed = true;
+      return gson.toJson(trip);
+    } catch(JsonParseException e){
+      System.err.println(e);
+      jsonParsed = false;
+    }
+    return null;
   }
 
+  /*
+   * Returns a status code back to Microserver. Basic error checking for the supplied JSON.
+   * Currently returns a 400: Bad Request if any essential JSON information is missing or JSON
+   * is not in a parseable format, otherwise returns 200: OK
+   */
+  public int getStatus(){
+    //If there are no places or distance units
+    if(trip.places.size() == 0 || trip.options.distance == null){
+      return 400;
+    }
+    //If the title or type are not defined
+    if(trip.title == null || trip.type == null){
+      return 400;
+    }
+    //If the json was not correctly parsed
+    if(!jsonParsed){
+      return 400;
+    }
+    return 200;
+  }
 }

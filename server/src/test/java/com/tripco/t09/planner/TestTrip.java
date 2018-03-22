@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 public class TestTrip {
   Trip trip;
 
-  // Setup to be done before every test in TestPlan
+  // Setup to be done before every test in TestTrip
   @Before
   public void initialize() {
     trip = new Trip();
