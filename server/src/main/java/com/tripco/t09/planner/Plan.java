@@ -68,7 +68,6 @@ public class Plan {
     if (trip.type == "trip") {
       trip.plan();
     } else if (trip.type == "query") {
-      trip.query();
     } else if (trip.type == "config") {
       trip.config();
     }

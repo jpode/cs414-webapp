@@ -58,13 +58,6 @@ public class Trip {
   /**
    * to be implemented!
    */
-  public void query() {
-
-  }
-
-  /**
-   * to be implemented!
-   */
   public String config() {
     // first, ensure values were initialized with (at minimum) defaults
     if (this.options == null) {

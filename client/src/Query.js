@@ -11,11 +11,17 @@ class Query extends Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.createTable = this.createTable.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleSubmit(event)
   {
     this.setState({search: event.target.value});
+    console.log(this.state.search);
+  }
+
+  handleClick(event)
+  {
     this.query()
   }
 
@@ -45,10 +51,14 @@ class Query extends Component {
     try {
       let serverResponse = await this.fetchResponse();
       let tffi = await serverResponse.json();
-
+      console.log("Fetched response from database");
+      tffi = JSON.parse(tffi);
       console.log(tffi);
-      this.state.places = tffi.trip.places;
 
+      this.state.places = tffi.places;
+
+      console.log(tffi.places);
+      console.log(this.state.places);
     } catch(err) {
       console.error(err);
     }
@@ -66,6 +76,10 @@ class Query extends Component {
       municipalities = this.state.places.map((item) => <td>{item.municipality}</td>);
     }
 
+    console.log(ids);
+    console.log(names);
+    console.log(municipalities);
+
     return {ids, names, municipalities};
   }
 
@@ -78,9 +92,9 @@ class Query extends Component {
             <input type="checkbox" name="searchCheck" value="on"/>
           </label>
           <div className="input-group" role="group">
-            <input type="text" className="form-control" placeholder="Find"/>
+            <input type="text" className="form-control" onChange = {this.handleSubmit} placeholder="Find"/>
             <span className="input-group-btn">
-              <button className="btn btn-primary " onClick={this.handleSubmit} type="button">Search</button>
+              <button className="btn btn-primary " onClick={this.handleClick} type="button">Search</button>
             </span>
           </div>
           <table className="table table-responsive table-bordered">
