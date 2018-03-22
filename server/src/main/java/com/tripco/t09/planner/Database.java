@@ -48,6 +48,8 @@ public class Database {
     }
   }
 
+
+  
   private static void printJson(ResultSet count, ResultSet query) throws SQLException {
     System.out.printf("\n{\n");
     System.out.printf("\"type\": \"find\",\n");

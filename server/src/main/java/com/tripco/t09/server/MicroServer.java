@@ -1,5 +1,6 @@
 package com.tripco.t09.server;
 
+import com.google.gson.Gson;
 import com.tripco.t09.planner.Plan;
 import com.tripco.t09.planner.Search;
 
@@ -168,7 +169,9 @@ public class MicroServer {
    */
   private String query(Request request, Response response) {
     response.type("application/json");
-    return (new Search(request)).toString();
+    // convert the object to a Json string.
+    Gson gson = new Gson();
+    return (gson.toJson(new Search(request)));
   }
 
   /**
