@@ -100,7 +100,7 @@ class Trip extends Component {
               <span className="input-group-btn">
               <button disabled = {!hasTitle} className="btn btn-primary " onClick={this.plan} type="button">Plan</button>
             </span>
-              <input type="text" className="form-control" onChange = {this.handleSubmit} placeholder={this.state.userTitle}/>
+              <input type="text" className="form-control" onChange = {this.handleSubmit} placeholder="Trip title..."/>
               <span className="input-group-btn">
               <button disabled = {!hasTitle} className="btn btn-primary " onClick={this.saveTFFI} type="button">Save</button>
             </span>
