@@ -14,6 +14,8 @@ class Options extends Component{
       sliderval : 0
     }
 
+    
+
    // this.optimize = this.optimize.bind(this);
     this.handleSlider = this.handleSlider.bind(this);
     this.changeDistance = this.changeDistance.bind(this);
