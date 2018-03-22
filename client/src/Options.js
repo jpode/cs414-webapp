@@ -28,6 +28,7 @@ class Options extends Component{
     var newTFFI = this.props.trip;
     newTFFI.options.optimization = event.target.value;
     this.props.updateTrip(newTFFI);
+    this.optimize();
 
   }
 
