@@ -2,7 +2,6 @@ package com.tripco.t09.server;
 
 import com.google.gson.Gson;
 import com.tripco.t09.planner.Plan;
-import com.tripco.t09.planner.Search;
 
 import spark.Request;
 import spark.Response;
@@ -171,7 +170,7 @@ public class MicroServer {
     response.type("application/json");
     // convert the object to a Json string.
     Gson gson = new Gson();
-    return (gson.toJson(new Search(request)));
+    return (gson.toJson(new Plan(request)));
   }
 
   /**
