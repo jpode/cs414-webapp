@@ -11,21 +11,25 @@ class Application extends Component {
     super(props);
     this.state = {
       trip: { // default TFFI
+        version: 2,
         type: "trip",
+        query: "",
         title: "",
-        options : {distance: "miles", optimization : "none"},
+        options : {distance: "miles", optimization : "0.0", userUnit: "", userRadius: ""},
         places: [],
         distances: [],
         map: "<svg width=\"1920\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:svg=\"http://www.w3.org/2000/svg\"><g></g></svg>"
       }
     }
     this.updateTrip = this.updateTrip.bind(this);
-    this.updateOptions = this.updateOptions.bind(this);
   }
 
   updateTrip(tffi){
     var new_tffi = this.state.trip;
 
+    if(typeof tffi.version != "undefined" && tffi.version != 0) {
+        new_tffi.version = tffi.version;
+    }
     if(typeof tffi.type != "undefined" && tffi.type != ""){
       new_tffi.type = tffi.type;
     }
@@ -50,26 +54,12 @@ class Application extends Component {
 
   }
 
-  updateOptions(options){
-    console.log(options);
-    var new_tffi = this.state.trip;
-    if(options === "miles") {
-        new_tffi.options.distance = "miles";
-    }
-    else if(options === "kilometers"){
-        new_tffi.options.distance = "kilometers";
-    }
-    console.log(new_tffi);
-    this.setState({trip:new_tffi});
-
-  }
-
   render() {
     return(
         <div id="application" className="container">
           <div className="row">
             <div className="col-12">
-                <Options options={this.state.trip.options} updateOptions={this.updateOptions}/>
+                <Options trip={this.state.trip} updateTrip={this.updateTrip}/>
             </div>
             <div className="col-12">
                 <Destinations trip={this.state.trip} updateTrip={this.updateTrip}/>

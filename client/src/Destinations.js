@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Query from './Query';
 
 /* Destinations reside in the parent object so they may be shared
  * with the Trip object.
@@ -25,14 +26,14 @@ class Destinations extends Component {
     reader.onload = function(event){
 
       var tffi = JSON.parse(event.target.result);
+      //tffi.title = event.target.files[0].name;
       this.props.updateTrip(tffi);
 
     }.bind(this);
   }
 
   render() {
-    // need to clean up the button
-    // need to count the number in the trip
+    // see team 03 for good build trip table
     return (
         <div id="destinations" className="card">
           <div className="card-header bg-info text-white">
@@ -44,6 +45,8 @@ class Destinations extends Component {
                 <input type="file" className="form-control-file" onChange={this.loadTFFI} id="tffifile" />
             </div>
             <h5>There are {this.props.trip.places.length} destinations. </h5>
+            <hr/>
+            <Query/>
           </div>
         </div>
     )
