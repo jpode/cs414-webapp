@@ -36,8 +36,7 @@ Epics planned for this release.
 
 * *#139 Clean Code*
 * *#140 Code Coverage*
-* *#141 Build a trip from existing information*
-* *#142 Design a trip from scratch/manually*
+* *#148 Update Itinerary from database selection*
 * *#159 Give the user an option to view a shorter trip*
 * *#162 Let the user reverse the order of the trip*
 
@@ -47,40 +46,47 @@ In Sprint2 we began with around 38/39 initial tasks to complete, and we've start
 
 Statistic | Planned | Completed
 --- | ---: | ---:
-Tasks |  *16*   | *0* 
-Story Points |  *39*  | *0* 
+Tasks |  *28*   | *25* 
+Story Points |  *57*  | *52* 
 
 ## Daily Scrums
 
 Date | Tasks done  | Tasks in progress | Impediments 
 :--- | :--- | :--- | :--- 
-*date* | *@task only* | *@task only* | none
+*2/28* | *5* | *12* | none
+*3/7* | *7* | *11* | none
+*3/21* | *18* | *9* | Spring Break pushed us back farther than expected
  | | | 
  
 
 ## Review
 
 #### Completed epics in Sprint Backlog 
-* *user story*:  *comments*
+* *#139 Clean Code: Improve the quality of our code by lowering our technical debt ratio so our code is more maintainable, Adopt Google coding standards*
+* *#140 Code Coverage: Improve our code coverage*
+* *#159 Give the user an option to view a shorter trip: Implement Nearest Neighbor and 2-opt algorithms*
 * 
 
 #### Incomplete epics in Sprint Backlog 
-* *user story*: *explanation...*
+* *#162 Let the user reverse the order of the trip: Wasn't prioritized, and assignee had poor time management*
+* *#148 Update Itinerary from database selection: was mostly completed, but client-side bugs caused us from including it in our release and demo*
 *
 
 #### What went well
-* *something*
+* *We were able to utilize our previous (and concurrent) experience from CS320 (Algorithms) to implement the Nearest Neighbor and 2-opt algorithms, and we're already far along with 3-opt!*
+* *We have RESTAPI down, and are improving our understanding of Client-Server communications*
 *
 
 #### Problems encountered and resolutions
-* *something*
+* *Spring Break actually hurt us more than we expected. Dave was right!* 
+* *We had almost completed our Database Epic (#148), but were derailed by confusing Client-side bugs*
 *
 
 ## Retrospective
 
 Topic | Teamwork | Process | Tools
 :--- | :--- | :--- | :---
-What we will change this time |  |  | 
-What we did well |  |  | 
-What we need to work on |  |  |
-What we will change next time |  |  | 
+What we will change this time | Ask for help from teammates sooner | Splitting up tasks/issues into even smaller, more managable chunks | Focus less on Code Climate, Utilize Intellij functionality more, better understanding of SQL and MariaDB 
+What we did well | Better communication over the course of each week | Good job of adding additional tasks as Issues grew | Good use of ZenHub! Improved use of Intellij
+What we need to work on | Cycling tasks between teammates, so workload rotates | Improve initial estimates for time on ZenHub, but producing smaller chunks | better understanding of SQL and MariaDB
+What we will change next time | More consistent inperson meetings/daily scrums | Take longer estimating time for tasks | Improve DB utilization
