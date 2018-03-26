@@ -35,7 +35,6 @@ Epics planned for this release.
 
 * *Zoom and Pan the Map*
 * *Design a Trip from Scratch / Manually*
-* *Update Itinerary from Database Selection*
 * *Build a Trip from Existing Information*
 * *Filtered Search*
 * *Plan Trips Outside of Colorado*
