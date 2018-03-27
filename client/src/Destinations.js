@@ -26,6 +26,7 @@ class Destinations extends Component {
     reader.onload = function(event){
 
       var tffi = JSON.parse(event.target.result);
+      //tffi.title = event.target.files[0].name;
       this.props.updateTrip(tffi);
 
     }.bind(this);
