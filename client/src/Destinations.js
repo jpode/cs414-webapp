@@ -45,7 +45,7 @@ class Destinations extends Component {
             </div>
             <h5>There are {this.props.trip.places.length} destinations. </h5>
             <hr/>
-            <Query query={this.props.trip}/>
+            <Query query={this.props.query}/>
           </div>
         </div>
     )

@@ -22,7 +22,8 @@ class Query extends Component {
 
   handleClick(event)
   {
-    this.query()
+    this.query();
+
   }
 
   /* Sends a request to the server with all state information except type.
@@ -55,7 +56,7 @@ class Query extends Component {
       tffi = JSON.parse(tffi);
       console.log(tffi);
 
-      this.state.places = tffi.places;
+      this.setState({places: tffi.places});
 
       console.log(tffi.places);
       console.log(this.state.places);
@@ -89,7 +90,6 @@ class Query extends Component {
         <div>
           <label>
             Search destinations from a database:
-            <input type="checkbox" name="searchCheck" value="on"/>
           </label>
           <div className="input-group" role="group">
             <input type="text" className="form-control" onChange = {this.handleSubmit} placeholder="Find"/>
