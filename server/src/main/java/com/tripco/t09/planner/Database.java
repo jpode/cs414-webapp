@@ -28,7 +28,7 @@ public class Database {
   /**
    * Arguments contain the username and password for the database.
    */
-  public Database (Request request){
+  public Database(Request request){
     try {
       // extract the information from the body of the request.
       JsonParser jsonParser = new JsonParser();
