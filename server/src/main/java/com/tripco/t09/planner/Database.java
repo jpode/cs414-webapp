@@ -40,7 +40,7 @@ public class Database {
 
       System.out.println(query.query);
 
-      search = "SELECT id,name,municipality,longitude,latitude FROM airports WHERE NAME LIKE \'%" + query.query + "%\'";
+      search = "SELECT * FROM airports WHERE NAME LIKE \'%" + query.query + "%\'";
       System.out.println(search);
 
       Class.forName(myDriver);
