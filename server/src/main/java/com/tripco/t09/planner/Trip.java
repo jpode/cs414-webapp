@@ -207,7 +207,7 @@ public class Trip {
    * Returns the distances between consecutive places,
    * including the return to the starting point to make a
    * round trip.This method may remove locations if their
-   * coordinates do not match the Colorado boundaries. If
+   * coordinates do not match the acceptable boundaries. If
    * all the locations in the places array are removed, the
    * return array will have no values.
    * @return
@@ -238,13 +238,13 @@ public class Trip {
   }
 
 
-  private void verifyPlaces(){
+  public void verifyPlaces(){
     try {
       for (int i = 0; i < places.size(); i++) {
         if (!verifyLatitudeCoordinates(convertCoordinate(places.get(i).latitude))
             || !verifyLongitudeCoordinates(convertCoordinate(places.get(i).longitude))) {
           System.out.println("Coordinates for location " + places.get(i).name
-              + " are outside of Colorado boundaries");
+              + " are outside of acceptable boundaries");
           places.remove(i);
           i--;
         }
@@ -330,20 +330,25 @@ public class Trip {
   }
 
   /**
-   * Takes a single decimal longitudinal coordinate and checks to see if it is within the 102.05W and 109.05W boundaries
-   *  of the Colorado eastern and western border
+   * Takes a single decimal longitudinal coordinate and checks to see if it is within acceptable coordinate boundaries
+   * for Google Maps
    * @params Double containing the coordinate
    * @return boolean indicating if the coordinate is within the boundaries.
    *  true = within boundaries, false = outside of boundaries
    */
   public boolean verifyLongitudeCoordinates(double coordinate){
-    return coordinate < -102.05 && coordinate > -109.05;
+    return coordinate > -180 && coordinate < 180;
   }
 
-  // Same as verifyLongitudeCoordinates, but takes a latitudinal coordinate and tests
-  //  it against the south and north Colorado borders at 37N and 41N
+  /**
+   * Takes a single decimal latitudinal coordinate and checks to see if it is within acceptable coordinate boundaries
+   * for Google Maps
+   * @params Double containing the coordinate
+   * @return boolean indicating if the coordinate is within the boundaries.
+   *  true = within boundaries, false = outside of boundaries
+   */
   public boolean verifyLatitudeCoordinates(double coordinate){
-    return coordinate > 37 && coordinate < 41;
+    return coordinate > -85 && coordinate < 85;
   }
 
   // Converting our Latitude to SVG values for Polyline on Map
