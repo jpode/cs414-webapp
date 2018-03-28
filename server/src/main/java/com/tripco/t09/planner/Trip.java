@@ -237,7 +237,11 @@ public class Trip {
     return distanceHelper(ptALat, ptALong, ptBLat, ptBLong);
   }
 
-
+  /*
+   * Verifies that all places currently in the places arraylist are
+   * valid and are within acceptable coordinate boundaries. Any
+   * locations that are invalid are removed from the places arraylist.
+   */
   public void verifyPlaces(){
     try {
       for (int i = 0; i < places.size(); i++) {
@@ -330,7 +334,8 @@ public class Trip {
   }
 
   /**
-   * Takes a single decimal longitudinal coordinate and checks to see if it is within acceptable coordinate boundaries
+   * Takes a single decimal longitudinal coordinate and checks to see if it is within acceptable
+   * coordinate boundaries
    * for Google Maps
    * @params Double containing the coordinate
    * @return boolean indicating if the coordinate is within the boundaries.
@@ -341,7 +346,8 @@ public class Trip {
   }
 
   /**
-   * Takes a single decimal latitudinal coordinate and checks to see if it is within acceptable coordinate boundaries
+   * Takes a single decimal latitudinal coordinate and checks to see if it is within acceptable
+   * coordinate boundaries
    * for Google Maps
    * @params Double containing the coordinate
    * @return boolean indicating if the coordinate is within the boundaries.
