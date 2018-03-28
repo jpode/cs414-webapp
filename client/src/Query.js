@@ -127,6 +127,7 @@ class Query extends Component {
               <tbody>
               <tr>
                 <th className="table-info align-middle">Add</th>
+                <input type="button" value="Button" name="Add" onclick="alert('hello');">
               </tr>
               </tbody>
             </table>
