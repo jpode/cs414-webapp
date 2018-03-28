@@ -7,12 +7,12 @@
 }
 
 body {
-    font-family: 'prox-regular', sans-serif;
+    font-family: 'prox-regular', sans-serif !important;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'factoria-book', sans-serif;
-    font-weight:normal;
+    font-family: 'factoria-book', sans-serif !important;
+    font-weight:normal !important;
 }
 
 #footer {
