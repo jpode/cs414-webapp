@@ -16,9 +16,6 @@ class Destinations extends Component {
 
   loadTFFI(event) {
     console.log(event.target.files[0].name);
-    // now you need to read the file and create a JSON.
-    // then you need to set the trip property
-    // this.props.updateTrip(??);
 
     var reader = new FileReader();
     reader.readAsText(event.target.files[0]);
@@ -26,7 +23,6 @@ class Destinations extends Component {
     reader.onload = function(event){
 
       var tffi = JSON.parse(event.target.result);
-      //tffi.title = event.target.files[0].name;
       this.props.updateTrip(tffi);
 
     }.bind(this);
