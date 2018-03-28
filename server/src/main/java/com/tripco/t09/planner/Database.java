@@ -1,11 +1,15 @@
 package com.tripco.t09.planner;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import spark.Request;
 
 /**
  * The Database class supports TFFI so it can easily be converted to/from Json by Gson.
@@ -13,35 +17,39 @@ import java.util.ArrayList;
 
 public class Database {
   // The variables in this class should reflect TFFI.
-  public int version;
-  public String type;
-  public String query;
-  public ArrayList<Place> places;
-
+  private static Query query;
   // db configuration information
   private static final String myDriver = "com.mysql.jdbc.Driver";
   private static final String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
-  // SQL queries to count the number of records and to retrieve the data
-  private static final String count = "";
-  private static final String search = "";
+  // SQL queries to retrieve the data
+  private static String search = "";
 
 
   /**
    * Arguments contain the username and password for the database.
-   *
-   * @note Database.main(new String[]{"lburford","830664143"}); is an example to call the db
    */
-  public static void main(String[] args) {
+  public Database(Request request){
     try {
+      // extract the information from the body of the request.
+      JsonParser jsonParser = new JsonParser();
+      JsonElement requestBody = jsonParser.parse(request.body());
+
+      // convert the body of the request to a Java class.
+      Gson gson = new Gson();
+      query = gson.fromJson(requestBody, Query.class);
+
+      System.out.println(query.query);
+
+      search = "SELECT * FROM airports WHERE name LIKE '%" + query.query + "%'";
+      System.out.println(search);
+
       Class.forName(myDriver);
-// connect to the database and query
-      try (Connection conn = DriverManager.getConnection(myUrl, args[0], args[1]);
-          Statement stCount = conn.createStatement();
+      // connect to the database and query
+      try (Connection conn = DriverManager.getConnection(myUrl, "cs314-db", "eiK5liet1uej");
           Statement stQuery = conn.createStatement();
-          ResultSet rsCount = stCount.executeQuery(count);
           ResultSet rsQuery = stQuery.executeQuery(search)
       ) {
-        printJson(rsCount, rsQuery);
+        printJson(rsQuery);
       }
     } catch (Exception e) {
       System.err.println("Exception: " + e.getMessage());
@@ -50,24 +58,22 @@ public class Database {
 
 
   
-  private static void printJson(ResultSet count, ResultSet query) throws SQLException {
-    System.out.printf("\n{\n");
-    System.out.printf("\"type\": \"find\",\n");
-    System.out.printf("\"title\": \"%s\",\n", search);
-    System.out.printf("\"places\": [\n");
+  private static void printJson(ResultSet queryResult) throws SQLException {
 // determine the number of results that match the query
-    count.next();
-    int results = count.getInt(1);
-// iterate through query results and print out the airport codes
-    while (query.next()) {
-      System.out.printf(" \"%s\"", query.getString("code"));
-      if (--results == 0)
-      {
-        System.out.printf("\n");
-      } else {
-        System.out.printf(",\n");
-      }
+// iterate through query results
+    while (queryResult.next()) {
+      Place place = new Place();
+      place.name = queryResult.getString("name");
+      place.id = queryResult.getString("id");
+      place.municipality = queryResult.getString("municipality");
+      place.longitude = queryResult.getString("longitude");
+      place.latitude = queryResult.getString("latitude");
+      query.places.add(place);
     }
-    System.out.printf(" ]\n}\n");
+  }
+
+  public String getString() {
+      Gson gson = new Gson();
+      return gson.toJson(query);
   }
 }

@@ -33,7 +33,6 @@ class Destinations extends Component {
   }
 
   render() {
-    // see team 03 for good build trip table
     return (
         <div id="destinations" className="card">
           <div className="card-header bg-info text-white">
@@ -46,7 +45,7 @@ class Destinations extends Component {
             </div>
             <h5>There are {this.props.trip.places.length} destinations. </h5>
             <hr/>
-            <Query/>
+            <Query query={this.props.query}/>
           </div>
         </div>
     )

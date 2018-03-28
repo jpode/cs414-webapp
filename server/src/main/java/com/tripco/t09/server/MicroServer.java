@@ -1,6 +1,7 @@
 package com.tripco.t09.server;
 
 import com.google.gson.Gson;
+import com.tripco.t09.planner.Database;
 import com.tripco.t09.planner.Plan;
 
 import spark.Request;
@@ -46,6 +47,7 @@ public class MicroServer {
     // client is sending data, so a HTTP POST is used instead of a GET
     post("/plan", this::plan);
     post("/optimize", this::optimize);
+    post("/query", this::query);
 
     System.out.println("\n\nServer running on port: " + this.port + "\n\n");
   }
@@ -166,10 +168,11 @@ public class MicroServer {
    * @return
    */
   private String query(Request request, Response response) {
+    Database db = new Database(request);
     response.type("application/json");
     // convert the object to a Json string.
     Gson gson = new Gson();
-    return (gson.toJson(new Plan(request)));
+    return (gson.toJson(db.getString()));
   }
 
   /**
