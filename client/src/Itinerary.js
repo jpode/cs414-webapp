@@ -9,7 +9,7 @@ class Itinerary extends Component {
 
   createTable () {
 
-    let distance = 0;  // need to sum this from real the trip
+    let distance = 0;
     let units = "miles";
     let dests = [];
     let dists = [];

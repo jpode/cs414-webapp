@@ -37,21 +37,7 @@ class Application extends Component {
       new_tffi.title = tffi.title;
     }
     if(typeof tffi.options != "undefined" && tffi.options != {}){
-      if(typeof tffi.options.distance != "undefined" && tffi.options.distance != ""){
-        console.log(tffi.options.distance);
-        new_tffi.options.distance = tffi.options.distance;
-        console.log(new_tffi.options.distance);
-      }
-      if(typeof tffi.options.userUnit != "undefined" && tffi.options.userUnit != ""){
-        new_tffi.options.userUnit = tffi.options.userUnit;
-        console.log(tffi.options.distance);
-      }
-      if(typeof tffi.options.userRadius != "undefined" && tffi.options.userRadius != ""){
-        new_tffi.options.userRadius = tffi.options.userRadius;
-      }
-      if(typeof tffi.options.optimization != "undefined" && tffi.options.optimization != ""){
-        new_tffi.options.optimization = tffi.options.optimization;
-      }
+        new_tffi.options = tffi.options;
     }
     if(typeof tffi.places != "undefined" && tffi.places != []){
       new_tffi.places = tffi.places;
@@ -62,10 +48,7 @@ class Application extends Component {
     if(typeof tffi.map != "undefined" && tffi.map != ""){
       new_tffi.map = tffi.map;
     }
-    console.log("Updating trip to new object: ");
-    console.log(new_tffi.options.distance);
     console.log(new_tffi)
-    console.log(new_tffi.options.distance);
     this.setState({trip:new_tffi});
 
   }

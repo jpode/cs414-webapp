@@ -16,9 +16,6 @@ class Options extends Component{
       distanceRadius : ""
     }
 
-
-
-   // this.optimize = this.optimize.bind(this);
     this.handleSlider = this.handleSlider.bind(this);
     this.changeDistance = this.changeDistance.bind(this);
     this.changeDistanceCustom = this.changeDistanceCustom.bind(this);
@@ -38,7 +35,6 @@ class Options extends Component{
   }
 
   changeDistance(arg) {
-      console.log("Non user defined unit: " + arg);
       this.setState({distanceUnit : ""});
 
       var newTFFI = this.props.trip;
@@ -49,22 +45,18 @@ class Options extends Component{
   }
 
   changeDistanceCustom(arg) {
-    console.log("distance is custom");
     this.setState({distanceUnit : "new"});
   }
 
   handleCustomDistanceName(event){
-    console.log("changing custom distance name");
     this.setState({distanceUnit : event.target.value});
   }
 
   handleCustomDistanceRadius(event){
-    console.log("changing custom distance radius");
     this.setState({distanceRadius : event.target.value});
   }
 
   updateCustomDistance(){
-    console.log("updating with custom user distance");
     var newTFFI = this.props.trip;
     newTFFI.options.distance = "user defined";
     newTFFI.options.userUnit = this.state.distanceUnit;
@@ -75,9 +67,7 @@ class Options extends Component{
 
   }
 
-  //NOTE: need to implement nautical miles, and a way for users to define/name distance units
-
-  /* Sends a request to the server with all state information except type.
+  /* Sends a bas request to the server with only necessary objects.
  * Receives a response containing an optimized itinerary to update the
  * state for this object.
  */
@@ -112,48 +102,46 @@ class Options extends Component{
     }
   }
 
-  /////////////////////////
-    fetchResponse2(){
-        // need to get the request body from the trip in state object.
-        let requestBody = {
-            "version"  : this.props.trip.version,
-            "type"     : this.props.trip.type,
-            "query"    : this.props.trip.version,
-            "title"    : this.props.trip.title,
-            "options"  : this.props.trip.options,
-            "places"   : this.props.trip.places,
-            "distances": this.props.trip.distances,
-            "map"      : this.props.trip.map
-        };
-        // unsure if map or distances should be included above! ^
-        console.log(process.env.SERVICE_URL);
-        console.log(requestBody);
+  fetchResponse_V2(){
+      // need to get the request body from the trip in state object.
+      let requestBody = {
+          "version"  : this.props.trip.version,
+          "type"     : this.props.trip.type,
+          "query"    : this.props.trip.version,
+          "title"    : this.props.trip.title,
+          "options"  : this.props.trip.options,
+          "places"   : this.props.trip.places,
+          "distances": this.props.trip.distances,
+          "map"      : this.props.trip.map
+      };
+      // unsure if map or distances should be included above! ^
+      console.log(process.env.SERVICE_URL);
+      console.log(requestBody);
 
-        return fetch('http://' + location.host + '/plan', {
-            method:"POST",
-            body: JSON.stringify(requestBody)
-        });
-    }
+      return fetch('http://' + location.host + '/plan', {
+          method:"POST",
+          body: JSON.stringify(requestBody)
+      });
+  }
 
-    async plan(){
-        try {
-            let serverResponse = await this.fetchResponse2();
-            let tffi = await serverResponse.json();
+  async plan(){
+      try {
+          let serverResponse = await this.fetchResponse_V2();
+          let tffi = await serverResponse.json();
 
-            console.log("Status " + serverResponse.status + ": " + serverResponse.statusText);
-            if(serverResponse.status >= 200 && serverResponse.status < 300) {
-                console.log(tffi);
-                this.props.updateTrip(tffi);
-            } else {
-                alert("Error " + serverResponse.status + ": " + serverResponse.statusText);
-            }
+          console.log("Status " + serverResponse.status + ": " + serverResponse.statusText);
+          if(serverResponse.status >= 200 && serverResponse.status < 300) {
+              console.log(tffi);
+              this.props.updateTrip(tffi);
+          } else {
+              alert("Error " + serverResponse.status + ": " + serverResponse.statusText);
+          }
 
-        } catch(err) {
-            console.error(err);
-            alert(err);
-        }
-    }
-    ////////////
+      } catch(err) {
+          console.error(err);
+          alert(err);
+      }
+  }
 
 
   render() {
