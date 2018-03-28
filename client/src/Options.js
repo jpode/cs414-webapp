@@ -11,7 +11,9 @@ class Options extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      sliderval : 0
+      sliderval : 0,
+      distanceUnit : "",
+      distanceRadius : ""
     }
 
 
@@ -19,7 +21,10 @@ class Options extends Component{
    // this.optimize = this.optimize.bind(this);
     this.handleSlider = this.handleSlider.bind(this);
     this.changeDistance = this.changeDistance.bind(this);
-
+    //this.changeDistanceCustom = this.changeDistanceCustom.bind(this);
+    //this.handleCustomDistanceName = this.handleCustomDistanceName.bind(this);
+    //this.handleCustomDistanceRadius = this.handleCustomDistanceRadius.bind(this);
+   // this.updateCustomDistance = this.updateCustomDistance.bind(this);
   }
 
   handleSlider(event){
@@ -33,12 +38,43 @@ class Options extends Component{
   }
 
   changeDistance(arg) {
-    var newTFFI = this.props.trip;
-    newTFFI.options.distance = arg;
+      console.log("Non user defined unit: " + arg);
+      //this.setState({distanceUnit : ""});
 
-    this.props.updateTrip(newTFFI);
-    this.plan();
+      var newTFFI = this.props.trip;
+      newTFFI.options.distance = arg;
+
+      this.props.updateTrip(newTFFI);
+      this.plan();
   }
+/*
+  changeDistanceCustom(arg) {
+    console.log("distance is custom");
+    this.setState({distanceUnit : "new"});
+  }
+
+  handleCustomDistanceName(event){
+    console.log("changing custom distance name");
+    this.setState({distanceUnit : event.target.value});
+  }
+
+  handleCustomDistanceRadius(event){
+    console.log("changing custom distance radius");
+    this.setState({distanceRadius : event.target.value});
+  }
+
+  updateCustomDistance(){
+    console.log("updating with custom user distance");
+    var newTFFI = this.props.trip;
+    newTFFI.options.distance = "user defined1";
+    newTFFI.options.userUnit = this.state.distanceUnit;
+    newTFFI.options.userRadius = this.state.distanceRadius;
+
+    //this.props.updateTrip(newTFFI);
+    //this.plan();
+
+  }
+*/
   //NOTE: need to implement nautical miles, and a way for users to define/name distance units
 
   /* Sends a request to the server with all state information except type.
@@ -83,7 +119,7 @@ class Options extends Component{
             "version"  : this.props.trip.version,
             "type"     : this.props.trip.type,
             "query"    : this.props.trip.version,
-            "title"    : this.state.userTitle,
+            "title"    : this.props.trip.title,
             "options"  : this.props.trip.options,
             "places"   : this.props.trip.places,
             "distances": this.props.trip.distances,
@@ -121,6 +157,12 @@ class Options extends Component{
 
 
   render() {
+    /*
+    const isCustomUnit = this.state.distanceUnit != "";
+    const hasTitle = this.state.distanceUnit != "" && this.state.distanceUnit != "new";
+    const hasRadius = this.state.distanceRadius != "";
+    */
+
     return(
         <div id="options" className="card">
           <div className="card-header bg-info text-white">
@@ -143,7 +185,21 @@ class Options extends Component{
               <label className={"btn btn-outline-dark".concat((this.props.trip.options.distance === "nautical miles") ? " active" : "")}>
                 <input type="radio" id="nautical miles" name="distance" value="on" onClick={() => { this.changeDistance("nautical miles") }} /> Nautical Miles
               </label>
+              {/* <label className={"btn btn-outline-dark".concat((this.props.trip.options.distance === "user defined") ? " active" : "")}>
+                <input type="radio" id="user defined" name="distance" value="on" onClick={() => { this.changeDistanceCustom("user defined2") }} /> Custom Unit
+              </label> */}
             </div>
+            {/* {isCustomUnit &&
+            <div className="input-group" role="group">
+              <span>
+                <input type="text" className="form-control" onChange = {this.handleCustomDistanceName} placeholder="Unit name..."/>
+                <input type="text" className="form-control" onChange = {this.handleCustomDistanceRadius} placeholder="Unit radius..."/>
+                <span className="input-group-btn">
+                <button disabled = {!hasTitle && !hasRadius} className="btn btn-primary " onClick={this.updateCustomDistance} type="button">Submit</button>
+                </span>
+              </span>
+            </div>
+            } */}
           </div>
         </div>
     )

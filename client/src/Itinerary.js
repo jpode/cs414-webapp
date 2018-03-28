@@ -15,7 +15,11 @@ class Itinerary extends Component {
     let dists = [];
 
     if(typeof this.props.trip.options.distance != "undefined") {
-      units = this.props.trip.options.distance;
+      if(this.props.trip.options.distance = "user defined"){
+        units = this.props.trip.options.userUnit;
+      } else {
+        units = this.props.trip.options.distance;
+      }
     }
 
     if(typeof this.props.trip.distances != "undefined" && this.props.trip.distances.length > 0) {
