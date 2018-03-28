@@ -35,7 +35,7 @@ class Destinations extends Component {
     // need to count the number in the trip
     return (
         <div id="destinations" className="card">
-          <div className="card-header bg-info text-white">
+          <div className="card-header bg-success text-white">
             Destinations
           </div>
           <div className="card-body">

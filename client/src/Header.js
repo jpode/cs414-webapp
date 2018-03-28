@@ -11,8 +11,10 @@ class Header extends Component{
     return(
         <div id="header" className="jumbotron container-fluid bg-success">
           <div className="row">
-            <div>
+            <div className="col-md-6">
+              <a href="https://www.cs.colostate.edu/cstop/index">
               <img src="http://www.cs.colostate.edu/~cs314/images/CompSci-NS-CSU-1-Hrev.png" className="img-fluid" alt="CSU CS Dept."/>
+              </a>
             </div>
           </div>
         </div>

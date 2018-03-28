@@ -81,18 +81,18 @@ class Trip extends Component {
     const hasTitle = this.state.userTitle.length > 0;
     return(
         <div id="trip" className="card">
-          <div className="card-header bg-info text-white">
+          <div className="card-header bg-success text-white">
             Trip
           </div>
           <div className="card-body">
             <p>Give your trip a title before planning or saving.</p>
             <div className="input-group" role="group">
               <span className="input-group-btn">
-              <button disabled = {!hasTitle} className="btn btn-primary " onClick={this.plan} type="button">Plan</button>
+              <button disabled = {!hasTitle} className="btn btn-success" onClick={this.plan} type="button">Plan</button>
             </span>
               <input type="text" className="form-control" onChange = {this.handleSubmit} placeholder="Trip title..."/>
               <span className="input-group-btn">
-              <button disabled = {!hasTitle} className="btn btn-primary " onClick={this.saveTFFI} type="button">Save</button>
+              <button disabled = {!hasTitle} className="btn btn-success " onClick={this.saveTFFI} type="button">Save</button>
             </span>
             </div>
             <Map trip={this.props.trip} />
