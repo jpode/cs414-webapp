@@ -60,19 +60,16 @@ public class Database {
   
   private static void printJson(ResultSet queryResult) throws SQLException {
 // determine the number of results that match the query
-    Place place = new Place();
 // iterate through query results
     while (queryResult.next()) {
-
-    place.name = queryResult.getString("name");
-    place.id = queryResult.getString("id");
-    place.municipality = queryResult.getString("municipality");
-    place.longitude = queryResult.getString("longitude");
-    place.latitude = queryResult.getString("latitude");
-
-    query.places.add(place);
+      Place place = new Place();
+      place.name = queryResult.getString("name");
+      place.id = queryResult.getString("id");
+      place.municipality = queryResult.getString("municipality");
+      place.longitude = queryResult.getString("longitude");
+      place.latitude = queryResult.getString("latitude");
+      query.places.add(place);
     }
-
   }
 
   public String getString() {
