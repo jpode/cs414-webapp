@@ -11,15 +11,17 @@ class Options extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      sliderval : 0
+      sliderval : 0,
+      distanceUnit : "",
+      distanceRadius : ""
     }
 
-
-
-   // this.optimize = this.optimize.bind(this);
     this.handleSlider = this.handleSlider.bind(this);
     this.changeDistance = this.changeDistance.bind(this);
-
+    this.changeDistanceCustom = this.changeDistanceCustom.bind(this);
+    this.handleCustomDistanceName = this.handleCustomDistanceName.bind(this);
+    this.handleCustomDistanceRadius = this.handleCustomDistanceRadius.bind(this);
+    this.updateCustomDistance = this.updateCustomDistance.bind(this);
   }
 
   handleSlider(event){
@@ -33,15 +35,39 @@ class Options extends Component{
   }
 
   changeDistance(arg) {
+      this.setState({distanceUnit : ""});
+
+      var newTFFI = this.props.trip;
+      newTFFI.options.distance = arg;
+
+      this.props.updateTrip(newTFFI);
+      this.plan();
+  }
+
+  changeDistanceCustom(arg) {
+    this.setState({distanceUnit : "new"});
+  }
+
+  handleCustomDistanceName(event){
+    this.setState({distanceUnit : event.target.value});
+  }
+
+  handleCustomDistanceRadius(event){
+    this.setState({distanceRadius : event.target.value});
+  }
+
+  updateCustomDistance(){
     var newTFFI = this.props.trip;
-    newTFFI.options.distance = arg;
+    newTFFI.options.distance = "user defined";
+    newTFFI.options.userUnit = this.state.distanceUnit;
+    newTFFI.options.userRadius = this.state.distanceRadius;
 
     this.props.updateTrip(newTFFI);
     this.plan();
-  }
-  //NOTE: need to implement nautical miles, and a way for users to define/name distance units
 
-  /* Sends a request to the server with all state information except type.
+  }
+
+  /* Sends a bas request to the server with only necessary objects.
  * Receives a response containing an optimized itinerary to update the
  * state for this object.
  */
@@ -76,51 +102,54 @@ class Options extends Component{
     }
   }
 
-  /////////////////////////
-    fetchResponse2(){
-        // need to get the request body from the trip in state object.
-        let requestBody = {
-            "version"  : this.props.trip.version,
-            "type"     : this.props.trip.type,
-            "query"    : this.props.trip.version,
-            "title"    : this.state.userTitle,
-            "options"  : this.props.trip.options,
-            "places"   : this.props.trip.places,
-            "distances": this.props.trip.distances,
-            "map"      : this.props.trip.map
-        };
-        // unsure if map or distances should be included above! ^
-        console.log(process.env.SERVICE_URL);
-        console.log(requestBody);
+  fetchResponse_V2(){
+      // need to get the request body from the trip in state object.
+      let requestBody = {
+          "version"  : this.props.trip.version,
+          "type"     : this.props.trip.type,
+          "query"    : this.props.trip.version,
+          "title"    : this.props.trip.title,
+          "options"  : this.props.trip.options,
+          "places"   : this.props.trip.places,
+          "distances": this.props.trip.distances,
+          "map"      : this.props.trip.map
+      };
+      // unsure if map or distances should be included above! ^
+      console.log(process.env.SERVICE_URL);
+      console.log(requestBody);
 
-        return fetch('http://' + location.host + '/plan', {
-            method:"POST",
-            body: JSON.stringify(requestBody)
-        });
-    }
+      return fetch('http://' + location.host + '/plan', {
+          method:"POST",
+          body: JSON.stringify(requestBody)
+      });
+  }
 
-    async plan(){
-        try {
-            let serverResponse = await this.fetchResponse2();
-            let tffi = await serverResponse.json();
+  async plan(){
+      try {
+          let serverResponse = await this.fetchResponse_V2();
+          let tffi = await serverResponse.json();
 
-            console.log("Status " + serverResponse.status + ": " + serverResponse.statusText);
-            if(serverResponse.status >= 200 && serverResponse.status < 300) {
-                console.log(tffi);
-                this.props.updateTrip(tffi);
-            } else {
-                alert("Error " + serverResponse.status + ": " + serverResponse.statusText);
-            }
+          console.log("Status " + serverResponse.status + ": " + serverResponse.statusText);
+          if(serverResponse.status >= 200 && serverResponse.status < 300) {
+              console.log(tffi);
+              this.props.updateTrip(tffi);
+          } else {
+              alert("Error " + serverResponse.status + ": " + serverResponse.statusText);
+          }
 
-        } catch(err) {
-            console.error(err);
-            alert(err);
-        }
-    }
-    ////////////
+      } catch(err) {
+          console.error(err);
+          alert(err);
+      }
+  }
 
 
   render() {
+
+    const isCustomUnit = this.state.distanceUnit != "";
+    const hasTitle = this.state.distanceUnit != "" && this.state.distanceUnit != "new";
+    const hasRadius = this.state.distanceRadius != "";
+
     return(
         <div id="options" className="card">
           <div className="card-header bg-info text-white">
@@ -143,7 +172,21 @@ class Options extends Component{
               <label className={"btn btn-outline-dark".concat((this.props.trip.options.distance === "nautical miles") ? " active" : "")}>
                 <input type="radio" id="nautical miles" name="distance" value="on" onClick={() => { this.changeDistance("nautical miles") }} /> Nautical Miles
               </label>
+              <label className={"btn btn-outline-dark".concat((this.props.trip.options.distance === "user defined") ? " active" : "")}>
+                <input type="radio" id="user defined" name="distance" value="on" onClick={() => { this.changeDistanceCustom("user defined") }} /> Custom Unit
+              </label>
             </div>
+            {isCustomUnit &&
+            <div className="input-group" role="group">
+              <span>
+                <input type="text" className="form-control" onChange = {this.handleCustomDistanceName} placeholder="Unit"/>
+                <input type="text" className="form-control" onChange = {this.handleCustomDistanceRadius} placeholder="Radius of the Earth in unit"/>
+                <span className="input-group-btn">
+                <button disabled = {!hasTitle && !hasRadius} className="btn btn-primary " onClick={this.updateCustomDistance} type="button">Submit</button>
+                </span>
+              </span>
+            </div>
+            }
           </div>
         </div>
     )

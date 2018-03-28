@@ -37,7 +37,7 @@ class Application extends Component {
       new_tffi.title = tffi.title;
     }
     if(typeof tffi.options != "undefined" && tffi.options != {}){
-      new_tffi.options = tffi.options;
+        new_tffi.options = tffi.options;
     }
     if(typeof tffi.places != "undefined" && tffi.places != []){
       new_tffi.places = tffi.places;
@@ -48,8 +48,7 @@ class Application extends Component {
     if(typeof tffi.map != "undefined" && tffi.map != ""){
       new_tffi.map = tffi.map;
     }
-
-    console.log(new_tffi);
+    console.log(new_tffi)
     this.setState({trip:new_tffi});
 
   }
