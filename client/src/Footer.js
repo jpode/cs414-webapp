@@ -12,11 +12,12 @@ class Footer extends Component {
     return (
         <div id="footer" className="jumbotron container-fluid">
                 <div className="row">
-                    <div className="col-8 align-self-center">
-                        <h4 className="text-white">© TripCo t{this.props.number} {this.props.name} 2018</h4>
+                    <div className="col-md-4 align-self-center">
+                        <h4 className="text-white">© TripCo t{this.props.number} Over9000 2018</h4>
                     </div>
-                    <div className="col-4">
-                        <img src="https://raw.githubusercontent.com/csu314sp18/tripco/setup/sprint3/CSU-Official-wrdmrk-357-617_Rev.png?token=Abgsf1PkOTR0A9RK8uV-N1wwo6z-d3Qrks5aoHjawA%3D%3D" className="img-fluid" alt="CSU"/>
+                    <div className="col-md-4"></div>
+                    <div className="col-md-4">
+                        <img src="http://www.cs.colostate.edu/~cs314/images/CSU-Official-wrdmrk-357-617_Rev.png" className="img-fluid" alt="CSU"/>
                     </div>
                 </div>
         </div>
