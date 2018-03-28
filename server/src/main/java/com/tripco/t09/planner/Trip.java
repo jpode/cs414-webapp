@@ -255,7 +255,6 @@ public class Trip {
       }
     } catch (NullPointerException e) {
       System.out.println("Places is empty / has not been initialized (verifyPlaces())");
-      return;
     }
   }
 
