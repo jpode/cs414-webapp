@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.tripco.t09.server.HTTP;
+import java.util.LinkedList;
 import spark.Request;
 
 import java.io.BufferedReader;
@@ -21,12 +22,20 @@ import java.util.Arrays;
  */
 public class Trip {
   // The variables in this class should reflect TFFI.
+  public int version;
   public String type;
+  public String query;
   public String title;
   public Option options;
   public ArrayList<Place> places;
   public ArrayList<Integer> distances;
   public String map;
+
+  //public int[][] distArr;
+  // notes for memoization: how should indexes be handled? We could do it by index in places,
+  // but we would have to account for optimizations changing order of places (which is when we
+  // would utilize it)... Could try to implement it by latitude / longitude, but then it would
+  // likely have to be a string to prevent false matches, which would create problems of its own...
 
   /** The top level method that does planning.
    * At this point it just adds the map and distances for the places in order.
@@ -35,16 +44,100 @@ public class Trip {
   public void plan() {
 
     verifyPlaces();
-    if(places.size() > 1) {
-      this.map = svg();
-      this.distances = legDistances();
+    try {
+      if (places.size() > 1) {
+        this.map = svg();
+        this.distances = legDistances();
+      }
+    } catch (NullPointerException e) {
+      return;
     }
 
   }
 
   /**
+   * to be implemented!
+   */
+  public String config() {
+    // first, ensure values were initialized with (at minimum) defaults
+    if (this.options == null) {
+      this.options = new Option();
+    }
+    if (this.version == 0) {
+      this.version = 2;
+    }
+    if (this.type == null) {
+      this.type = "config";
+    }
+    Config config = new Config(this);
+    Gson gson = new Gson();
+    return gson.toJson(config);
+  }
+
+  /**
+   * Optimize can be called directly through changing slider on UI, or indirectly through planTrip()
+   * above. optimize() is the entry function for nearest neighbor, 2opt, and 3opt optimizations
+   * methods, all defined in Trip.java.
+   */
+
+  public void optimize() {
+    if (options.numOfOptimizations == 0.0)   // to prevent divide by 0 later on
+    {
+      this.plan();
+    }
+    Optimization opt = new Optimization(this);
+    System.out.println("Optimizing trip with level " + this.options.optimization);
+    verifyPlaces();
+    Double optLevel;
+    try {      // in case this.options.optimization is "none" (version 1)
+      optLevel = Double.parseDouble(this.options.optimization);
+    } catch (NumberFormatException e) {
+      this.plan();
+      return;
+    }  // if "none", just plan trip
+    double optPartition = 1.0 / (double) (options.numOfOptimizations) + .01;
+    if (optLevel < (optPartition) && optLevel != 0) {
+      this.places = opt.planNearestNeighbor();
+      System.out.println("Optimized Round Trip Distance: " + sumDistances(places));
+    } else if (optLevel < (2 * optPartition)) {
+      this.places = opt.plan2Opt();
+        System.out.println("Optimized Round Trip Distance: " + sumDistances(places));
+    } else if (optLevel < (3 * optPartition)) {
+      opt.plan3Opt();
+    }
+    this.plan();
+  }
+
+
+
+  /**
+   * This method calculates the sum of distances between consecutive points in an ArrayList
+   * containing type Place objects (Round-Trip Distance).
+   *
+   * @return totalDist
+   */
+
+  public int sumDistances(ArrayList<Place> newPlaces) {
+    int totalDist = 0;
+    Place aa;
+    Place bb;
+    for (int i = 0; i < newPlaces.size(); i++) {
+      aa = newPlaces.get(i);
+      if (i != newPlaces.size() - 1) {
+        bb = newPlaces.get(i + 1);
+      } else {
+        bb = newPlaces.get(0);
+      }
+      totalDist += distBetweenTwoPlaces(aa, bb);
+    }
+    return totalDist;
+  }
+
+
+
+  /**
    * Returns an SVG containing the background and the legs of the trip.
-   * @return
+   * @return SVG
    */
   private String svg() {
 
@@ -98,7 +191,7 @@ public class Trip {
 
       stringBuffer.insert(stringBuffer.length()-8, path);
       //stringBuffer.append(points);
-      System.out.println(stringBuffer.toString());
+      //System.out.println(stringBuffer.toString());
       is.close();
       //System.out.println(stringBuffer.toString());
 
@@ -122,38 +215,43 @@ public class Trip {
   private ArrayList<Integer> legDistances() {
 
     ArrayList<Integer> dist = new ArrayList<Integer>();
-    int singleDist = 0;
-    int i;
-    double ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG;
-
-    for(i = 0; i < places.size(); i++){
-
-      ptA_LAT = convertCoordinate(places.get(i).latitude);
-      ptA_LONG = convertCoordinate(places.get(i).longitude);
-
+    Place aa;
+    Place bb;
+    for (int i = 0; i < places.size(); i++) {
+      aa = places.get(i);
       if(i != places.size() - 1) {
-        ptB_LAT = convertCoordinate(places.get(i + 1).latitude);
-        ptB_LONG = convertCoordinate(places.get(i + 1).longitude);
+        bb = places.get(i + 1);
       } else {
-        ptB_LAT = convertCoordinate(places.get(0).latitude);
-        ptB_LONG = convertCoordinate(places.get(0).longitude);
+        bb = places.get(0);
       }
-
-      singleDist = distanceHelper(ptA_LAT, ptA_LONG, ptB_LAT, ptB_LONG);
-      dist.add(singleDist);
-
+      dist.add(distBetweenTwoPlaces(aa, bb));
     }
     return dist;
-
   }
 
+  protected int distBetweenTwoPlaces(Place aa, Place bb) {
+    double ptALat = convertCoordinate(aa.latitude);
+    double ptALong = convertCoordinate(aa.longitude);
+    double ptBLat = convertCoordinate(bb.latitude);
+    double ptBLong = convertCoordinate(bb.longitude);
+    return distanceHelper(ptALat, ptALong, ptBLat, ptBLong);
+  }
+
+
   private void verifyPlaces(){
-    for(int i = 0; i < places.size(); i++){
-      if(!verifyLatitudeCoordinates(convertCoordinate(places.get(i).latitude)) || !verifyLongitudeCoordinates(convertCoordinate(places.get(i).longitude))){
-        System.out.println("Coordinates for location " + places.get(i).name + " are outside of Colorado boundaries");
-        places.remove(i);
-        i--;
+    try {
+      for (int i = 0; i < places.size(); i++) {
+        if (!verifyLatitudeCoordinates(convertCoordinate(places.get(i).latitude))
+            || !verifyLongitudeCoordinates(convertCoordinate(places.get(i).longitude))) {
+          System.out.println("Coordinates for location " + places.get(i).name
+              + " are outside of Colorado boundaries");
+          places.remove(i);
+          i--;
+        }
       }
+    } catch (NullPointerException e) {
+      System.out.println("Places is empty / has not been initialized (verifyPlaces())");
+      return;
     }
   }
 
@@ -173,13 +271,25 @@ public class Trip {
     double central_angle = 2 * Math.asin(c / 2);
 
     try {
-      if (this.options.distance.compareTo("miles") == 0) {
-        return (int)Math.round(3959 * central_angle);
+      if (this.options.distance.compareTo("user defined") == 0) {
+        double rad;
+        try {
+          rad = Double.parseDouble(this.options.userRadius);
+        } catch (NumberFormatException e) {
+          rad = 3959;
+          this.options.userUnit = "miles";
+          System.out.println("Unable to parse User-Defined radius");
+        }
+        return (int) Math.round(rad * central_angle);
+      } else if (this.options.distance.compareTo("kilometers") == 0) {
+        return (int) Math.round(6371 * central_angle);
+      } else if (this.options.distance.compareTo("nautical miles") == 0) {
+        return (int) Math.round(3440.0695 * central_angle);
       } else {
-        return (int)Math.round(6371 * central_angle);
+        return (int) Math.round(3959 * central_angle);
       }
-    } catch(NullPointerException e){
-      return (int)Math.round(3959 * central_angle);
+    } catch (NullPointerException e) {
+      return (int) Math.round(3959 * central_angle);
     }
   }
 
@@ -227,19 +337,13 @@ public class Trip {
    *  true = within boundaries, false = outside of boundaries
    */
   public boolean verifyLongitudeCoordinates(double coordinate){
-    if(coordinate < -102.05 && coordinate > -109.05){
-      return true;
-    }
-    return false;
+    return coordinate < -102.05 && coordinate > -109.05;
   }
 
   // Same as verifyLongitudeCoordinates, but takes a latitudinal coordinate and tests
   //  it against the south and north Colorado borders at 37N and 41N
   public boolean verifyLatitudeCoordinates(double coordinate){
-    if(coordinate > 37 && coordinate < 41){
-      return true;
-    }
-    return false;
+    return coordinate > 37 && coordinate < 41;
   }
 
   // Converting our Latitude to SVG values for Polyline on Map
