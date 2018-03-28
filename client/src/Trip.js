@@ -12,7 +12,7 @@ class Trip extends Component {
     super(props);
 
     this.state = {
-      userTitle : ""
+      userTitle : this.props.trip.title
     };
 
     this.plan = this.plan.bind(this);
@@ -100,7 +100,7 @@ class Trip extends Component {
               <span className="input-group-btn">
               <button disabled = {!hasTitle} className="btn btn-primary " onClick={this.plan} type="button">Plan</button>
             </span>
-              <input type="text" className="form-control" onChange = {this.handleSubmit} placeholder="Trip title..."/>
+              <input type="text" value={this.state.userTitle} className="form-control" onChange = {this.handleSubmit} placeholder="Trip title..."/>
               <span className="input-group-btn">
               <button disabled = {!hasTitle} className="btn btn-primary " onClick={this.saveTFFI} type="button">Save</button>
             </span>

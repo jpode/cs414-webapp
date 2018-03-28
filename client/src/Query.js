@@ -11,19 +11,23 @@ class Query extends Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.createTable = this.createTable.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
+    this.handleClear = this.handleClear.bind(this);
   }
 
   handleSubmit(event)
   {
     this.setState({search: event.target.value});
-    console.log(this.state.search);
   }
 
-  handleClick(event)
+  handleSearch(event)
   {
     this.query();
+  }
 
+  handleClear(event)
+  {
+    this.setState({places: []});
   }
 
   /* Sends a request to the server with all state information except type.
@@ -58,8 +62,6 @@ class Query extends Component {
 
       this.setState({places: tffi.places});
 
-      console.log(tffi.places);
-      console.log(this.state.places);
     } catch(err) {
       console.error(err);
     }
@@ -86,42 +88,49 @@ class Query extends Component {
 
   render() {
     let table = this.createTable();
+    const numPlaces = this.state.places.length;
+
     return (
         <div>
           <label>
             Search destinations from a database:
           </label>
           <div className="input-group" role="group">
+            <span className="input-group-btn">
+              <button className="btn btn-primary " onClick={this.handleSearch} type="button">Search</button>
+            </span>
             <input type="text" className="form-control" onChange = {this.handleSubmit} placeholder="Find"/>
             <span className="input-group-btn">
-              <button className="btn btn-primary " onClick={this.handleClick} type="button">Search</button>
+              <button className="btn btn-primary " onClick={this.handleClear} type="button">Clear</button>
             </span>
           </div>
-          <table className="table table-responsive table-bordered">
-            <thead>
-            <tr className="table-info">
-              <th className="align-middle">ID</th>
-              {table.ids}
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <th className="table-info align-middle">Name</th>
-              {table.names}
-            </tr>
-            </tbody>
-            <tbody>
-            <tr>
-              <th className="table-info align-middle">Municipality</th>
-              {table.municipalities}
-            </tr>
-            </tbody>
-            <tbody>
-            <tr>
-              <th className="table-info align-middle">Add</th>
-            </tr>
-            </tbody>
-          </table>
+          {numPlaces > 0 &&
+            <table className="table table-responsive table-bordered">
+              <tbody>
+              <tr className="table-info">
+                <th className="align-middle">ID</th>
+                {table.ids}
+              </tr>
+              </tbody>
+              <tbody>
+              <tr>
+                <th className="table-info align-middle">Name</th>
+                {table.names}
+              </tr>
+              </tbody>
+              <tbody>
+              <tr>
+                <th className="table-info align-middle">Municipality</th>
+                {table.municipalities}
+              </tr>
+              </tbody>
+              <tbody>
+              <tr>
+                <th className="table-info align-middle">Add</th>
+              </tr>
+              </tbody>
+            </table>
+          }
         </div>
     )
   }

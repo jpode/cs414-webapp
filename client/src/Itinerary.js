@@ -37,24 +37,29 @@ class Itinerary extends Component {
 
   render() {
     let table = this.createTable();
+    const numPlaces = table.dists.length;
 
     return(
         <div id="itinerary">
-          <h4>Round trip distance of {table.distance} {table.units}. </h4>
-          <table className="table table-responsive table-bordered">
-            <thead>
-            <tr className="table-info">
-              <th className="align-middle">Destination</th>
-              {table.dests}
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <th className="table-info align-middle">{table.units}</th>
-              {table.dists}
-            </tr>
-            </tbody>
-          </table>
+          {numPlaces > 0 &&
+            <h4>Round trip distance of {table.distance} {table.units}. </h4>
+          }
+          {numPlaces > 0 &&
+            <table className="table table-responsive table-bordered">
+              <thead>
+              <tr className="table-info">
+                <th className="align-middle">Destination</th>
+                {table.dests}
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <th className="table-info align-middle">{table.units}</th>
+                {table.dists}
+              </tr>
+              </tbody>
+            </table>
+        }
         </div>
     )
   }

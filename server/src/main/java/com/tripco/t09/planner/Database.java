@@ -59,9 +59,9 @@ public class Database {
 
   
   private static void printJson(ResultSet queryResult) throws SQLException {
-// determine the number of results that match the query
-// iterate through query results
-    while (queryResult.next()) {
+    // iterate through query results, stop when all results are added or until the limit (20) is reached
+    int counter = 0;
+    while (queryResult.next() && counter < 20) {
       Place place = new Place();
       place.name = queryResult.getString("name");
       place.id = queryResult.getString("id");
@@ -69,6 +69,7 @@ public class Database {
       place.longitude = queryResult.getString("longitude");
       place.latitude = queryResult.getString("latitude");
       query.places.add(place);
+      counter++;
     }
   }
 
