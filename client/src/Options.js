@@ -124,7 +124,25 @@ class Options extends Component{
       });
   }
 
-  async plan(){
+  async plan(){<<<<<<< SoDakHib-Branding
+167
+ 
+              <label className={"btn btn-outline-dark btn-success".concat((this.props.options.distance === "miles") ? " active" : "")}>
+168
+ 
+                <input type="radio" id="miles" name="distance" value="on" onClick={() => { this.changeOption("miles") }} /> Miles
+169
+ 
+              </label>
+170
+ 
+              <label className={"btn btn-outline-dark btn-success".concat((this.props.options.distance === "kilometers") ? " active" : "")}>
+171
+ 
+                <input type="radio" id="kilometers" name="distance" value="on" onClick={() => { this.changeOption("kilometers") }} /> Kilometers
+172
+ 
+=======
       try {
           let serverResponse = await this.fetchResponse_V2();
           let tffi = await serverResponse.json();
@@ -152,7 +170,7 @@ class Options extends Component{
 
     return(
         <div id="options" className="card">
-          <div className="card-header bg-info text-white">
+          <div className="card-header bg-success text-white">
             Options
           </div>
           <div className="card-body">
@@ -163,16 +181,16 @@ class Options extends Component{
               <sup>Less</sup> &nbsp;&nbsp; <input type="range" name="optimization" value={this.state.sliderval} onChange={this.handleSlider} min="0" max="1" step=".5" /> &nbsp;&nbsp; <sup>More</sup>
             </div>
             <div className="btn-group btn-group-toggle" data-toggle="buttons">
-              <label className={"btn btn-outline-dark".concat((this.props.trip.options.distance === "miles") ? " active" : "")}>
+              <label className={"btn btn-outline-dark btn-success".concat((this.props.trip.options.distance === "miles") ? " active" : "")}>
                 <input type="radio" id="miles" name="distance" value="on" onClick={() => { this.changeDistance("miles") }} /> Miles
               </label>
-              <label className={"btn btn-outline-dark".concat((this.props.trip.options.distance === "kilometers") ? " active" : "")}>
+              <label className={"btn btn-outline-dark btn-success".concat((this.props.trip.options.distance === "kilometers") ? " active" : "")}>
                 <input type="radio" id="kilometers" name="distance" value="on" onClick={() => { this.changeDistance("kilometers") }} /> Kilometers
               </label>
-              <label className={"btn btn-outline-dark".concat((this.props.trip.options.distance === "nautical miles") ? " active" : "")}>
+              <label className={"btn btn-outline-dark btn-success".concat((this.props.trip.options.distance === "nautical miles") ? " active" : "")}>
                 <input type="radio" id="nautical miles" name="distance" value="on" onClick={() => { this.changeDistance("nautical miles") }} /> Nautical Miles
               </label>
-              <label className={"btn btn-outline-dark".concat((this.props.trip.options.distance === "user defined") ? " active" : "")}>
+              <label className={"btn btn-outline-dark btn-success".concat((this.props.trip.options.distance === "user defined") ? " active" : "")}>
                 <input type="radio" id="user defined" name="distance" value="on" onClick={() => { this.changeDistanceCustom("user defined") }} /> Custom Unit
               </label>
             </div>

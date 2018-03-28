@@ -31,7 +31,7 @@ class Destinations extends Component {
   render() {
     return (
         <div id="destinations" className="card">
-          <div className="card-header bg-info text-white">
+          <div className="card-header bg-success text-white">
             Destinations
           </div>
           <div className="card-body">

@@ -52,13 +52,13 @@ class Itinerary extends Component {
             <table className="table table-responsive table-bordered">
               <thead>
               <tr className="table-info">
-                <th className="align-middle">Destination</th>
+                <th className="align-middle btn-success">Destination</th>
                 {table.dests}
               </tr>
               </thead>
               <tbody>
               <tr>
-                <th className="table-info align-middle">{table.units}</th>
+                <th className="table-info align-middle btn-success">{table.units}</th>
                 {table.dists}
               </tr>
               </tbody>
