@@ -10,7 +10,7 @@ class Footer extends Component {
 
   render() {
     return (
-        <div id="footer" className="jumbotron container-fluid">
+        <div id="footer" className="jumbotron container-fluid bg-success">
                 <div className="row">
                     <div className="col-md-4 align-self-center">
                         <h4 className="text-white">© TripCo t{this.props.number} Over9000 2018</h4>
