@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Options from './Options';
 import Destinations from './Destinations';
 import Trip from './Trip';
+import "./custom.scss";
 
 /* Renders the application.
  * Holds the destinations and options state shared with the trip.
