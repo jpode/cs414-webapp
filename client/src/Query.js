@@ -97,11 +97,11 @@ class Query extends Component {
           </label>
           <div className="input-group" role="group">
             <span className="input-group-btn">
-              <button className="btn btn-primary " onClick={this.handleSearch} type="button">Search</button>
+              <button className="btn btn-outline-dark btn-success" onClick={this.handleSearch} type="button">Search</button>
             </span>
             <input type="text" className="form-control" onChange = {this.handleSubmit} placeholder="Find"/>
             <span className="input-group-btn">
-              <button className="btn btn-primary " onClick={this.handleClear} type="button">Clear</button>
+              <button className="btn btn-outline-dark btn-success" onClick={this.handleClear} type="button">Clear</button>
             </span>
           </div>
           {numPlaces > 0 &&
