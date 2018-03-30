@@ -124,25 +124,18 @@ class Options extends Component{
       });
   }
 
-  async plan(){<<<<<<< SoDakHib-Branding
-167
- 
-              <label className={"btn btn-outline-dark btn-success".concat((this.props.options.distance === "miles") ? " active" : "")}>
-168
- 
-                <input type="radio" id="miles" name="distance" value="on" onClick={() => { this.changeOption("miles") }} /> Miles
-169
- 
-              </label>
-170
- 
-              <label className={"btn btn-outline-dark btn-success".concat((this.props.options.distance === "kilometers") ? " active" : "")}>
-171
- 
-                <input type="radio" id="kilometers" name="distance" value="on" onClick={() => { this.changeOption("kilometers") }} /> Kilometers
-172
- 
-=======
+  async plan(){
+/* Commented this out since it breaks master.
+                <label className={"btn btn-outline-dark btn-success".concat((this.props.options.distance === "miles") ? " active" : "")}>
+
+                     <input type="radio" id="miles" name="distance" value="on" onClick={() => { this.changeOption("miles") }} /> Miles
+
+
+                 </label>
+
+    <label className={"btn btn-outline-dark btn-success".concat((this.props.options.distance === "kilometers") ? " active" : "")}>
+      <input type="radio" id="kilometers" name="distance" value="on" onClick={() => { this.changeOption("kilometers") }} /> Kilometers
+*/
       try {
           let serverResponse = await this.fetchResponse_V2();
           let tffi = await serverResponse.json();
