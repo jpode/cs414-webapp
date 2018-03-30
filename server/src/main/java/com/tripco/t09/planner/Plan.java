@@ -65,17 +65,19 @@ public class Plan {
    */
   
   public void planTrip(){
-    if (trip.type == "trip") {
-      trip.plan();
-    } 
-    //else if (trip.type == "query") {
-    //} 
+
+    trip.plan();
+
+    //Not really sure if this is necessary
+    /*else if (trip.type == "query") {
+    }
     else if (trip.type == "config") {
       trip.config();
     }
     else{
       trip.plan();
     }
+    */
   }
 
   /**

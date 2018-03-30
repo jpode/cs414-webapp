@@ -231,7 +231,6 @@ public class TestTrip {
     Option option = new Option();
     option.distance = "miles";
     option.optimization = "0.5";
-    option.numOfOptimizations = 2;
     trip.options = option;
 
     Place placeA = new Place();
@@ -290,7 +289,6 @@ public class TestTrip {
     Option option = new Option();
     option.distance = "miles";
     option.optimization = "1.0";
-    option.numOfOptimizations = 2;
     trip.options = option;
 
     Place placeA = new Place();
@@ -348,7 +346,6 @@ public class TestTrip {
     Option option = new Option();
     option.distance = "miles";
     option.optimization = "1.0";
-    option.numOfOptimizations = 2;
     trip.options = option;
 
     Place placeA = new Place();
