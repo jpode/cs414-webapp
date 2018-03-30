@@ -17,8 +17,7 @@ public class Config {
 
   /**
    * Returns the configuration trip object consisting of type, version, # of optimizations,
-   * and distance unit types
-   * @param
+   * and distance unit types.
    */
   public Config() {
     this.type = "config";

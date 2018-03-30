@@ -1,9 +1,9 @@
 package com.tripco.t09.server;
 
 import com.google.gson.Gson;
+import com.tripco.t09.planner.Config;
 import com.tripco.t09.planner.Database;
 import com.tripco.t09.planner.Plan;
-import com.tripco.t09.planner.Config;
 
 import spark.Request;
 import spark.Response;
