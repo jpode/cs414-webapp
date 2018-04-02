@@ -22,6 +22,11 @@ class Application extends Component {
         map: "<svg width=\"1920\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:svg=\"http://www.w3.org/2000/svg\"><g></g></svg>"
       }
     }
+
+    console.log("Version: " + this.props.version);
+    console.log("Supported Distances: " + this.props.distances);
+    console.log("Supported Optimization Levels: " + this.props.optimization);
+
     this.updateTrip = this.updateTrip.bind(this);
   }
 
@@ -55,6 +60,7 @@ class Application extends Component {
   }
 
   render() {
+
     return(
         <div id="application" className="container">
           <div className="row">
