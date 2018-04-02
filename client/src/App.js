@@ -7,11 +7,13 @@ class App extends Component {
   constructor (props){
     super(props);
     this.state = {
-      number: "09",
-      name: "OVER NINE THOUSAND!?",
-      version: "",
-      distances: "",
-      optimization: ""
+      config: {
+        number: "09",
+        name: "OVER NINE THOUSAND!?",
+        version: "",
+        distances: "",
+        optimization: ""
+      }
     }
 
     this.config = this.config.bind(this);
@@ -22,7 +24,19 @@ class App extends Component {
   }
 
   updateFromConfig(config){
-    this.setState({version: config.version, distances : config.distances, optimization : config.optimization});
+    var newConfig = this.state.config;
+
+    if(typeof config.version != "undefined" && config.version != ""){
+      newConfig.version = config.version;
+    }
+    if(typeof config.distances != "undefined" && config.distances != ""){
+      newConfig.distances = config.distances;
+    }
+    if(typeof config.optimization != "undefined" && config.optimization != ""){
+      newConfig.optimization = config.optimization;
+    }
+
+    this.setState({config:newConfig});
   }
 
   fetchConfig(){
@@ -47,15 +61,15 @@ class App extends Component {
   }
 
   render() {
-    const active = this.state.version != "";
+    const active = this.state.config.version != "";
     return(
           <div id="tripco">
 
-            <Header number={this.state.number} name={this.state.name}/>
+            <Header number={this.state.config.number} name={this.state.config.name}/>
             {active &&
-              <Application version={this.state.version} distances={this.state.distances} optimization={this.state.optimization}/>
+              <Application config={this.state.config}/>
             }
-            <Footer number={this.state.number} name={this.state.name}/>
+            <Footer number={this.state.config.number} name={this.state.config.name}/>
           </div>
     );
   }
