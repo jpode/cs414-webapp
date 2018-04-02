@@ -22,7 +22,7 @@ public class Config {
   public Config() {
     this.type = "config";
     this.version = "3";
-    this.optimization = "0";
+    this.optimization = "2";
     this.distances = new String[]{"miles", "kilometers", "nautical miles", "user defined"};
   }
 
