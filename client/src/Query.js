@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Destinations from './Destinations';
 
 class Query extends Component {
   constructor(props) {
@@ -29,6 +30,7 @@ class Query extends Component {
   {
     this.setState({places: []});
   }
+
 
   /* Sends a request to the server with all state information except type.
 * Receives a response containing an optimized itinerary to update the
@@ -66,24 +68,32 @@ class Query extends Component {
       console.error(err);
     }
   }
+  //temporary for testing btns
+  outputBtn(e)
+  {
+    console.log(e);
+  }
 
   createTable () {
 
     let ids = [];
     let names = [];
     let municipalities = [];
+    let btns = [];
 
-    if(typeof this.state.places[0] != "undefined") {
+    if (typeof this.state.places[0] != "undefined") {
       ids = this.state.places.map((item) => <td>{item.id}</td>);
       names = this.state.places.map((item) => <td>{item.name}</td>);
-      municipalities = this.state.places.map((item) => <td>{item.municipality}</td>);
+      municipalities = this.state.places.map(
+          (item) => <td>{item.municipality}</td>);
+      btns = this.state.places.map((item) => <td><button className="btn " onClick={() => this.outputBtn(item.id)} >Add</button></td>)
     }
 
     console.log(ids);
     console.log(names);
     console.log(municipalities);
 
-    return {ids, names, municipalities};
+    return {ids, names, municipalities, btns};
   }
 
   render() {
@@ -97,11 +107,11 @@ class Query extends Component {
           </label>
           <div className="input-group" role="group">
             <span className="input-group-btn">
-              <button className="btn btn-outline-dark btn-success" onClick={this.handleSearch} type="button">Search</button>
+              <button className="btn btn-outline-dark btn-success" onClick={this.handleSearch} >Search</button>
             </span>
             <input type="text" className="form-control" onChange = {this.handleSubmit} placeholder="Find"/>
             <span className="input-group-btn">
-              <button className="btn btn-outline-dark btn-success" onClick={this.handleClear} type="button">Clear</button>
+              <button className="btn btn-outline-dark btn-success" onClick={this.handleClear} >Clear</button>
             </span>
           </div>
           {numPlaces > 0 &&
@@ -127,6 +137,7 @@ class Query extends Component {
               <tbody>
               <tr>
                 <th className="table-info align-middle">Add</th>
+                {table.btns}
               </tr>
               </tbody>
             </table>
