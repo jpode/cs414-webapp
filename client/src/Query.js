@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import Destinations from './Destinations';
 
 class Query extends Component {
   constructor(props) {
@@ -14,6 +13,7 @@ class Query extends Component {
     this.createTable = this.createTable.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleClear = this.handleClear.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
   }
 
   handleSubmit(event)
@@ -29,6 +29,25 @@ class Query extends Component {
   handleClear(event)
   {
     this.setState({places: []});
+  }
+
+
+
+  //temporary for testing btns
+  handleAdd(place) {
+    console.log(place);
+    // if (this.state.table.find(function (element) {
+    //       console.log(element);
+    //       return element.key == place.id;
+    //     }) != undefined) {
+    //   this.setState({ error: "You have already added this location with this ID" });
+    //   return;
+    // }
+    // var places = this.props.trip.places.slice();
+    // places.push(place);
+    // var trip = this.props.trip;
+    // trip.places = places;
+    // this.props.updateTrip(trip);
   }
 
 
@@ -68,11 +87,6 @@ class Query extends Component {
       console.error(err);
     }
   }
-  //temporary for testing btns
-  outputBtn(e)
-  {
-    console.log(e);
-  }
 
   createTable () {
 
@@ -86,7 +100,7 @@ class Query extends Component {
       names = this.state.places.map((item) => <td>{item.name}</td>);
       municipalities = this.state.places.map(
           (item) => <td>{item.municipality}</td>);
-      btns = this.state.places.map((item) => <td><button className="btn " onClick={() => this.outputBtn(item.id)} >Add</button></td>)
+      btns = this.state.places.map((item) => <td><button className="btn " onClick={() => this.handleAdd(item.id)} >Add</button></td>)
     }
 
     console.log(ids);
