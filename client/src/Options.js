@@ -125,17 +125,6 @@ class Options extends Component{
   }
 
   async plan(){
-/* Commented this out since it breaks master.
-                <label className={"btn btn-outline-dark btn-success".concat((this.props.options.distance === "miles") ? " active" : "")}>
-
-                     <input type="radio" id="miles" name="distance" value="on" onClick={() => { this.changeOption("miles") }} /> Miles
-
-
-                 </label>
-
-    <label className={"btn btn-outline-dark btn-success".concat((this.props.options.distance === "kilometers") ? " active" : "")}>
-      <input type="radio" id="kilometers" name="distance" value="on" onClick={() => { this.changeOption("kilometers") }} /> Kilometers
-*/
       try {
           let serverResponse = await this.fetchResponse_V2();
           let tffi = await serverResponse.json();
@@ -161,6 +150,17 @@ class Options extends Component{
     const hasTitle = this.state.distanceUnit != "" && this.state.distanceUnit != "new";
     const hasRadius = this.state.distanceRadius != "";
 
+    const distances = this.props.config.distances;
+    const configNMiles= distances.includes("nautical miles");
+    const configUD= distances.includes("user defined");
+    const configOptLevel = parseFloat(this.props.config.optimization);
+    var configOptStep;
+    if(configOptLevel > 0) {
+      configOptStep = (1.0 / configOptLevel).toString();
+    } else {
+      configOptStep = (0).toString();
+    }
+
     return(
         <div id="options" className="card">
           <div className="card-header bg-success text-white">
@@ -168,11 +168,18 @@ class Options extends Component{
           </div>
           <div className="card-body">
             <p>Select the options you want to add to your trip.</p>
+            {configOptLevel > 0 &&
             <div>
               <p>&nbsp;&nbsp;Level of Optimization</p>
-              <p><small><i>&nbsp;&nbsp;Warning: optimized trips can take time to generate. Please be patient when selecting high levels of optimization.</i></small></p>
-              <sup>Less</sup> &nbsp;&nbsp; <input type="range" name="optimization" value={this.state.sliderval} onChange={this.handleSlider} min="0" max="1" step=".5" /> &nbsp;&nbsp; <sup>More</sup>
+              <p>
+                <small><i>&nbsp;&nbsp;Warning: optimized trips can take time to
+                  generate. Please be patient when selecting high levels of
+                  optimization.</i></small>
+              </p>
+              <sup>Less</sup> &nbsp;&nbsp; <input type="range" name="optimization" value={this.state.sliderval} onChange={this.handleSlider} min="0" max="1" step={configOptStep}/> &nbsp;&nbsp;
+              <sup>More</sup>
             </div>
+            }
             <div className="btn-group btn-group-toggle" data-toggle="buttons">
               <label className={"btn btn-outline-dark btn-success".concat((this.props.trip.options.distance === "miles") ? " active" : "")}>
                 <input type="radio" id="miles" name="distance" value="on" onClick={() => { this.changeDistance("miles") }} /> Miles
@@ -180,12 +187,16 @@ class Options extends Component{
               <label className={"btn btn-outline-dark btn-success".concat((this.props.trip.options.distance === "kilometers") ? " active" : "")}>
                 <input type="radio" id="kilometers" name="distance" value="on" onClick={() => { this.changeDistance("kilometers") }} /> Kilometers
               </label>
+              {configNMiles &&
               <label className={"btn btn-outline-dark btn-success".concat((this.props.trip.options.distance === "nautical miles") ? " active" : "")}>
-                <input type="radio" id="nautical miles" name="distance" value="on" onClick={() => { this.changeDistance("nautical miles") }} /> Nautical Miles
+                <input type="radio" id="nautical miles" name="distance" value="on" onClick={() => {this.changeDistance("nautical miles")}}/> Nautical Miles
               </label>
+              }
+              {configUD &&
               <label className={"btn btn-outline-dark btn-success".concat((this.props.trip.options.distance === "user defined") ? " active" : "")}>
                 <input type="radio" id="user defined" name="distance" value="on" onClick={() => { this.changeDistanceCustom("user defined") }} /> Custom Unit
               </label>
+              }
             </div>
             {isCustomUnit &&
             <div className="input-group" role="group">

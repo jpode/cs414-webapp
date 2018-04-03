@@ -23,9 +23,9 @@ class Application extends Component {
       }
     }
 
-    console.log("Version: " + this.props.version);
-    console.log("Supported Distances: " + this.props.distances);
-    console.log("Supported Optimization Levels: " + this.props.optimization);
+    console.log("Version: " + this.props.config.version);
+    console.log("Supported Distances: " + this.props.config.distances);
+    console.log("Supported Optimization Levels: " + this.props.config.optimization);
 
     this.updateTrip = this.updateTrip.bind(this);
   }
@@ -65,10 +65,10 @@ class Application extends Component {
         <div id="application" className="container">
           <div className="row">
             <div className="col-12">
-                <Options trip={this.state.trip} updateTrip={this.updateTrip}/>
+                <Options trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip}/>
             </div>
             <div className="col-12">
-                <Destinations trip={this.state.trip} updateTrip={this.updateTrip}/>
+                <Destinations trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip}/>
             </div>
             <div className="col-12">
                 <Trip trip={this.state.trip} updateTrip={this.updateTrip} />
