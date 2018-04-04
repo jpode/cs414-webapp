@@ -186,6 +186,7 @@ public class MicroServer {
    * @return
    */
   private String query(Request request, Response response) {
+    System.out.println("Query: " + request.body());
     Database db = new Database(request);
     response.type("application/json");
     return db.getString();
