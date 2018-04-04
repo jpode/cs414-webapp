@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Options from './Options';
 import Destinations from './Destinations';
 import Trip from './Trip';
-import "./custom.scss";
+//import "./custom.scss";
 
 /* Renders the application.
  * Holds the destinations and options state shared with the trip.
@@ -12,7 +12,7 @@ class Application extends Component {
     super(props);
     this.state = {
       trip: { // default TFFI
-        version: 2,
+        version: this.props.config.version,
         type: "trip",
         query: "",
         title: "",

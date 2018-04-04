@@ -87,7 +87,6 @@ public class Plan {
    * always first call the Plan.java constructor, which initializes a new trip object, only minor
    * and likely unnecessary error checking was added to Trip's optimize method.
    */
-
   public void optimize() {
     System.out.println("Optimizing trip with level " + trip.options.optimization);
     if (trip.places.size() < 2) {
@@ -102,8 +101,6 @@ public class Plan {
   /** Handles the response for a Trip object.
    * Does the conversion from a Java class to a Json string.*
    */
-
-
   public String getTrip () {
     try {
       Gson gson = new Gson();

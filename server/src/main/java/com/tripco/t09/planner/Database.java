@@ -30,15 +30,16 @@ public class Database {
    */
   public Database(Request request){
     try {
-      // extract the information from the body of the request.
+      // extract the information from the body of the request and log it.
       JsonParser jsonParser = new JsonParser();
       JsonElement requestBody = jsonParser.parse(request.body());
+      System.out.println(request.body());
 
       // convert the body of the request to a Java class.
       Gson gson = new Gson();
       query = gson.fromJson(requestBody, Query.class);
 
-      System.out.println(query.query);
+      System.out.println(gson.toJson(query));
 
       search = "SELECT * FROM airports WHERE name LIKE '%" + query.query + "%'";
       System.out.println(search);
@@ -49,7 +50,7 @@ public class Database {
           Statement stQuery = conn.createStatement();
           ResultSet rsQuery = stQuery.executeQuery(search)
       ) {
-        printJson(rsQuery);
+        addPlaces(rsQuery);
       }
     } catch (Exception e) {
       System.err.println("Exception: " + e.getMessage());
@@ -58,9 +59,10 @@ public class Database {
 
 
   
-  private static void printJson(ResultSet queryResult) throws SQLException {
+  private static void addPlaces(ResultSet queryResult) throws SQLException {
     // iterate through query results, stop when all results are added or until the limit (20) is reached
     int counter = 0;
+
     while (queryResult.next() && counter < 20) {
       Place place = new Place();
       place.name = queryResult.getString("name");
@@ -75,6 +77,7 @@ public class Database {
 
   public String getString() {
       Gson gson = new Gson();
+      System.out.println(gson.toJson(query));
       return gson.toJson(query);
   }
 }

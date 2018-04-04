@@ -10,9 +10,9 @@ class App extends Component {
       config: {
         number: "09",
         name: "OVER NINE THOUSAND!?",
-        version: "",
+        version: 0,
         distances: "",
-        optimization: ""
+        optimization: 0
       }
     }
 
@@ -26,13 +26,13 @@ class App extends Component {
   updateFromConfig(config){
     var newConfig = this.state.config;
 
-    if(typeof config.version != "undefined" && config.version != ""){
+    if(typeof config.version != "undefined" && config.version != 0){
       newConfig.version = config.version;
     }
     if(typeof config.distances != "undefined" && config.distances != ""){
       newConfig.distances = config.distances;
     }
-    if(typeof config.optimization != "undefined" && config.optimization != ""){
+    if(typeof config.optimization != "undefined" && config.optimization != 0){
       newConfig.optimization = config.optimization;
     }
 
@@ -61,7 +61,7 @@ class App extends Component {
   }
 
   render() {
-    const active = this.state.config.version != "";
+    const active = this.state.config.version > 0;
     return(
           <div id="tripco">
 
