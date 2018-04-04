@@ -33,6 +33,7 @@ public class Plan {
     // extract the information from the body of the request.
     JsonParser jsonParser = new JsonParser();
     JsonElement requestBody = jsonParser.parse(request.body());
+    System.out.println(request.body());
 
     // convert the body of the request to a Java class.
     Gson gson = new Gson();

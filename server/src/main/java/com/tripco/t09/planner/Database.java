@@ -39,7 +39,7 @@ public class Database {
       Gson gson = new Gson();
       query = gson.fromJson(requestBody, Query.class);
 
-      System.out.println(gson.toJson(query));
+      System.out.println("DB Received: " + gson.toJson(query));
 
       search = "SELECT * FROM airports WHERE name LIKE '%" + query.query + "%'";
       System.out.println(search);
@@ -77,7 +77,6 @@ public class Database {
 
   public String getString() {
       Gson gson = new Gson();
-      System.out.println(gson.toJson(query));
       return gson.toJson(query);
   }
 }
