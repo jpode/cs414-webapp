@@ -54,7 +54,6 @@ class Query extends Component {
       let serverResponse = await this.fetchResponse();
       let tffi = await serverResponse.json();
       console.log("Fetched response from database");
-      tffi = JSON.parse(tffi);
       console.log(tffi);
 
       this.setState({places: tffi.places});

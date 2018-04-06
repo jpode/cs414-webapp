@@ -12,7 +12,7 @@ class Application extends Component {
     super(props);
     this.state = {
       trip: { // default TFFI
-        version: 2,
+        version: this.props.config.version,
         type: "trip",
         query: "",
         title: "",

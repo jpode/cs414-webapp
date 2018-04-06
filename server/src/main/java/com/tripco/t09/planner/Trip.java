@@ -72,19 +72,20 @@ public class Trip {
     Double optLevel;
     try {      // in case this.options.optimization is "none" (version 1)
       optLevel = Double.parseDouble(this.options.optimization);
-    } catch (NumberFormatException e) {
+    } catch (NumberFormatException e) {   // if "none", just plan trip
       this.plan();
       return;
-    }  // if "none", just plan trip
-    double optPartition = 1.0 / 2 + .01;
-    if (optLevel < (optPartition) && optLevel != 0) {
+    }
+    // optPartition is to be calculated later
+    //double optPartition = 1.0 / 2 + .01;
+    if (optLevel < (1) && optLevel != 0) {
       this.places = opt.planNearestNeighbor();
       System.out.println("NN Optimized Round Trip Distance: " + sumDistances(places));
-    } else if (optLevel < (2 * optPartition)) {
+    } else if (optLevel == 1) {
       this.places = opt.plan2Opt();
         System.out.println("2OPT Optimized Round Trip Distance: " + sumDistances(places));
-    } else if (optLevel < (3 * optPartition)) {
-      opt.plan3Opt();
+    //} else if (optLevel < (3 * optPartition)) {
+    //  opt.plan3Opt();
     }
     this.plan();
   }

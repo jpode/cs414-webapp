@@ -107,7 +107,6 @@ class Options extends Component{
       let requestBody = {
           "version"  : this.props.trip.version,
           "type"     : this.props.trip.type,
-          "query"    : this.props.trip.version,
           "title"    : this.props.trip.title,
           "options"  : this.props.trip.options,
           "places"   : this.props.trip.places,
@@ -153,7 +152,8 @@ class Options extends Component{
     const distances = this.props.config.distances;
     const configNMiles= distances.includes("nautical miles");
     const configUD= distances.includes("user defined");
-    const configOptLevel = parseFloat(this.props.config.optimization);
+    const configOptLevel = this.props.config.optimization;
+
     var configOptStep;
     if(configOptLevel > 0) {
       configOptStep = (1.0 / configOptLevel).toString();

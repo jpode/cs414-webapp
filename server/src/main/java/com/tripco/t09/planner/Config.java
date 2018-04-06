@@ -11,8 +11,8 @@ import com.google.gson.JsonParser;
 public class Config {
 
   public String type;
-  public String version;
-  public String optimization;
+  public int version;
+  public int optimization;
   public String[] distances;
 
   /**
@@ -21,8 +21,8 @@ public class Config {
    */
   public Config() {
     this.type = "config";
-    this.version = "3";
-    this.optimization = "2";
+    this.version = 2;
+    this.optimization = 2;
     this.distances = new String[]{"miles", "kilometers", "nautical miles", "user defined"};
   }
 
