@@ -49,9 +49,8 @@ public class Plan {
    */
   public Double optimizationLevel(){
     Double optLevel;
-    if (trip.options.optimization == null) {
+    if (trip.options.optimization == null)
       return 0.0;
-    }
     try {
       optLevel = Double.parseDouble(trip.options.optimization);
     } catch (NumberFormatException e) {

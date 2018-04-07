@@ -7,7 +7,6 @@ import spark.Request;
  *
  */
 public class Query {
-
   // The variables in this class shold reflect a query TFFI.
   public int version;
   public String type;

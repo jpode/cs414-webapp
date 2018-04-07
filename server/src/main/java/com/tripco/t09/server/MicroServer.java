@@ -181,6 +181,9 @@ public class MicroServer {
 
   /**
    * A REST API to query the database.
+   * @param request
+   * @param response
+   * @return
    */
   private String query(Request request, Response response) {
     System.out.println("Query: " + request.body());

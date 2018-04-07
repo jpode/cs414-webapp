@@ -16,7 +16,6 @@ import spark.Request;
  */
 
 public class Database {
-
   // The variables in this class should reflect TFFI.
   private static Query query;
   // db configuration information
@@ -57,6 +56,7 @@ public class Database {
       System.err.println("Exception: " + e.getMessage());
     }
   }
+
 
 
   private static void addPlaces(ResultSet queryResult) throws SQLException {
