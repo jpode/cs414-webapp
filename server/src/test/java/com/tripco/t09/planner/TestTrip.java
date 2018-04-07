@@ -219,7 +219,7 @@ public class TestTrip {
     ArrayList<Place> expectedPlaces = new ArrayList<Place>();
     Collections.addAll(expectedPlaces, ptA, ptB, ptC, ptD, ptE);
 
-    for(int i = 0; i < expectedPlaces.size(); i++) {
+    for(int i = 0; i < expectedPlaces.size(); i++){
       assertEquals(expectedPlaces.get(i).id, trip.places.get(i).id);
     }
 
