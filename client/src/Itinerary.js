@@ -9,13 +9,17 @@ class Itinerary extends Component {
 
   createTable () {
 
-    let distance = 0;  // need to sum this from real the trip
+    let distance = 0;
     let units = "miles";
     let dests = [];
     let dists = [];
 
     if(typeof this.props.trip.options.distance != "undefined") {
-      units = this.props.trip.options.distance;
+      if(this.props.trip.options.distance == "user defined"){
+        units = this.props.trip.options.userUnit;
+      } else {
+        units = this.props.trip.options.distance;
+      }
     }
 
     if(typeof this.props.trip.distances != "undefined" && this.props.trip.distances.length > 0) {
@@ -37,24 +41,29 @@ class Itinerary extends Component {
 
   render() {
     let table = this.createTable();
+    const numPlaces = table.dists.length;
 
     return(
         <div id="itinerary">
-          <h4>Round trip distance of {table.distance} {table.units}. </h4>
-          <table className="table table-responsive table-bordered">
-            <thead>
-            <tr className="table-info">
-              <th className="align-middle">Destination</th>
-              {table.dests}
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <th className="table-info align-middle">{table.units}</th>
-              {table.dists}
-            </tr>
-            </tbody>
-          </table>
+          {numPlaces > 0 &&
+            <h4>Round trip distance of {table.distance} {table.units}. </h4>
+          }
+          {numPlaces > 0 &&
+            <table className="table table-responsive table-bordered">
+              <thead>
+              <tr className="table-info">
+                <th className="align-middle btn-success">Destination</th>
+                {table.dests}
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <th className="table-info align-middle btn-success">{table.units}</th>
+                {table.dists}
+              </tr>
+              </tbody>
+            </table>
+        }
         </div>
     )
   }

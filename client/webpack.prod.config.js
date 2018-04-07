@@ -27,8 +27,8 @@ module.exports = {
         include: path.join(__dirname, 'src'),
         query: { presets: ['react'] } // Still unfamiliar with the query instruction
       },
-      { test: /\.css$/, loader: 'style!css' },
-      { test: /\.scss&/, loaders: ["style-loader", "css-loader", "sass-loader"] }
+      { test: /\.css&/, loader: 'style!css' },
+      { test: /\.scss$/, loaders: ["style-loader", "css-loader", "sass-loader"] }
     ]
   }
 }

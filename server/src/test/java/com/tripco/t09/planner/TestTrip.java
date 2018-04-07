@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 public class TestTrip {
   Trip trip;
 
-  // Setup to be done before every test in TestPlan
+  // Setup to be done before every test in TestTrip
   @Before
   public void initialize() {
     trip = new Trip();
@@ -35,12 +35,6 @@ public class TestTrip {
 
     ArrayList<Place> testPlaces = new ArrayList<Place>();
 
-    Place ptH = new Place();
-    ptH.id = "nyci";
-    ptH.name = "New York City";
-    ptH.longitude = "-68.163";
-    ptH.latitude = "30.5788";
-
     Place ptA = new Place();
     ptA.id = "dnvr";
     ptA.name = "Denver";
@@ -52,12 +46,6 @@ public class TestTrip {
     ptB.name = "Boulder";
     ptB.longitude = "-105.2705";
     ptB.latitude = "40.0150";
-
-    Place ptG = new Place();
-    ptG.id = "atla";
-    ptG.name = "Atlanta";
-    ptG.longitude = "-76.97";
-    ptG.latitude = "26.298";
 
     Place ptC = new Place();
     ptC.id = "foco";
@@ -77,20 +65,12 @@ public class TestTrip {
     ptE.longitude = "-105.89";
     ptE.latitude = "37.924";
 
-    Place ptF = new Place();
-    ptF.id = "chic";
-    ptF.name = "Chicago";
-    ptF.longitude = "-94.27";
-    ptF.latitude = "39.311";
 
-    testPlaces.add(ptH);
     testPlaces.add(ptA);
     testPlaces.add(ptB);
-    testPlaces.add(ptG);
     testPlaces.add(ptC);
     testPlaces.add(ptD);
     testPlaces.add(ptE);
-    testPlaces.add(ptF);
 
     trip.places = testPlaces;
 
@@ -151,16 +131,98 @@ public class TestTrip {
 
   @Test
   public void testLongCoordinateVerification(){
-    assert(trip.verifyLongitudeCoordinates(-105) == true);
-    assert(trip.verifyLongitudeCoordinates(-100) == false);
-    assert(trip.verifyLongitudeCoordinates(-110) == false);
+    assert(trip.verifyLongitudeCoordinates(-179) == true);
+    assert(trip.verifyLongitudeCoordinates(179) == true);
+    assert(trip.verifyLongitudeCoordinates(181) == false);
+    assert(trip.verifyLongitudeCoordinates(-181) == false);
+    assert(trip.verifyLongitudeCoordinates(0) == true);
+    assert(trip.verifyLongitudeCoordinates(-1100474) == false);
   }
 
   @Test
   public void testLatCoordinateVerification(){
-    assert(trip.verifyLatitudeCoordinates(38) == true);
-    assert(trip.verifyLatitudeCoordinates(36) == false);
-    assert(trip.verifyLatitudeCoordinates(41) == false);
+
+    assert(trip.verifyLatitudeCoordinates(-84) == true);
+    assert(trip.verifyLatitudeCoordinates(84) == true);
+    assert(trip.verifyLatitudeCoordinates(86) == false);
+    assert(trip.verifyLatitudeCoordinates(-86) == false);
+    assert(trip.verifyLatitudeCoordinates(0) == true);
+    assert(trip.verifyLatitudeCoordinates(-1100474) == false);
+  }
+
+  @Test
+  public void TestVerifyPlaces() {
+    ArrayList<Place> testPlaces = new ArrayList<Place>();
+
+    Place ptA = new Place();
+    ptA.id = "aust";
+    ptA.name = "Austin";
+    ptA.longitude = "-104.9903";
+    ptA.latitude = "39.7392";
+
+    Place ptF = new Place();
+    ptF.id = "moon";
+    ptF.name = "The Moon";
+    ptF.longitude = "-181.523";
+    ptF.latitude = "39.7392";
+
+    Place ptB = new Place();
+    ptB.id = "nyny";
+    ptB.name = "New York";
+    ptB.longitude = "-105.2705";
+    ptB.latitude = "40.0150";
+
+    Place ptC = new Place();
+    ptC.id = "bost";
+    ptC.name = "Boston";
+    ptC.longitude = "-106.445";
+    ptC.latitude = "40.95";
+
+    Place ptD = new Place();
+    ptD.id = "atla";
+    ptD.name = "Atlanta";
+    ptD.longitude = "-103.6";
+    ptD.latitude = "38.824";
+
+    Place ptG = new Place();
+    ptG.id = "sun";
+    ptG.name = "The Sun";
+    ptG.longitude = "120.9903";
+    ptG.latitude = "391898.7392";
+
+    Place ptE = new Place();
+    ptE.id = "chic";
+    ptE.name = "Chicago";
+    ptE.longitude = "-105.89";
+    ptE.latitude = "37.924";
+
+    Place ptH = new Place();
+    ptH.id = "mars";
+    ptH.name = "Mars";
+    ptH.longitude = "8592.713";
+    ptH.latitude = "-34656.98";
+
+
+    testPlaces.add(ptA);
+    testPlaces.add(ptF);
+    testPlaces.add(ptB);
+    testPlaces.add(ptC);
+    testPlaces.add(ptD);
+    testPlaces.add(ptG);
+    testPlaces.add(ptE);
+    testPlaces.add(ptH);
+
+    trip.places = testPlaces;
+
+    trip.verifyPlaces();
+
+    ArrayList<Place> expectedPlaces = new ArrayList<Place>();
+    Collections.addAll(expectedPlaces, ptA, ptB, ptC, ptD, ptE);
+
+    for(int i = 0; i < expectedPlaces.size(); i++){
+      assertEquals(expectedPlaces.get(i).id, trip.places.get(i).id);
+    }
+
   }
 
   @Test
@@ -169,7 +231,6 @@ public class TestTrip {
     Option option = new Option();
     option.distance = "miles";
     option.optimization = "0.5";
-    option.numOfOptimizations = 2;
     trip.options = option;
 
     Place placeA = new Place();
@@ -228,7 +289,6 @@ public class TestTrip {
     Option option = new Option();
     option.distance = "miles";
     option.optimization = "1.0";
-    option.numOfOptimizations = 2;
     trip.options = option;
 
     Place placeA = new Place();
@@ -286,7 +346,6 @@ public class TestTrip {
     Option option = new Option();
     option.distance = "miles";
     option.optimization = "1.0";
-    option.numOfOptimizations = 2;
     trip.options = option;
 
     Place placeA = new Place();
@@ -371,12 +430,4 @@ public class TestTrip {
     }
   }
 
-  @Test
-  public void testConfigRequest() {
-    assertEquals("{\"type\":\"config\",\"version\":2,\"optimization\":2}", trip.config());
-    trip.options = new Option();
-    trip.version = 1;
-    trip.type = "config";
-    assertEquals("{\"type\":\"config\",\"version\":1,\"optimization\":2}", trip.config());
-  }
 }
