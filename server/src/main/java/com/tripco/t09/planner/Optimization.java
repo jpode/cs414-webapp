@@ -29,22 +29,16 @@ public class Optimization extends Trip {
    */
 
   public ArrayList<Place> planNearestNeighbor() {
-    ArrayList<Place> tempMinRoute = new ArrayList<Place>();
+
     ArrayList<Place> finalMinRoute = new ArrayList<Place>(trip.places);
     // set initial minimum distance to unoptimized sum of distances
     int finalMinDist = sumDistances(finalMinRoute);
     // calculate nearestNeighbor for each starting city
     for (int i = 0; i < trip.places.size(); ++i) {
-      tempMinRoute.clear();
-      Place current = trip.places.get(i); // starting city
-      for (int j = 0; j < trip.places.size(); ++j) {
-        tempMinRoute.add(current);  // add city to potential minimum route
-        Place next = nearestNeighborHelper(current, tempMinRoute);  // get next city
-        current = next;     // repeat with this new city
-      }
+      ArrayList<Place> tempMinRoute = nearestNeighborRoute(trip.places.get(i)); // starting city
       int tempMinDist = sumDistances(tempMinRoute);   // find tot. round-trip distance of new route
       if (tempMinDist < finalMinDist) {     // if less than current, set as new min (dist & route)
-        finalMinRoute = new ArrayList<Place>(tempMinRoute);
+        finalMinRoute = new ArrayList<>(tempMinRoute);
         finalMinDist = tempMinDist;
       }
     }
@@ -52,7 +46,25 @@ public class Optimization extends Trip {
   }
 
   /**
-   * This method finds the next closest city to the parameter "start" city that is not already
+   * This method calculates the nearest neighbor route for a given starting city (may not be
+   * optimal)
+   *
+   * @return tempMinRoute
+   */
+  public ArrayList<Place> nearestNeighborRoute(Place starting_city) {
+    ArrayList<Place> tempMinRoute = new ArrayList<Place>();
+    Place current = starting_city;
+    for (int j = 0; j < trip.places.size(); ++j) {
+      tempMinRoute.add(current);  // add city to potential minimum route
+      Place next = nearestNeighborHelper(current, tempMinRoute);  // get next city
+      current = next;     // repeat with this new city
+    }
+    return tempMinRoute;
+  }
+
+
+  /**
+   * This method finds the next closest city to the parameter "start" / current city that is not already
    * included in the route (minRoute).
    *
    * @return next
@@ -81,11 +93,34 @@ public class Optimization extends Trip {
    */
 
   public ArrayList<Place> plan2Opt() {
+    ArrayList<Place> minRoute = new ArrayList<>(trip.places);
+    int minDist = sumDistances(trip.places);
+    Place current = trip.places.get(0);
+    for (int i = 0; i < trip.places.size(); i++) {
+      ArrayList<Place> temp = nearestNeighborRoute(current);
+      temp = nextRoute2Opt(temp);
+      int tempDist = sumDistances(temp);
+      if (tempDist < minDist) {
+        minRoute = new ArrayList<>(temp);
+        minDist = tempDist;
+      }
+    }
+    return minRoute;
+  }
+
+  /**
+   * This function finds the next 2-0pt trip for the given route (as 2-Opt runs on each iteration of
+   * nearest neighbor, this function gives a new 2-Opt route for each nearest neighbor solution it
+   * is given as an argument).
+   */
+
+
+  public ArrayList<Place> nextRoute2Opt(ArrayList<Place> nextRoute) {
     if (trip.places.size() < 4) {
       System.out.println("2Opt Optimization requires a minimum of 4 places. Using NearestNeighbor");
-      trip.places = this.planNearestNeighbor();   // perform lesser optimization if can't do 2Opt
+      return trip.places = this.planNearestNeighbor();   // perform lesser optimization if can't do 2Opt
     }
-    LinkedList<Place> route = new LinkedList<>(trip.places);
+    LinkedList<Place> route = new LinkedList<>(nextRoute);
     route.add(route.get(0));  // for round trip algorithm
     boolean improvement = true;
     while (improvement) {
