@@ -16,6 +16,7 @@ import spark.Request;
  */
 
 public class Database {
+
   // The variables in this class should reflect TFFI.
   private static Query query;
   // db configuration information
@@ -28,7 +29,7 @@ public class Database {
   /**
    * Arguments contain the username and password for the database.
    */
-  public Database(Request request){
+  public Database(Request request) {
     try {
       // extract the information from the body of the request and log it.
       JsonParser jsonParser = new JsonParser();
@@ -58,7 +59,6 @@ public class Database {
   }
 
 
-  
   private static void addPlaces(ResultSet queryResult) throws SQLException {
     // iterate through query results, stop when all results are added or until the limit (20) is reached
     int counter = 0;
@@ -76,7 +76,7 @@ public class Database {
   }
 
   public String getString() {
-      Gson gson = new Gson();
-      return gson.toJson(query);
+    Gson gson = new Gson();
+    return gson.toJson(query);
   }
 }

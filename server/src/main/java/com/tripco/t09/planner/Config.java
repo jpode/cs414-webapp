@@ -16,8 +16,8 @@ public class Config {
   public String[] distances;
 
   /**
-   * Returns the configuration trip object consisting of type, version, # of optimizations,
-   * and distance unit types.
+   * Returns the configuration trip object consisting of type, version, # of optimizations, and
+   * distance unit types.
    */
   public Config() {
     this.type = "config";
@@ -26,7 +26,7 @@ public class Config {
     this.distances = new String[]{"miles", "kilometers", "nautical miles", "user defined"};
   }
 
-  public String getConfig(){
+  public String getConfig() {
     Gson gson = new Gson();
     return gson.toJson(this);
   }

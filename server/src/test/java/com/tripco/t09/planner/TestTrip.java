@@ -131,23 +131,23 @@ public class TestTrip {
 
   @Test
   public void testLongCoordinateVerification(){
-    assert(trip.verifyLongitudeCoordinates(-179) == true);
-    assert(trip.verifyLongitudeCoordinates(179) == true);
-    assert(trip.verifyLongitudeCoordinates(181) == false);
-    assert(trip.verifyLongitudeCoordinates(-181) == false);
-    assert(trip.verifyLongitudeCoordinates(0) == true);
-    assert(trip.verifyLongitudeCoordinates(-1100474) == false);
+    assert (trip.verifyLongitudeCoordinates(-179) == true);
+    assert (trip.verifyLongitudeCoordinates(179) == true);
+    assert (trip.verifyLongitudeCoordinates(181) == false);
+    assert (trip.verifyLongitudeCoordinates(-181) == false);
+    assert (trip.verifyLongitudeCoordinates(0) == true);
+    assert (trip.verifyLongitudeCoordinates(-1100474) == false);
   }
 
   @Test
   public void testLatCoordinateVerification(){
 
-    assert(trip.verifyLatitudeCoordinates(-84) == true);
-    assert(trip.verifyLatitudeCoordinates(84) == true);
-    assert(trip.verifyLatitudeCoordinates(86) == false);
-    assert(trip.verifyLatitudeCoordinates(-86) == false);
-    assert(trip.verifyLatitudeCoordinates(0) == true);
-    assert(trip.verifyLatitudeCoordinates(-1100474) == false);
+    assert (trip.verifyLatitudeCoordinates(-84) == true);
+    assert (trip.verifyLatitudeCoordinates(84) == true);
+    assert (trip.verifyLatitudeCoordinates(86) == false);
+    assert (trip.verifyLatitudeCoordinates(-86) == false);
+    assert (trip.verifyLatitudeCoordinates(0) == true);
+    assert (trip.verifyLatitudeCoordinates(-1100474) == false);
   }
 
   @Test
@@ -202,7 +202,6 @@ public class TestTrip {
     ptH.longitude = "8592.713";
     ptH.latitude = "-34656.98";
 
-
     testPlaces.add(ptA);
     testPlaces.add(ptF);
     testPlaces.add(ptB);
@@ -219,7 +218,7 @@ public class TestTrip {
     ArrayList<Place> expectedPlaces = new ArrayList<Place>();
     Collections.addAll(expectedPlaces, ptA, ptB, ptC, ptD, ptE);
 
-    for(int i = 0; i < expectedPlaces.size(); i++){
+    for (int i = 0; i < expectedPlaces.size(); i++) {
       assertEquals(expectedPlaces.get(i).id, trip.places.get(i).id);
     }
 
