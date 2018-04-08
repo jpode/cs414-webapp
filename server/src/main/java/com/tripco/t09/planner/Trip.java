@@ -83,9 +83,9 @@ public class Trip {
       System.out.println("NN Optimized Round Trip Distance: " + sumDistances(places));
     } else if (optLevel == 1) {
       this.places = opt.plan2Opt();
-        System.out.println("2OPT Optimized Round Trip Distance: " + sumDistances(places));
-    //} else if (optLevel < (3 * optPartition)) {
-    //  opt.plan3Opt();
+      System.out.println("2OPT Optimized Round Trip Distance: " + sumDistances(places));
+      //} else if (optLevel < (3 * optPartition)) {
+      //  opt.plan3Opt();
     }
     this.plan();
   }
@@ -224,7 +224,7 @@ public class Trip {
    * valid and are within acceptable coordinate boundaries. Any
    * locations that are invalid are removed from the places arraylist.
    */
-  public void verifyPlaces(){
+  public void verifyPlaces() {
     try {
       for (int i = 0; i < places.size(); i++) {
         if (!verifyLatitudeCoordinates(convertCoordinate(places.get(i).latitude))
@@ -328,11 +328,11 @@ public class Trip {
 
   /**
    * Takes a single decimal latitudinal coordinate and checks to see if it is within acceptable
-   * coordinate boundaries
-   * for Google Maps
+   * coordinate boundaries for Google Maps
+   *
+   * @return boolean indicating if the coordinate is within the boundaries. true = within
+   * boundaries, false = outside of boundaries
    * @params Double containing the coordinate
-   * @return boolean indicating if the coordinate is within the boundaries.
-   *  true = within boundaries, false = outside of boundaries
    */
   public boolean verifyLatitudeCoordinates(double coordinate){
     return coordinate > -85 && coordinate < 85;

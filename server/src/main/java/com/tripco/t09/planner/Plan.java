@@ -49,7 +49,7 @@ public class Plan {
    */
   public Double optimizationLevel(){
     Double optLevel;
-    if(trip.options.optimization == null)
+    if (trip.options.optimization == null)
       return 0.0;
     try {
       optLevel = Double.parseDouble(trip.options.optimization);
@@ -107,7 +107,7 @@ public class Plan {
       Gson gson = new Gson();
       jsonParsed = true;
       return gson.toJson(trip);
-    } catch(JsonParseException e){
+    } catch (JsonParseException e) {
       System.err.println(e);
       jsonParsed = false;
     }
@@ -119,9 +119,9 @@ public class Plan {
    * Currently returns a 400: Bad Request if any essential JSON information is missing or JSON
    * is not in a parseable format, otherwise returns 200: OK
    */
-  public int getStatus(){
+  public int getStatus() {
     //If there are no places or distance units
-    if(trip.type == "trip") {
+    if (trip.type == "trip") {
       if (trip.places.size() == 0 || trip.options.distance == null) {
         return 400;
       }

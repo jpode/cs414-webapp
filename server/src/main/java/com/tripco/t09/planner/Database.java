@@ -155,8 +155,8 @@ public class Database {
    * @return stringified JSON version of a query object.
    */
   public String getString() {
-      Gson gson = new Gson();
-      return gson.toJson(query);
+    Gson gson = new Gson();
+    return gson.toJson(query);
   }
 
   /**

@@ -179,8 +179,8 @@ public class MicroServer {
     return result;
   }
 
-  /** A REST API to query the database.
-   *
+  /**
+   * A REST API to query the database.
    * @param request
    * @param response
    * @return
