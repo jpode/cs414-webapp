@@ -28,7 +28,7 @@ public class Config {
     this.maps = new String[]{"svg"};
     this.optimization = 2;
     this.optimizations = new OptType[]{new OptType("NN", "Basic Nearest Neighbor algorithm"),
-                                       new OptType("2-opt", "Expansion on NN using a 2-opt algorithm")
+                                       new OptType("2-opt", "Expansion on NN using 2-opt algorithm")
                                       };
     this.distances = new String[]{"miles", "kilometers", "nautical miles", "user defined"};
   }

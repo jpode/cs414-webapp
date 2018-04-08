@@ -24,8 +24,13 @@ class Application extends Component {
     }
 
     this.updateTrip = this.updateTrip.bind(this);
+    this.printConfig = this.printConfig.bind(this);
 
-    //Print out information from the config file received from the server.
+    this.printConfig();
+  }
+
+  //Print out information from the config file received from the server.
+  printConfig(){
     console.log("Version: " + this.props.config.version);
     if(this.props.config.version > 0) {
       console.log("Version acceptable. Loading client...")
