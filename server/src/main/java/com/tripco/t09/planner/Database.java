@@ -31,7 +31,7 @@ public class Database {
   private static Connection conn;
 
   /**
-   * Constructor. Establishes connection with database and queries it for available filters
+   * Constructor. Establishes connection with database and queries it for available filters.
    */
   public Database(){
     myDriver = "com.mysql.jdbc.Driver";
@@ -51,7 +51,8 @@ public class Database {
         addFilters(rs);
         rs.close();
       }
-      rs = sendQuery("SELECT DISTINCT(country.name) FROM country INNER JOIN airports ON country.id=airports.iso_country ORDER BY country.name;");
+      rs = sendQuery("SELECT DISTINCT(country.name) FROM country INNER JOIN airports ON "
+          + "country.id=airports.iso_country ORDER BY country.name;");
       if(rs != null) {
         addFilters(rs);
         rs.close();
@@ -62,8 +63,8 @@ public class Database {
   }
 
   /**
-   * Process requests and generate SQL search statement from request
-   * @param request object to be processed
+   * Process requests and generate SQL search statement from request.
+   * @param request object to be processed.
    */
   public void processRequest(Request request){
     // extract the information from the body of the request and log it.
@@ -76,7 +77,8 @@ public class Database {
     query = gson.fromJson(requestBody, Query.class);
 
     // SQL query to be sent to database
-    String search = "SELECT * FROM airports WHERE id LIKE '%" + query.query + "%' OR name LIKE '%" + query.query + "%' OR municipality LIKE '%" + query.query + "%' OR keywords LIKE '%" + query.query + "%'";
+    String search = "SELECT * FROM airports WHERE id LIKE '%" + query.query + "%' OR name LIKE '%" + query.query + "%' "
+        + "OR municipality LIKE '%" + query.query + "%' OR keywords LIKE '%" + query.query + "%'";
 
     try {
       ResultSet rs = sendQuery(search);
@@ -90,9 +92,9 @@ public class Database {
   }
 
   /**
-   * Searches the database with the given search
-   * @param valid SQL search statement
-   * @return SQL ResultSet object containing results from the query
+   * Searches the database with the given search.
+   * @param SQL search statement.
+   * @return SQL ResultSet object containing results from the query.
    */
   public ResultSet sendQuery(String search){
     System.out.println(search);
@@ -110,8 +112,8 @@ public class Database {
 
   /**
    * iterate through query results and create a new place object for each row,
-   * stop when all results are added or until the limit (20) is reached
-   * @param ResultSet object containing results of the SQL query
+   * stop when all results are added or until the limit (20) is reached.
+   * @param ResultSet object containing results of the SQL query.
    */
   private static void addPlaces(ResultSet queryResult) throws SQLException {
 
@@ -131,8 +133,8 @@ public class Database {
 
   /**
    * Creates a new filter object for each column of the ResultSet and adds it to the
-   * global filters object
-   * @param ResultSet object containing results of the SQL query
+   * global filters object.
+   * @param ResultSet object containing results of the SQL query.
    */
   private static void addFilters(ResultSet queryResult) throws SQLException{
 
@@ -149,8 +151,8 @@ public class Database {
   }
 
   /**
-   * Get the query
-   * @return stringified JSON version of a query object
+   * Get the query.
+   * @return stringified JSON version of a query object.
    */
   public String getString() {
       Gson gson = new Gson();
@@ -158,8 +160,8 @@ public class Database {
   }
 
   /**
-   * Get the available filters
-   * @return ArrayList of filter objects
+   * Get the available filters.
+   * @return ArrayList of filter objects.
    */
   public ArrayList<Filter> getFilters(){
     return filters;

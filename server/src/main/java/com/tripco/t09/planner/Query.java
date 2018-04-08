@@ -1,7 +1,7 @@
 package com.tripco.t09.planner;
 
-import java.util.ArrayList;
 import com.tripco.t09.planner.Filter;
+import java.util.ArrayList;
 import spark.Request;
 
 /**
