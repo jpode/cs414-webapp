@@ -14,7 +14,9 @@ import java.util.Arrays;
 import spark.Request;
 
 /**
- * A
+ * A class that allows connection to and querying of a remote database. Relies on HTTP
+ * request objects to create SQL search statements. On construction a database will
+ * have a set of filters available to be used.
  * The Database class supports TFFI so it can easily be converted to/from Json by Gson.
  */
 

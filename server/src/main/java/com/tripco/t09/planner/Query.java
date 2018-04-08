@@ -13,5 +13,6 @@ public class Query {
   public String type;
   public String query;
   public ArrayList<Place> places = new ArrayList<Place>();
+  public ArrayList<Filter> filters = new ArrayList<Filter>();
 
 }
