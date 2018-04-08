@@ -70,6 +70,7 @@ class Application extends Component {
         }
       }
     }
+
     console.log(new_tffi)
     this.setState({trip:new_tffi});
 
