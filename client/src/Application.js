@@ -54,6 +54,7 @@ class Application extends Component {
     if(typeof tffi.map != "undefined" && tffi.map != ""){
       new_tffi.map = tffi.map;
     }
+
     console.log(new_tffi)
     this.setState({trip:new_tffi});
 
