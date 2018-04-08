@@ -94,8 +94,8 @@ public class Optimization extends Trip {
   public ArrayList<Place> plan2Opt() {
     ArrayList<Place> minRoute = new ArrayList<>(trip.places);
     int minDist = sumDistances(trip.places);
-    Place current = trip.places.get(0);
     for (int i = 0; i < trip.places.size(); i++) {
+      Place current = trip.places.get(i);
       ArrayList<Place> temp = nearestNeighborRoute(current);
       temp = nextRoute2Opt(temp);
       int tempDist = sumDistances(temp);
