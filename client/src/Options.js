@@ -11,7 +11,6 @@ class Options extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      sliderval : 0,
       distanceUnit : "",
       distanceRadius : ""
     }
@@ -25,7 +24,6 @@ class Options extends Component{
   }
 
   handleSlider(event){
-    this.setState({sliderval : event.target.value});
 
     var newTFFI = this.props.trip;
     newTFFI.options.optimization = event.target.value;
@@ -176,7 +174,7 @@ class Options extends Component{
                   generate. Please be patient when selecting high levels of
                   optimization.</i></small>
               </p>
-              <sup>Less</sup> &nbsp;&nbsp; <input type="range" name="optimization" value={this.state.sliderval} onChange={this.handleSlider} min="0" max="1" step={configOptStep}/> &nbsp;&nbsp;
+              <sup>Less</sup> &nbsp;&nbsp; <input type="range" name="optimization" value={this.props.trip.options.optimization} onChange={this.handleSlider} min="0" max="1" step={configOptStep}/> &nbsp;&nbsp;
               <sup>More</sup>
             </div>
             }
