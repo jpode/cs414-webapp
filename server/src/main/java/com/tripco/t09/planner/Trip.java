@@ -252,7 +252,7 @@ public class Trip {
     return temp;
   }
 
-  /*
+  /**
    * Verifies that all places currently in the places arraylist are
    * valid and are within acceptable coordinate boundaries. Any
    * locations that are invalid are removed from the places arraylist.
