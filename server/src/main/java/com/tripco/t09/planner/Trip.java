@@ -102,7 +102,7 @@ public class Trip {
 
 
   /**
-   * This method calculates the sum of di      System.out.println(result);stances between consecutive points in an ArrayList
+   * This method calculates the sum of distances between consecutive points in an ArrayList
    * containing type Place objects (Round-Trip Distance).
    *
    * @return totalDist

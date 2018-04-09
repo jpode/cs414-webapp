@@ -102,7 +102,7 @@ public class Plan {
   /** Handles the response for a Trip object.
    * Does the conversion from a Java class to a Json string.
    */
-  public String getTrip () {
+  public String getTrip() {
     try {
       Gson gson = new Gson();
       jsonParsed = true;
@@ -118,7 +118,7 @@ public class Plan {
    * Does the conversion from a Java class to a Json string.
    * A shitty hack from jake and drew
    */
-  public String getTripNoOpt () {
+  public String getTripNoOpt() {
     try {
       String optValue = trip.options.optimization;
       trip.options.optimization = "0";
