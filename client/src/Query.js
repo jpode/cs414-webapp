@@ -85,7 +85,8 @@ class Query extends Component {
       names = this.state.places.map((item) => <td>{item.name}</td>);
       municipalities = this.state.places.map(
           (item) => <td>{item.municipality}</td>);
-      btns = this.state.places.map((i) => <td><button className="btn " onClick={() => this.addBtn(i)} >Add</button></td>)
+      btns = this.state.places.map(
+          (i) => <td><button className="btn btn-outline-dark btn-success" onClick={() => this.addBtn(i)} >Add</button></td>)
     }
 
     console.log(ids);
@@ -111,7 +112,7 @@ class Query extends Component {
                 className="btn btn-outline-dark btn-success"
                 onClick={this.handleSearch} type="button">Search</button>
               </span>
-              <input type="text" className="form-control"
+              <input type="text" className="form-control input-success"
                      onChange={this.handleSubmit} placeholder="Find"/>
               <span className="input-group-btn">
                 <button className="btn btn-outline-dark btn-success"
@@ -121,26 +122,26 @@ class Query extends Component {
             {numPlaces > 0 &&
             <table className="table table-responsive table-bordered">
               <tbody>
-              <tr className="table-info">
-                <th className="align-middle">ID</th>
+              <tr>
+                <th className="table-success align-middle">ID</th>
                 {table.ids}
               </tr>
               </tbody>
               <tbody>
               <tr>
-                <th className="table-info align-middle">Name</th>
+                <th className="table-success align-middle">Name</th>
                 {table.names}
               </tr>
               </tbody>
               <tbody>
               <tr>
-                <th className="table-info align-middle">Municipality</th>
+                <th className="table-success align-middle">Municipality</th>
                 {table.municipalities}
               </tr>
               </tbody>
               <tbody>
               <tr>
-                <th className="table-info align-middle">Add</th>
+                <th className="table-success align-middle">Add</th>
                 {table.btns}
               </tr>
               </tbody>
