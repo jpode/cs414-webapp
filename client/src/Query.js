@@ -65,10 +65,11 @@ class Query extends Component {
       console.error(err);
     }
   }
-  //temporary for testing btns
-  outputBtn(e)
+  //add the place to the current trip
+  addBtn(e)
   {
     console.log(e);
+
   }
 
   createTable() {
@@ -77,13 +78,14 @@ class Query extends Component {
     let names = [];
     let municipalities = [];
     let btns = [];
+    let i = 0;
 
     if (typeof this.state.places[0] != "undefined") {
       ids = this.state.places.map((item) => <td>{item.id}</td>);
       names = this.state.places.map((item) => <td>{item.name}</td>);
       municipalities = this.state.places.map(
           (item) => <td>{item.municipality}</td>);
-      btns = this.state.places.map((item) => <td><button className="btn " onClick={() => this.outputBtn(item.id)} >Add</button></td>)
+      btns = this.state.places.map((i) => <td><button className="btn " onClick={() => this.addBtn(i)} >Add</button></td>)
     }
 
     console.log(ids);
