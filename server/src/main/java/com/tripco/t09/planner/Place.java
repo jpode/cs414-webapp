@@ -11,6 +11,7 @@ public class Place {
   public String municipality;
   public String latitude;
   public String longitude;
+  public int index;
 
 }
 
