@@ -226,7 +226,7 @@ public class MicroServer {
     boolean isChangeStartPos = editor.editType.equals("changeStartPos");
 
     if(isInsert){
-
+      editor.places.add(editor.new_place);
     } else if(isRemove){
 
     } else if(isReverse){
@@ -235,8 +235,10 @@ public class MicroServer {
 
     }
 
+    boolean hasOpt = false;
     for(int i = 0; i < 3; i++){
       if(opts[i] != null && opts[i] != ""){
+        hasOpt = true;
         Trip trip = gson.fromJson(opts[i], Trip.class);
         Plan plan;
         if(isInsert){
@@ -253,7 +255,15 @@ public class MicroServer {
         }
       }
     }
-    return opts[getOptLvl(editor.optimization)];
+    if(hasOpt) {
+      return opts[getOptLvl(editor.optimization)];
+    } else {
+      Trip trip = new Trip();
+      trip.places = editor.places;
+      trip.distances = editor.distances;
+      Plan plan = new Plan(trip);
+      return plan.getTrip();
+    }
   }
 
   /**

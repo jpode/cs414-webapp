@@ -7,7 +7,7 @@ class UserEditing extends Component {
       selected: 0,
       editType: "",
       targetIndex: 0,
-      destIndex: 0,
+      destIndex: -1,
       new_place: {
         id: "",
         name: "",
@@ -21,11 +21,12 @@ class UserEditing extends Component {
     this.handleCustomLongitude = this.handleCustomLongitude.bind(this);
     this.handleCustomLatitude = this.handleCustomLatitude.bind(this);
     this.handleCustomOrder = this.handleCustomOrder.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleInsert = this.handleInsert.bind(this);
 
   }
 
   handleCreation(event){
+    this.setState({editType : "insert"});
     if(this.state.selected === 0){
       this.setState({selected : 1});
     } else {
@@ -57,59 +58,16 @@ class UserEditing extends Component {
     this.setState({destIndex: event.target.value});
   }
 
-  handleSubmit(){
-    this.edit();
-  }
-
-  /* Sends a request to the server with the destinations and options.
-  * Receives a response containing the map and itinerary to update the
-  * state for this object.
-  */
-  fetchResponse(){
-    // need to get the request body from the trip in state object.
-    let requestBody = {
-      "editType"     : this.state.type,
-      "optimization"  : this.optimization,
-      "new_place" : this.state.new_place,
-      "targetIndex" : this.state.targetIndex,
-      "destIndex" : this.state.destIndex,
-      "places"   : this.props.trip.places,
-      "distances": this.props.trip.distances,
-    };
-    // unsure if map or distances should be included above! ^
-    console.log(process.env.SERVICE_URL);
-    console.log(requestBody);
-
-    return fetch('http://' + location.host + '/edit', {
-      method:"POST",
-      body: JSON.stringify(requestBody)
-    });
-  }
-
-  async edit(){
-    try {
-      let serverResponse = await this.fetchResponse();
-      let tffi = await serverResponse.json();
-
-      console.log("Status " + serverResponse.status + ": " + serverResponse.statusText);
-      if(serverResponse.status >= 200 && serverResponse.status < 300) {
-        console.log(tffi);
-        this.props.updateTrip(tffi);
-      } else {
-        alert("Error " + serverResponse.status + ": " + serverResponse.statusText);
-      }
-
-    } catch(err) {
-      console.error(err);
-      alert(err);
-    }
+  handleInsert(){
+    this.props.editTrip(this.state);
   }
 
   render(){
-    let hasName = this.state.place.name === "";
-    let hasLongitude = this.state.place.longitude === "";
-    let hasLatitude = this.state.place.latitude === "";
-    let hasDestIndex = this.state.destIndex === 0;
+    let hasName = this.state.new_place.name !== "";
+    let hasLongitude = this.state.new_place.longitude !== "";
+    let hasLatitude = this.state.new_place.latitude !== "";
+    let hasDestIndex = this.state.destIndex >= 0;
+
     return(
       <div id="options" className="card">
         <div className="card-header bg-success text-white">
@@ -118,7 +76,7 @@ class UserEditing extends Component {
 
         <div className="btn-group btn-group-toggle" data-toggle="buttons">
           <label className={"btn btn-outline-dark btn-success".concat((this.state.selected === 1) ? " active" : "")}>
-            <input type="radio" id="new_place" name="new_place" value="on" onClick={this.handleCreation} /> Create New Destination
+            <input type="radio" id="new_place" name="new_place" value="on" onClick={this.handleCreation} />Create New Destination
           </label>
         </div>
 
@@ -130,7 +88,8 @@ class UserEditing extends Component {
               <input type="text" className="form-control" onChange={this.handleCustomLatitude} placeholder="Destination Latitude"/>
               <input type="text" className="form-control" onChange={this.handleCustomOrder} placeholder="Order In Trip"/>
               <span className="input-group-btn">
-              <button className="btn btn-primary " onClick={this.handleSubmit} type="button">Submit</button>
+              <button disabled={!hasName || !hasLongitude || !hasLatitude || !hasDestIndex}
+                      className="btn btn-primary " onClick={this.handleInsert} type="button">Submit</button>
               </span>
             </span>
           </div>
@@ -140,5 +99,4 @@ class UserEditing extends Component {
   }
 }
 
-//disabled={!hasName && !hasLongitude && !hasLatitude && !hasOrder}
 export default UserEditing;

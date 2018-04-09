@@ -26,6 +26,7 @@ class Application extends Component {
 
     this.printConfig = this.printConfig.bind(this);
     this.updateTrip = this.updateTrip.bind(this);
+    this.editTrip = this.editTrip.bind(this);
 
     this.printConfig();
   }
@@ -77,6 +78,47 @@ class Application extends Component {
 
   }
 
+  /* Sends a request to the server with the editing options.
+   * Receives a response containing the edited trip.
+   */
+  fetchResponse(param){
+    let requestBody = {
+      "editType"      : param.editType,
+      "new_place"     : param.new_place,
+      "targetIndex"   : param.targetIndex,
+      "destIndex"     : param.destIndex,
+      "optimization"  : this.state.trip.options.optimization,
+      "places"        : this.state.trip.places,
+      "distances"     : this.state.trip.distances,
+    };
+    console.log(process.env.SERVICE_URL);
+    console.log(requestBody);
+
+    return fetch('http://' + location.host + '/edit', {
+      method:"POST",
+      body: JSON.stringify(requestBody)
+    });
+  }
+
+  async editTrip(param){
+    try {
+      let serverResponse = await this.fetchResponse(param);
+      let tffi = await serverResponse.json();
+
+      console.log("Status " + serverResponse.status + ": " + serverResponse.statusText);
+      if(serverResponse.status >= 200 && serverResponse.status < 300) {
+        console.log(tffi);
+        this.updateTrip(tffi);
+      } else {
+        alert("Error " + serverResponse.status + ": " + serverResponse.statusText);
+      }
+
+    } catch(err) {
+      console.error(err);
+      alert(err);
+    }
+  }
+
   render() {
 
     return(
@@ -86,10 +128,10 @@ class Application extends Component {
                 <Options trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip}/>
             </div>
             <div className="col-12">
-                <Destinations trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip}/>
+                <Destinations trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} editTrip={this.editTrip}/>
             </div>
             <div className="col-12">
-              <UserEditing trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} addPlace={this.addPlace}/>
+              <UserEditing trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} editTrip={this.editTrip}/>
             </div>
             <div className="col-12">
                 <Trip trip={this.state.trip} updateTrip={this.updateTrip} />
