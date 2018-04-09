@@ -1,10 +1,15 @@
 package com.tripco.t09.server;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import com.tripco.t09.planner.Config;
 import com.tripco.t09.planner.Database;
+import com.tripco.t09.planner.Editor;
 import com.tripco.t09.planner.Plan;
 
+import com.tripco.t09.planner.Trip;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
@@ -50,6 +55,7 @@ public class MicroServer {
     post("/plan", this::plan);
     post("/optimize", this::optimize);
     post("/query", this::query);
+    post("/edit", this::edit);
 
     System.out.println("\n\nServer running on port: " + this.port + "\n\n");
   }
@@ -193,17 +199,103 @@ public class MicroServer {
     return db.getString();
   }
 
+  /** A REST API to support user editing of trip.
+   *
+   * @param request
+   * @param response
+   * @return
+   */
+  private String edit(Request request, Response response) {
+
+    response.type("application/json");
+
+    //Print the request
+    System.out.println(HTTP.echoRequest(request));
+
+    // extract the information from the body of the request.
+    JsonParser jsonParser = new JsonParser();
+    JsonElement requestBody = jsonParser.parse(request.body());
+    // convert the body of the request to a Java class.
+    Gson gson = new Gson();
+    Editor editor = gson.fromJson(requestBody, Editor.class);
+
+    boolean isInsert = editor.editType.equals("insert");
+    boolean isRemove = editor.editType.equals("remove");
+    boolean isReverse = editor.editType.equals("reverse");
+    boolean isChangeStartPos = editor.editType.equals("changeStartPos");
+
+    if(isInsert){
+
+    } else if(isRemove){
+
+    } else if(isReverse){
+
+    } else if(isChangeStartPos){
+
+    }
+
+    //Edit the stored optimizations, if there are any
+    if(editOpts(editor, isInsert, isRemove, isReverse, isChangeStartPos)) {
+      //Return the optimization that the client was currently displaying
+      return opts[getOptLvl(editor.optimization)];
+    } else {
+      //No stored optimizations: return the trip as is
+      Trip trip = new Trip();
+      trip.places = editor.places;
+      trip.distances = editor.distances;
+      Plan plan = new Plan(trip);
+      return plan.getTrip();
+    }
+  }
+
+  private boolean editOpts(Editor editor, boolean isInsert, boolean isRemove,
+      boolean isReverse, boolean isChangeStartPos){
+
+    Gson gson = new Gson();
+    boolean hasOpt = false;
+    for(int i = 0; i < 3; i++){
+      if(opts[i] != null && opts[i] != ""){
+        hasOpt = true;
+        Trip trip = gson.fromJson(opts[i], Trip.class);
+        Plan plan;
+        if(isInsert){
+          trip.places = editor.places;
+          trip.distances.clear();
+          plan = new Plan(trip);
+          plan.planTrip();
+          opts[i] = plan.getTrip();
+        } else {
+          trip.places = editor.places;
+          trip.distances = editor.distances;
+          plan = new Plan(trip);
+          opts[i] = plan.getTrip();
+        }
+      }
+    }
+    return hasOpt;
+  }
+
   /**
    * Converts the Double optimization value from the slider to a more usable integer
    * this will need to be edited to account for third optimization level, if original (unoptimized)
    * is to be saved as well.
    */
   private int getOptLvl(Plan plan){
+    return getOptHelper(plan.optimizationLevel());
+  }
+
+  private int getOptLvl(String optimizationLevel){
     double optDouble;
+    try {
+      optDouble = Double.parseDouble(optimizationLevel);
+    } catch (NumberFormatException e) {
+      optDouble = 0.0;
+    }
+    return getOptHelper(optDouble);
+  }
+
+  private int getOptHelper(double optDouble){
     int optLvl;
-
-    optDouble = plan.optimizationLevel();
-
     if(optDouble == 0){
       optLvl = 0;
     } else if(optDouble <= .5){

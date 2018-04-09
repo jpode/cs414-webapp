@@ -28,9 +28,7 @@ class Options extends Component{
     var newTFFI = this.props.trip;
     newTFFI.options.optimization = event.target.value;
     this.props.updateTrip(newTFFI);
-    console.log("updated optimization1: " + this.props.trip.options.optimization);
     this.optimize();
-    console.log("updated optimization2: " + this.props.trip.options.optimization);
 
   }
 
@@ -49,6 +47,7 @@ class Options extends Component{
   }
 
   handleCustomDistanceName(event){
+    this.setState({distanceUnit : event.target.value})
   }
 
   handleCustomDistanceRadius(event){

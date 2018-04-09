@@ -26,7 +26,7 @@ public class Plan {
    * Does the conversion from Json to a Java class before planning the trip.
    * @param request
    */
-  public Plan (Request request) {
+  public Plan(Request request) {
     // first print the request
     System.out.println(HTTP.echoRequest(request));
 
@@ -42,6 +42,10 @@ public class Plan {
 
     // log something.
     System.out.println("Title = " + trip.title);
+  }
+
+  public Plan(Trip newTrip){
+    trip = newTrip;
   }
 
   /*
@@ -66,19 +70,7 @@ public class Plan {
    */
   
   public void planTrip(){
-
     trip.plan();
-
-    //Not really sure if this is necessary
-    /*else if (trip.type == "query") {
-    }
-    else if (trip.type == "config") {
-      trip.config();
-    }
-    else{
-      trip.plan();
-    }
-    */
   }
 
   /**
