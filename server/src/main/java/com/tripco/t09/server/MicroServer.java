@@ -220,10 +220,10 @@ public class MicroServer {
     Gson gson = new Gson();
     Editor editor = gson.fromJson(requestBody, Editor.class);
 
-    boolean isInsert = editor.type.equals("insert");
-    boolean isRemove = editor.type.equals("remove");
-    boolean isReverse = editor.type.equals("reverse");
-    boolean isChangeStartPos = editor.type.equals("changeStartPos");
+    boolean isInsert = editor.editType.equals("insert");
+    boolean isRemove = editor.editType.equals("remove");
+    boolean isReverse = editor.editType.equals("reverse");
+    boolean isChangeStartPos = editor.editType.equals("changeStartPos");
 
     if(isInsert){
 

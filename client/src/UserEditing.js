@@ -5,9 +5,9 @@ class UserEditing extends Component {
     super(props);
     this.state={
       selected: 0,
-      type: "",
+      editType: "",
       targetIndex: 0,
-      destinationIndex: 0,
+      destIndex: 0,
       new_place: {
         id: "",
         name: "",
@@ -23,8 +23,6 @@ class UserEditing extends Component {
     this.handleCustomOrder = this.handleCustomOrder.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
-
-    console.log(this.props.trip);
   }
 
   handleCreation(event){
@@ -36,49 +34,31 @@ class UserEditing extends Component {
   }
 
   handleCustomName(event){
-    var new_place = this.state.place;
-    new_place.name = event.target.value;
-    new_place.id = event.target.value.substring(0,4);
-    this.setState({place: new_place});
+    var place = this.state.new_place;
+    place.name = event.target.value;
+    place.id = event.target.value.substring(0,4);
+    this.setState({new_place: place});
 
   }
 
   handleCustomLongitude(event){
-    var new_place = this.state.place;
-    new_place.longitude = event.target.value;
-    this.setState({place: new_place});
+    var place = this.state.new_place;
+    place.longitude = event.target.value;
+    this.setState({new_place: place});
   }
 
   handleCustomLatitude(event){
-    var new_place = this.state.place;
-    new_place.latitude = event.target.value;
-    this.setState({place: new_place});
+    var place = this.state.new_place;
+    place.latitude = event.target.value;
+    this.setState({new_place: place});
   }
 
   handleCustomOrder(event){
-    this.setState({order: event.target.value});
+    this.setState({destIndex: event.target.value});
   }
 
   handleSubmit(){
-    /*
-    let new_places = this.props.trip;
-
-    console.log("Place: " + this.state.place.name);
-    console.log("Location: " + this.state.order);
-
-    if(this.props.trip.places.length < 1){
-      new_places.places = [this.state.place];
-    } else if(this.state.order <= 1){
-      new_places.places.splice(0, 0, this.state.place);
-    } else if(this.state.order > this.props.trip.places.length){
-      new_places.places = new_places.places.concat(this.state.place);
-    } else {
-      new_places.places.splice(this.state.order - 1, 0, this.state.place);
-    }
-
-    console.log(new_places);
-    this.props.updateTrip(new_places);
-    */
+    this.edit();
   }
 
   /* Sends a request to the server with the destinations and options.
@@ -88,24 +68,25 @@ class UserEditing extends Component {
   fetchResponse(){
     // need to get the request body from the trip in state object.
     let requestBody = {
-      "type"     : this.props.trip.type,
-      "title"    : this.props.trip.title,
-      "options"  : this.props.trip.options,
+      "editType"     : this.state.type,
+      "optimization"  : this.optimization,
+      "new_place" : this.state.new_place,
+      "targetIndex" : this.state.targetIndex,
+      "destIndex" : this.state.destIndex,
       "places"   : this.props.trip.places,
       "distances": this.props.trip.distances,
-      "map"      : this.props.trip.map
     };
     // unsure if map or distances should be included above! ^
     console.log(process.env.SERVICE_URL);
     console.log(requestBody);
 
-    return fetch('http://' + location.host + '/plan', {
+    return fetch('http://' + location.host + '/edit', {
       method:"POST",
       body: JSON.stringify(requestBody)
     });
   }
 
-  async plan(){
+  async edit(){
     try {
       let serverResponse = await this.fetchResponse();
       let tffi = await serverResponse.json();
@@ -128,7 +109,7 @@ class UserEditing extends Component {
     let hasName = this.state.place.name === "";
     let hasLongitude = this.state.place.longitude === "";
     let hasLatitude = this.state.place.latitude === "";
-    let hasOrder = this.state.order === 0;
+    let hasDestIndex = this.state.destIndex === 0;
     return(
       <div id="options" className="card">
         <div className="card-header bg-success text-white">

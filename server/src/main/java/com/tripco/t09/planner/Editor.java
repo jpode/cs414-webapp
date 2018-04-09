@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * the trip
  */
 public class Editor {
-  public String type;
+  public String editType;
   public int targetIndex;
   public int destIndex;
   public String optimization;
