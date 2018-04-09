@@ -123,7 +123,7 @@ public class MicroServer {
     System.out.println("Planning trip");
     plan.planTrip();
     System.out.println("Trip planned");
-    opts[0] = plan.getTrip();
+    opts[0] = plan.getTripNoOpt();
 
     if(getOptLvl(plan) > 0){
       plan.optimize();

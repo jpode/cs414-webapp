@@ -100,13 +100,35 @@ public class Plan {
   }
 
   /** Handles the response for a Trip object.
-   * Does the conversion from a Java class to a Json string.*
+   * Does the conversion from a Java class to a Json string.
    */
   public String getTrip () {
     try {
       Gson gson = new Gson();
       jsonParsed = true;
       return gson.toJson(trip);
+    } catch (JsonParseException e) {
+      System.err.println(e);
+      jsonParsed = false;
+    }
+    return null;
+  }
+
+  /** Handles the response for a Trip object with no optimization.
+   * Does the conversion from a Java class to a Json string.
+   * A shitty hack from jake and drew
+   */
+  public String getTripNoOpt () {
+    try {
+      String optValue = trip.options.optimization;
+      trip.options.optimization = "0";
+
+      Gson gson = new Gson();
+      jsonParsed = true;
+      String result = gson.toJson(trip);
+      trip.options.optimization = optValue;
+
+      return result;
     } catch (JsonParseException e) {
       System.err.println(e);
       jsonParsed = false;
