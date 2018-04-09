@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import Destinations from './Destinations';
 
 class Query extends Component {
   constructor(props) {
