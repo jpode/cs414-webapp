@@ -23,37 +23,54 @@ class Application extends Component {
       }
     }
 
-    console.log("Version: " + this.props.config.version);
-    console.log("Supported Distances: " + this.props.config.distances);
-    console.log("Supported Optimization Levels: " + this.props.config.optimization);
-
     this.updateTrip = this.updateTrip.bind(this);
+    this.printConfig = this.printConfig.bind(this);
+
+    this.printConfig();
+  }
+
+  //Print out information from the config file received from the server.
+  printConfig(){
+    console.log("Version: " + this.props.config.version);
+    if(this.props.config.version > 0) {
+      console.log("Version acceptable. Loading client...")
+    }
+    if(this.props.config.version > 1){
+      console.log("Supported Optimization Levels: " + this.props.config.optimization);
+    }
+    if(this.props.config.version > 2){
+      for (var key in this.props.config.optimizations) {
+        if (this.props.config.optimizations.hasOwnProperty(key)) {
+          console.log(this.props.config.optimizations[key].label + ": "
+              + this.props.config.optimizations[key].description);
+        }
+      }
+      console.log("Supported Maps:");
+      for (var key in this.props.config.maps) {
+        if (this.props.config.maps.hasOwnProperty(key)) {
+          console.log(this.props.config.maps[key]);
+        }
+      }
+      console.log("Supported Distances:");
+      for (var key in this.props.config.distances) {
+        if (this.props.config.distances.hasOwnProperty(key)) {
+          console.log(this.props.config.distances[key]);
+        }
+      }
+    }
   }
 
   updateTrip(tffi){
     var new_tffi = this.state.trip;
 
-    if(typeof tffi.version != "undefined" && tffi.version != 0) {
-        new_tffi.version = tffi.version;
+    for(var key in tffi){
+      if(tffi.hasOwnProperty(key)){
+        if(typeof tffi[key] != "undefined" && tffi[key] != 0 && tffi[key] != ""){
+          new_tffi[key] = tffi[key];
+        }
+      }
     }
-    if(typeof tffi.type != "undefined" && tffi.type != ""){
-      new_tffi.type = tffi.type;
-    }
-    if(typeof tffi.title != "undefined" && tffi.title != ""){
-      new_tffi.title = tffi.title;
-    }
-    if(typeof tffi.options != "undefined" && tffi.options != {}){
-        new_tffi.options = tffi.options;
-    }
-    if(typeof tffi.places != "undefined" && tffi.places != []){
-      new_tffi.places = tffi.places;
-    }
-    if(typeof tffi.distances != "undefined" && tffi.distances != []){
-      new_tffi.distances = tffi.distances;
-    }
-    if(typeof tffi.map != "undefined" && tffi.map != ""){
-      new_tffi.map = tffi.map;
-    }
+
     console.log(new_tffi)
     this.setState({trip:new_tffi});
 

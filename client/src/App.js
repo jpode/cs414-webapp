@@ -11,8 +11,11 @@ class App extends Component {
         number: "09",
         name: "OVER NINE THOUSAND!?",
         version: 0,
-        distances: "",
-        optimization: 0
+        maps : [],
+        optimization: 0,
+        optimizations: [],
+        distances: []
+
       }
     }
 
@@ -21,19 +24,18 @@ class App extends Component {
     console.log("fetching config from server");
     this.config();
     console.log("request ending");
+
   }
 
   updateFromConfig(config){
     var newConfig = this.state.config;
 
-    if(typeof config.version != "undefined" && config.version != 0){
-      newConfig.version = config.version;
-    }
-    if(typeof config.distances != "undefined" && config.distances != ""){
-      newConfig.distances = config.distances;
-    }
-    if(typeof config.optimization != "undefined" && config.optimization != 0){
-      newConfig.optimization = config.optimization;
+    for(var key in config){
+      if(config.hasOwnProperty(key)){
+        if(typeof config[key] != "undefined" && config[key] != 0 && config[key] != ""){
+          newConfig[key] = config[key];
+        }
+      }
     }
 
     this.setState({config:newConfig});
