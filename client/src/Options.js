@@ -203,7 +203,7 @@ class Options extends Component{
                 <input type="text" className="form-control" onChange = {this.handleCustomDistanceName} placeholder="Unit"/>
                 <input type="text" className="form-control" onChange = {this.handleCustomDistanceRadius} placeholder="Radius of the Earth in unit"/>
                 <span className="input-group-btn">
-                <button disabled = {!hasTitle && !hasRadius} className="btn btn-primary " onClick={this.updateCustomDistance} type="button">Submit</button>
+                <button disabled = {!hasTitle && !hasRadius} className="btn btn-outline-dark btn-success" onClick={this.updateCustomDistance} type="button">Submit</button>
                 </span>
               </span>
             </div>
