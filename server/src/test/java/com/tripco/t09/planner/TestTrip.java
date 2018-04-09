@@ -231,7 +231,6 @@ public class TestTrip {
     Option option = new Option();
     option.distance = "miles";
     option.optimization = "0.5";
-    option.numOfOptimizations = 2;
     trip.options = option;
 
     Place placeA = new Place();
@@ -290,7 +289,6 @@ public class TestTrip {
     Option option = new Option();
     option.distance = "miles";
     option.optimization = "1.0";
-    option.numOfOptimizations = 2;
     trip.options = option;
 
     Place placeA = new Place();
@@ -323,8 +321,8 @@ public class TestTrip {
     placeB.latitude = "40° 10' 01\" N";
     placeB.longitude = "105° 06' 06\" W";
 
-    testPlaces.add(placeA);
-    testPlaces.add(placeE);
+    testPlaces.add(placeA);   // foco
+    testPlaces.add(placeE);   //
     testPlaces.add(placeC);
     testPlaces.add(placeD);
     testPlaces.add(placeB);
@@ -348,7 +346,6 @@ public class TestTrip {
     Option option = new Option();
     option.distance = "miles";
     option.optimization = "1.0";
-    option.numOfOptimizations = 2;
     trip.options = option;
 
     Place placeA = new Place();
@@ -381,6 +378,84 @@ public class TestTrip {
     expectedOrder.add(placeE);    // littleton
     expectedOrder.add(placeC);    // then greeley
     expectedOrder.add(placeA);    // then fort collins
+
+    assertEquals(expectedOrder, trip.places);
+
+  }
+
+  @Test
+  public void globalMultipleOpts(){
+
+    //NOTE: this test case is very carefully designed to follow the rhombus Nearest Neighbor vs.
+    // 2-opt test. It illustrates the differences between a nearest neighbor solution, and a
+    // 2-opt one.
+
+    ArrayList<Place> testPlaces = new ArrayList<Place>();
+    Option option = new Option();
+    option.distance = "miles";
+    option.optimization = "0.9";
+    trip.options = option;
+
+
+    //top
+    Place placeA = new Place();
+    placeA.id = "wawa";
+    placeA.name = "Waw an Namus Libya";
+    placeA.latitude = "24° 54' 58\" N";
+    placeA.longitude = "17° 45' 53\" E";
+
+    //bottom
+    Place placeE = new Place();
+    placeE.id = "koto";
+    placeE.name = "Koro Toro Chad";
+    placeE.latitude = "16° 03' 52\" N";
+    placeE.longitude = "18° 30' 00\" E";
+
+    //right
+    Place placeC = new Place();
+    placeC.id = "dsrt";
+    placeC.name = "Desert Chad";
+    placeC.latitude = "20° 51' 20\" N";
+    placeC.longitude = "18° 54' 52\" E";
+
+    // left
+    Place placeD = new Place();
+    placeD.id = "tchd";
+    placeD.name = "Tchad Chad";
+    placeD.latitude = "20° 56' 59\" N";
+    placeD.longitude = "15° 33' 40\" E";
+
+    testPlaces.add(placeA);   // top
+    testPlaces.add(placeE);   // bottom
+    testPlaces.add(placeC);   // right
+    testPlaces.add(placeD);   // left
+
+    ArrayList<Place> testPlaces2 = new ArrayList<>(testPlaces);
+    trip.places = testPlaces;
+    trip.plan();
+    trip.optimize();
+
+    ArrayList<Place> expectedOrder = new ArrayList<Place>();
+
+    expectedOrder.add(placeA);  // top
+    expectedOrder.add(placeE);  // bottom
+    expectedOrder.add(placeC);  // right
+    expectedOrder.add(placeD);  // left
+
+    assertEquals(expectedOrder, trip.places);
+
+    // 2Opt section:
+
+    trip.places = testPlaces2;
+    option.optimization = "1.0";
+    trip.options = option;
+    trip.optimize();
+
+    expectedOrder = new ArrayList<Place>();
+    expectedOrder.add(placeA);  // top
+    expectedOrder.add(placeD);  // left
+    expectedOrder.add(placeE);  // bottom
+    expectedOrder.add(placeC);  // right
 
     assertEquals(expectedOrder, trip.places);
 

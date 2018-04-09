@@ -24,12 +24,12 @@ public class Trip {
   // The variables in this class should reflect TFFI.
   public int version;
   public String type;
-  public String query;
   public String title;
   public Option options;
   public ArrayList<Place> places;
   public ArrayList<Integer> distances;
   public String map;
+  public transient int[][] memoDists;
 
   //public int[][] distArr;
   // notes for memoization: how should indexes be handled? We could do it by index in places,
@@ -42,11 +42,16 @@ public class Trip {
    * It might need to reorder the places in the future.
    */
   public void plan() {
-
-    verifyPlaces();
+    if (verifyPlaces() == -1){
+      return;
+    }
+    if(memoDists == null) {
+      initIndexes();
+    }
     try {
       if (places.size() > 1) {
         this.map = svg();
+        System.out.println("calculating distances...");
         this.distances = legDistances();
       }
     } catch (NullPointerException e) {
@@ -56,54 +61,40 @@ public class Trip {
   }
 
   /**
-   * to be implemented!
-   */
-  public String config() {
-    // first, ensure values were initialized with (at minimum) defaults
-    if (this.options == null) {
-      this.options = new Option();
-    }
-    if (this.version == 0) {
-      this.version = 2;
-    }
-    if (this.type == null) {
-      this.type = "config";
-    }
-    Config config = new Config(this);
-    Gson gson = new Gson();
-    return gson.toJson(config);
-  }
-
-  /**
    * Optimize can be called directly through changing slider on UI, or indirectly through planTrip()
    * above. optimize() is the entry function for nearest neighbor, 2opt, and 3opt optimizations
    * methods, all defined in Trip.java.
    */
 
   public void optimize() {
-    if (options.numOfOptimizations == 0.0)   // to prevent divide by 0 later on
-    {
-      this.plan();
+
+    if (verifyPlaces() == -1){
+      return;
     }
-    Optimization opt = new Optimization(this);
+    if(memoDists == null) {
+      initIndexes();
+    }
+    Optimization opt = new Optimization(places, memoDists);
+
     System.out.println("Optimizing trip with level " + this.options.optimization);
-    verifyPlaces();
+
     Double optLevel;
     try {      // in case this.options.optimization is "none" (version 1)
       optLevel = Double.parseDouble(this.options.optimization);
-    } catch (NumberFormatException e) {
+    } catch (NumberFormatException e) {   // if "none", just plan trip
       this.plan();
       return;
-    }  // if "none", just plan trip
-    double optPartition = 1.0 / (double) (options.numOfOptimizations) + .01;
-    if (optLevel < (optPartition) && optLevel != 0) {
+    }
+    // optPartition is to be calculated later
+    //double optPartition = 1.0 / 2 + .01;
+    if (optLevel < (1) && optLevel != 0) {
       this.places = opt.planNearestNeighbor();
-      System.out.println("Optimized Round Trip Distance: " + sumDistances(places));
-    } else if (optLevel < (2 * optPartition)) {
+      System.out.println("NN Optimized Round Trip Distance: " + sumDistances(places));
+    } else if (optLevel == 1) {
       this.places = opt.plan2Opt();
-        System.out.println("Optimized Round Trip Distance: " + sumDistances(places));
-    } else if (optLevel < (3 * optPartition)) {
-      opt.plan3Opt();
+      System.out.println("2OPT Optimized Round Trip Distance: " + sumDistances(places));
+      //} else if (optLevel < (3 * optPartition)) {
+      //  opt.plan3Opt();
     }
     this.plan();
   }
@@ -229,20 +220,44 @@ public class Trip {
     return dist;
   }
 
+  // memoDists is initialized with values of -1, as 0 is a valid option (i.e. to check if dist
+  // between point a and point b has been already calculated, we can't check for 0, as that is
+  // a valid possible distance. Hence, -1 initialization. I believe this will still be faster than
+  // just recalculating every 0 value.
+  protected void initIndexes(){
+    memoDists = new int[places.size()][places.size()];
+    for(int i = 0; i < places.size(); ++i){
+      for(int j = 0; j < places.size(); ++j){
+        memoDists[i][j] = -1;
+      }
+      places.get(i).index = i;
+    }
+  }
+
   protected int distBetweenTwoPlaces(Place aa, Place bb) {
+    try {
+      if (memoDists[aa.index][bb.index] >= 0) {
+        return memoDists[aa.index][bb.index];
+      }
+    } catch(NullPointerException e){
+      this.initIndexes();
+    }
     double ptALat = convertCoordinate(aa.latitude);
     double ptALong = convertCoordinate(aa.longitude);
     double ptBLat = convertCoordinate(bb.latitude);
     double ptBLong = convertCoordinate(bb.longitude);
-    return distanceHelper(ptALat, ptALong, ptBLat, ptBLong);
+    int temp = distanceHelper(ptALat, ptALong, ptBLat, ptBLong);
+    memoDists[aa.index][bb.index] = temp;
+    memoDists[bb.index][aa.index] = temp;
+    return temp;
   }
 
-  /*
+  /**
    * Verifies that all places currently in the places arraylist are
    * valid and are within acceptable coordinate boundaries. Any
    * locations that are invalid are removed from the places arraylist.
    */
-  public void verifyPlaces(){
+  public int verifyPlaces() {
     try {
       for (int i = 0; i < places.size(); i++) {
         if (!verifyLatitudeCoordinates(convertCoordinate(places.get(i).latitude))
@@ -255,7 +270,9 @@ public class Trip {
       }
     } catch (NullPointerException e) {
       System.out.println("Places is empty / has not been initialized (verifyPlaces())");
+      return -1;
     }
+    return 0;
   }
 
   //follows chord length formula given here:
@@ -346,11 +363,11 @@ public class Trip {
 
   /**
    * Takes a single decimal latitudinal coordinate and checks to see if it is within acceptable
-   * coordinate boundaries
-   * for Google Maps
+   * coordinate boundaries for Google Maps
+   *
+   * @return boolean indicating if the coordinate is within the boundaries. true = within
+   * boundaries, false = outside of boundaries
    * @params Double containing the coordinate
-   * @return boolean indicating if the coordinate is within the boundaries.
-   *  true = within boundaries, false = outside of boundaries
    */
   public boolean verifyLatitudeCoordinates(double coordinate){
     return coordinate > -85 && coordinate < 85;

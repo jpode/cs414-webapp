@@ -10,6 +10,4 @@ public class Option {
   public String optimization = "0.0";
   public String userUnit = "";
   public String userRadius = "";
-  public int numOfOptimizations = 2;
-
 }

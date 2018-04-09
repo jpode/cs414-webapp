@@ -33,6 +33,7 @@ public class Plan {
     // extract the information from the body of the request.
     JsonParser jsonParser = new JsonParser();
     JsonElement requestBody = jsonParser.parse(request.body());
+    System.out.println(request.body());
 
     // convert the body of the request to a Java class.
     Gson gson = new Gson();
@@ -48,7 +49,7 @@ public class Plan {
    */
   public Double optimizationLevel(){
     Double optLevel;
-    if(trip.options.optimization == null)
+    if (trip.options.optimization == null)
       return 0.0;
     try {
       optLevel = Double.parseDouble(trip.options.optimization);
@@ -65,17 +66,19 @@ public class Plan {
    */
   
   public void planTrip(){
-    if (trip.type == "trip") {
-      trip.plan();
-    } 
-    //else if (trip.type == "query") {
-    //} 
+
+    trip.plan();
+
+    //Not really sure if this is necessary
+    /*else if (trip.type == "query") {
+    }
     else if (trip.type == "config") {
       trip.config();
     }
     else{
       trip.plan();
     }
+    */
   }
 
   /**
@@ -85,7 +88,6 @@ public class Plan {
    * always first call the Plan.java constructor, which initializes a new trip object, only minor
    * and likely unnecessary error checking was added to Trip's optimize method.
    */
-
   public void optimize() {
     System.out.println("Optimizing trip with level " + trip.options.optimization);
     if (trip.places.size() < 2) {
@@ -98,16 +100,36 @@ public class Plan {
   }
 
   /** Handles the response for a Trip object.
-   * Does the conversion from a Java class to a Json string.*
+   * Does the conversion from a Java class to a Json string.
    */
-
-
-  public String getTrip () {
+  public String getTrip() {
     try {
       Gson gson = new Gson();
       jsonParsed = true;
       return gson.toJson(trip);
-    } catch(JsonParseException e){
+    } catch (JsonParseException e) {
+      System.err.println(e);
+      jsonParsed = false;
+    }
+    return null;
+  }
+
+  /** Handles the response for a Trip object with no optimization.
+   * Does the conversion from a Java class to a Json string.
+   * A shitty hack from jake and drew
+   */
+  public String getTripNoOpt() {
+    try {
+      String optValue = trip.options.optimization;
+      trip.options.optimization = "0";
+
+      Gson gson = new Gson();
+      jsonParsed = true;
+      String result = gson.toJson(trip);
+      trip.options.optimization = optValue;
+
+      return result;
+    } catch (JsonParseException e) {
       System.err.println(e);
       jsonParsed = false;
     }
@@ -119,9 +141,9 @@ public class Plan {
    * Currently returns a 400: Bad Request if any essential JSON information is missing or JSON
    * is not in a parseable format, otherwise returns 200: OK
    */
-  public int getStatus(){
+  public int getStatus() {
     //If there are no places or distance units
-    if(trip.type == "trip") {
+    if (trip.type == "trip") {
       if (trip.places.size() == 0 || trip.options.distance == null) {
         return 400;
       }

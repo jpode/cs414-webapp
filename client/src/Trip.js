@@ -25,7 +25,6 @@ class Trip extends Component {
     let requestBody = {
       "version"  : this.props.trip.version,
       "type"     : this.props.trip.type,
-      "query"    : this.props.trip.version,
       "title"    : this.props.trip.title,
       "options"  : this.props.trip.options,
       "places"   : this.props.trip.places,

@@ -1,6 +1,7 @@
 package com.tripco.t09.server;
 
 import com.google.gson.Gson;
+import com.tripco.t09.planner.Config;
 import com.tripco.t09.planner.Database;
 import com.tripco.t09.planner.Plan;
 
@@ -44,6 +45,7 @@ public class MicroServer {
     get("/echo", this::echo);
     get("/hello/:name", this::hello);
     get("/team", this::team);
+    get("/config", this::config);
     // client is sending data, so a HTTP POST is used instead of a GET
     post("/plan", this::plan);
     post("/optimize", this::optimize);
@@ -91,6 +93,20 @@ public class MicroServer {
     return Greeting.html(request.params(":name"));
   }
 
+  /** A REST API that describes the server capabilities.
+   *
+   * @param request
+   * @param response
+   * @return
+   */
+  private String config(Request request, Response response) {
+
+    response.type("application/json");
+
+    Config cfg = new Config();
+    return cfg.getConfig();
+  }
+
   /** A REST API to support trip planning.
    *
    * @param request
@@ -104,9 +120,10 @@ public class MicroServer {
     Arrays.fill(opts, null);
 
     Plan plan = new Plan(request);
+    System.out.println("Planning trip");
     plan.planTrip();
-
-    opts[0] = plan.getTrip();
+    System.out.println("Trip planned");
+    opts[0] = plan.getTripNoOpt();
 
     if(getOptLvl(plan) > 0){
       plan.optimize();
@@ -146,10 +163,11 @@ public class MicroServer {
     String result = "";
     int optLvl;
     Plan plan = new Plan(request);
-
     optLvl = getOptLvl(plan);
 
+    System.out.println("Optimizing with optLvl " + optLvl);
     if(opts[optLvl] != null){
+      System.out.println("Retrieving optimization from cache");
       result = opts[optLvl];
     } else {
       System.out.println("No cached optimization.");
@@ -161,18 +179,18 @@ public class MicroServer {
     return result;
   }
 
-  /** A REST API to query the database.
-   *
+  /**
+   * A REST API to query the database.
    * @param request
    * @param response
    * @return
    */
   private String query(Request request, Response response) {
-    Database db = new Database(request);
+    System.out.println("Query: " + request.body());
+    Database db = new Database();
+    db.processRequest(request);
     response.type("application/json");
-    // convert the object to a Json string.
-    Gson gson = new Gson();
-    return (gson.toJson(db.getString()));
+    return db.getString();
   }
 
   /**
@@ -188,7 +206,7 @@ public class MicroServer {
 
     if(optDouble == 0){
       optLvl = 0;
-    } else if(optDouble < .5){
+    } else if(optDouble <= .5){
       optLvl = 1;
     } else {
       optLvl = 2;
