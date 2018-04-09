@@ -29,7 +29,7 @@ public class Trip {
   public ArrayList<Place> places;
   public ArrayList<Integer> distances;
   public String map;
-  public int[][] memoDists;
+  public transient int[][] memoDists;
 
   //public int[][] distArr;
   // notes for memoization: how should indexes be handled? We could do it by index in places,
