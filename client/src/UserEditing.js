@@ -21,6 +21,8 @@ class UserEditing extends Component {
     this.handleCustomOrder = this.handleCustomOrder.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
+
+    console.log(this.props.trip);
   }
 
   handleCreation(event){
@@ -63,13 +65,13 @@ class UserEditing extends Component {
 
     if(this.props.trip.places.length < 1){
       new_places.places = [this.state.place];
-    } else if(this.state.order <= 1){
+    } /*else if(this.state.order <= 1){
       new_places.places.splice(0, 0, this.state.place);
     } else if(this.state.order > this.props.trip.places.length){
       new_places.places = new_places.places.concat(this.state.place);
     } else {
       new_places.places.splice(this.state.order - 1, 0, this.state.place);
-    }
+    }*/
 
     console.log(new_places);
     this.props.updateTrip(new_places);
@@ -100,7 +102,7 @@ class UserEditing extends Component {
               <input type="text" className="form-control" onChange={this.handleCustomLatitude} placeholder="Destination Latitude"/>
               <input type="text" className="form-control" onChange={this.handleCustomOrder} placeholder="Order In Trip"/>
               <span className="input-group-btn">
-              <button disabled={!hasName || !hasLongitude || !hasLatitude || !hasOrder} className="btn btn-primary " onClick={this.handleSubmit} type="button">Submit</button>
+              <button className="btn btn-primary " onClick={this.handleSubmit} type="button">Submit</button>
               </span>
             </span>
           </div>
@@ -110,4 +112,5 @@ class UserEditing extends Component {
   }
 }
 
+//disabled={!hasName && !hasLongitude && !hasLatitude && !hasOrder}
 export default UserEditing;
