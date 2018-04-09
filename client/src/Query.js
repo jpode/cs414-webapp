@@ -6,6 +6,7 @@ class Query extends Component {
 
     this.state = {
       search: "",
+      filters: [],
       places: []
     };
 
@@ -38,6 +39,7 @@ class Query extends Component {
       "version": 2,
       "type": 'query',
       "query": this.state.search,
+      "filters": this.state.filters,
       "places": []
     };
 
