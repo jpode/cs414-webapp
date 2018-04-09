@@ -44,6 +44,10 @@ public class Plan {
     System.out.println("Title = " + trip.title);
   }
 
+  public Plan (Trip new_trip){
+    trip = new_trip;
+  }
+
   /*
    * Returns the optimization level if one is given, otherwise returns 0 indicating no optimization
    */
@@ -66,19 +70,7 @@ public class Plan {
    */
   
   public void planTrip(){
-
     trip.plan();
-
-    //Not really sure if this is necessary
-    /*else if (trip.type == "query") {
-    }
-    else if (trip.type == "config") {
-      trip.config();
-    }
-    else{
-      trip.plan();
-    }
-    */
   }
 
   /**
