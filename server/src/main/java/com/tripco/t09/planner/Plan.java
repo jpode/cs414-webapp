@@ -26,7 +26,7 @@ public class Plan {
    * Does the conversion from Json to a Java class before planning the trip.
    * @param request
    */
-  public Plan (Request request) {
+  public Plan(Request request) {
     // first print the request
     System.out.println(HTTP.echoRequest(request));
 
@@ -44,8 +44,8 @@ public class Plan {
     System.out.println("Title = " + trip.title);
   }
 
-  public Plan (Trip new_trip){
-    trip = new_trip;
+  public Plan(Trip newTrip){
+    trip = newTrip;
   }
 
   /*
