@@ -7,6 +7,8 @@ class InnerMap extends React.Component {
         super(props);
     }
 
+    // IMPORTANT: since our trip.places array contains strings, we'll need to convert them somewhere in this class.
+
     // Create our path from the places array
     makePath(places) {
         let path = places.map(
@@ -40,10 +42,12 @@ class InnerMap extends React.Component {
     }
 }
 
+// Higher Order Components, recompose library
+
 const TripMap = compose(
     withProps({
         googleMapURL: 'https://maps.googleapis.com/maps/api/js?' +
-        'key=' + // (1) should be key=<your API key>
+        'key=AIzaSyBf7YQM8PCye5AZ8nVnCUKGKrfRKRFSgC4' +
         '&v=3.exp' +
         '&libraries=geometry,drawing,places',
         loadingElement: <div />,
@@ -52,6 +56,6 @@ const TripMap = compose(
     }),
     withScriptjs,
     withGoogleMap,
-)(InnerMap);  // (2)
+)(InnerMap);
 
 export default TripMap;
