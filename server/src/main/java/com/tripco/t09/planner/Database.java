@@ -61,7 +61,8 @@ public class Database {
     query = gson.fromJson(requestBody, Query.class);
 
     // SQL query to be sent to database
-    String search = "SELECT * FROM airports WHERE (id LIKE '%" + query.query + "%' OR name LIKE '%" + query.query + "%' "
+    String search = "SELECT * FROM airports WHERE "
+        + "(id LIKE '%" + query.query + "%' OR name LIKE '%" + query.query + "%' "
         + "OR municipality LIKE '%" + query.query + "%' OR keywords LIKE '%" + query.query + "%')";
 
     try {
@@ -136,7 +137,8 @@ public class Database {
   }
 
   /**
-   * Adds selected filters to a query string
+   * Adds selected filters to a query string.
+   * @param SQL query string to be modified
    */
   private void addFilters(String queryString) throws SQLException{
     for(int i = 0; i < query.filters.size(); i++){
@@ -156,14 +158,14 @@ public class Database {
           if(j > 0){
             queryString += " OR ";
           }
-          queryString += "iso_country=" + getCountryID(query.filters.get(i).values.get(j));
+          queryString += "iso_country=" + getCountryId(query.filters.get(i).values.get(j));
         }
         queryString += ") ";
       }
     }
   }
 
-  private String getCountryID(String country) throws SQLException{
+  private String getCountryId(String country) throws SQLException{
     Statement stQuery = conn.createStatement();
     ResultSet rs = sendQuery("SELECT id FROM country WHERE name=" + country);
     return rs.getString("id");
