@@ -1,3 +1,5 @@
+// npm install --save recompose react-google-maps
+
 import React, {Component} from 'react'
 import {compose, withProps} from 'recompose'
 import {withScriptjs, withGoogleMap, GoogleMap, Polyline, Marker} from 'react-google-maps'
@@ -8,6 +10,7 @@ class InnerMap extends React.Component {
     }
 
     // IMPORTANT: since our trip.places array contains strings, we'll need to convert them somewhere in this class.
+    // QUESTION: use KML layer? You would use a REST API to get the KML...
 
     // Create our path from the places array
     makePath(places) {
@@ -43,7 +46,6 @@ class InnerMap extends React.Component {
 }
 
 // Higher Order Components, recompose library
-
 const TripMap = compose(
     withProps({
         googleMapURL: 'https://maps.googleapis.com/maps/api/js?' +
