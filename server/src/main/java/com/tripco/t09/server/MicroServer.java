@@ -226,7 +226,7 @@ public class MicroServer {
     boolean isChangeStartPos = editor.editType.equals("changeStartPos");
 
     if(isInsert){
-      editor.places.add(editor.new_place);
+
     } else if(isRemove){
 
     } else if(isReverse){
