@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Options from './Options';
 import Destinations from './Destinations';
+import UserEditing from './UserEditing';
 import Trip from './Trip';
 import "./custom.scss";
 
@@ -23,8 +24,9 @@ class Application extends Component {
       }
     }
 
-    this.updateTrip = this.updateTrip.bind(this);
     this.printConfig = this.printConfig.bind(this);
+    this.updateTrip = this.updateTrip.bind(this);
+    this.addPlace = this.addPlace.bind(this);
 
     this.printConfig();
   }
@@ -72,8 +74,20 @@ class Application extends Component {
     }
 
     console.log(new_tffi)
-    this.setState({trip:new_tffi});
+    this.setState({trip: new_tffi});
 
+  }
+
+  addPlace(place, location){
+    var new_places = this.state.trip;
+    if(location <= 1){
+      new_places.places.splice(0, 0, place);
+    } else if(location >= new_places.length){
+      new_places.places.push(place);
+    } else {
+      new_places.places.splice(location, 0, place);
+    }
+    this.setState({trip: new_places})
   }
 
   render() {
@@ -88,7 +102,7 @@ class Application extends Component {
                 <Destinations trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip}/>
             </div>
             <div className="col-12">
-                <UserEditing trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip}/>
+              <UserEditing trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} addPlace={this.addPlace}/>
             </div>
             <div className="col-12">
                 <Trip trip={this.state.trip} updateTrip={this.updateTrip} />
