@@ -17,10 +17,9 @@ import java.util.Arrays;
 
 public class Optimization extends Trip {
 
-  public Trip trip;
-
-  public Optimization(Trip trip) {
-    this.trip = trip;
+  public Optimization(ArrayList<Place> places, int[][] memoDists) {
+    this.places = places;
+    this.memoDists = memoDists;
   }
 
   /**
@@ -30,12 +29,12 @@ public class Optimization extends Trip {
 
   public ArrayList<Place> planNearestNeighbor() {
 
-    ArrayList<Place> finalMinRoute = new ArrayList<Place>(trip.places);
+    ArrayList<Place> finalMinRoute = new ArrayList<Place>(places);
     // set initial minimum distance to unoptimized sum of distances
     int finalMinDist = sumDistances(finalMinRoute);
     // calculate nearestNeighbor for each starting city
-    for (int i = 0; i < trip.places.size(); ++i) {
-      ArrayList<Place> tempMinRoute = nearestNeighborRoute(trip.places.get(i)); // starting city
+    for (int i = 0; i < places.size(); ++i) {
+      ArrayList<Place> tempMinRoute = nearestNeighborRoute(places.get(i)); // starting city
       int tempMinDist = sumDistances(tempMinRoute);   // find tot. round-trip distance of new route
       if (tempMinDist < finalMinDist) {     // if less than current, set as new min (dist & route)
         finalMinRoute = new ArrayList<>(tempMinRoute);
@@ -54,7 +53,7 @@ public class Optimization extends Trip {
   public ArrayList<Place> nearestNeighborRoute(Place startingCity) {
     ArrayList<Place> tempMinRoute = new ArrayList<Place>();
     Place current = startingCity;
-    for (int j = 0; j < trip.places.size(); ++j) {
+    for (int j = 0; j < places.size(); ++j) {
       tempMinRoute.add(current);  // add city to potential minimum route
       Place next = nearestNeighborHelper(current, tempMinRoute);  // get next city
       current = next;     // repeat with this new city
@@ -72,8 +71,8 @@ public class Optimization extends Trip {
   public Place nearestNeighborHelper(Place start, ArrayList<Place> minRoute) {
     Place next = new Place();
     int minDist = Integer.MAX_VALUE;
-    for (int i = 0; i < trip.places.size(); ++i) {
-      Place temp = trip.places.get(i);
+    for (int i = 0; i < places.size(); ++i) {
+      Place temp = places.get(i);
       if (minRoute.contains(temp)) {
         continue;
       }
@@ -92,10 +91,15 @@ public class Optimization extends Trip {
    */
 
   public ArrayList<Place> plan2Opt() {
-    ArrayList<Place> minRoute = new ArrayList<>(trip.places);
-    int minDist = sumDistances(trip.places);
-    Place current = trip.places.get(0);
-    for (int i = 0; i < trip.places.size(); i++) {
+    if (places.size() < 4) {
+      System.out.println("2Opt Optimization requires a minimum of 4 places. Using NearestNeighbor");
+      return places = this.planNearestNeighbor();   // perform lesser opt. if can't do 2Opt
+    }
+
+    ArrayList<Place> minRoute = new ArrayList<>(places);
+    int minDist = sumDistances(places);
+    for (int i = 0; i < places.size(); i++) {
+      Place current = places.get(i);
       ArrayList<Place> temp = nearestNeighborRoute(current);
       temp = nextRoute2Opt(temp);
       int tempDist = sumDistances(temp);
@@ -115,10 +119,6 @@ public class Optimization extends Trip {
 
 
   public ArrayList<Place> nextRoute2Opt(ArrayList<Place> nextRoute) {
-    if (trip.places.size() < 4) {
-      System.out.println("2Opt Optimization requires a minimum of 4 places. Using NearestNeighbor");
-      return trip.places = this.planNearestNeighbor();   // perform lesser opt. if can't do 2Opt
-    }
     LinkedList<Place> route = new LinkedList<>(nextRoute);
     route.add(route.get(0));  // for round trip algorithm
     boolean improvement = true;

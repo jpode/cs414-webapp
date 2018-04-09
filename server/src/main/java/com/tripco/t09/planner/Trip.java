@@ -29,6 +29,7 @@ public class Trip {
   public ArrayList<Place> places;
   public ArrayList<Integer> distances;
   public String map;
+  public int[][] memoDists;
 
   //public int[][] distArr;
   // notes for memoization: how should indexes be handled? We could do it by index in places,
@@ -41,7 +42,12 @@ public class Trip {
    * It might need to reorder the places in the future.
    */
   public void plan() {
-    verifyPlaces();
+    if (verifyPlaces() == -1){
+      return;
+    }
+    if(memoDists == null) {
+      initIndexes();
+    }
     try {
       if (places.size() > 1) {
         this.map = svg();
@@ -62,12 +68,15 @@ public class Trip {
 
   public void optimize() {
 
-    this.plan();
-    Optimization opt = new Optimization(this);
+    if (verifyPlaces() == -1){
+      return;
+    }
+    if(memoDists == null) {
+      initIndexes();
+    }
+    Optimization opt = new Optimization(places, memoDists);
 
     System.out.println("Optimizing trip with level " + this.options.optimization);
-
-    verifyPlaces();
 
     Double optLevel;
     try {      // in case this.options.optimization is "none" (version 1)
@@ -211,12 +220,36 @@ public class Trip {
     return dist;
   }
 
+  // memoDists is initialized with values of -1, as 0 is a valid option (i.e. to check if dist
+  // between point a and point b has been already calculated, we can't check for 0, as that is
+  // a valid possible distance. Hence, -1 initialization. I believe this will still be faster than
+  // just recalculating every 0 value.
+  protected void initIndexes(){
+    memoDists = new int[places.size()][places.size()];
+    for(int i = 0; i < places.size(); ++i){
+      for(int j = 0; j < places.size(); ++j){
+        memoDists[i][j] = -1;
+      }
+      places.get(i).index = i;
+    }
+  }
+
   protected int distBetweenTwoPlaces(Place aa, Place bb) {
+    try {
+      if (memoDists[aa.index][bb.index] >= 0) {
+        return memoDists[aa.index][bb.index];
+      }
+    } catch(NullPointerException e){
+      this.initIndexes();
+    }
     double ptALat = convertCoordinate(aa.latitude);
     double ptALong = convertCoordinate(aa.longitude);
     double ptBLat = convertCoordinate(bb.latitude);
     double ptBLong = convertCoordinate(bb.longitude);
-    return distanceHelper(ptALat, ptALong, ptBLat, ptBLong);
+    int temp = distanceHelper(ptALat, ptALong, ptBLat, ptBLong);
+    memoDists[aa.index][bb.index] = temp;
+    memoDists[bb.index][aa.index] = temp;
+    return temp;
   }
 
   /*
@@ -224,7 +257,7 @@ public class Trip {
    * valid and are within acceptable coordinate boundaries. Any
    * locations that are invalid are removed from the places arraylist.
    */
-  public void verifyPlaces() {
+  public int verifyPlaces() {
     try {
       for (int i = 0; i < places.size(); i++) {
         if (!verifyLatitudeCoordinates(convertCoordinate(places.get(i).latitude))
@@ -237,7 +270,9 @@ public class Trip {
       }
     } catch (NullPointerException e) {
       System.out.println("Places is empty / has not been initialized (verifyPlaces())");
+      return -1;
     }
+    return 0;
   }
 
   //follows chord length formula given here:
