@@ -56,25 +56,18 @@ class UserEditing extends Component {
   }
 
   handleSubmit(){
-    console.log("props.trip=");
-    console.log(this.props.trip);
-
     let new_places = this.props.trip;
 
     console.log("Place: " + this.state.place.name);
     console.log("Location: " + this.state.order);
 
     if(this.props.trip.places.length < 1){
-      console.log("No current places in array");
       new_places.places = [this.state.place];
     } else if(this.state.order <= 1){
-      console.log("Adding to beginning of array");
       new_places.places.splice(0, 0, this.state.place);
     } else if(this.state.order > this.props.trip.places.length){
-      console.log("Adding to end of array");
       new_places.places = new_places.places.concat(this.state.place);
     } else {
-      console.log("Inserting into index " + this.state.order + " of array");
       new_places.places.splice(this.state.order - 1, 0, this.state.place);
     }
 
@@ -83,10 +76,10 @@ class UserEditing extends Component {
   }
 
   render(){
-    let hasName = this.state.place.name !== "";
-    let hasLongitude = this.state.place.longitude !== "";
-    let hasLatitude = this.state.place.latitude !== "";
-    let hasOrder = this.state.order !== 0;
+    let hasName = this.state.place.name === "";
+    let hasLongitude = this.state.place.longitude === "";
+    let hasLatitude = this.state.place.latitude === "";
+    let hasOrder = this.state.order === 0;
     return(
       <div id="options" className="card">
         <div className="card-header bg-success text-white">
@@ -107,7 +100,7 @@ class UserEditing extends Component {
               <input type="text" className="form-control" onChange={this.handleCustomLatitude} placeholder="Destination Latitude"/>
               <input type="text" className="form-control" onChange={this.handleCustomOrder} placeholder="Order In Trip"/>
               <span className="input-group-btn">
-              <button disabled={!hasName && !hasLongitude && !hasLatitude && !hasOrder} className="btn btn-primary " onClick={this.handleSubmit} type="button">Submit</button>
+              <button disabled={!hasName || !hasLongitude || !hasLatitude || !hasOrder} className="btn btn-primary " onClick={this.handleSubmit} type="button">Submit</button>
               </span>
             </span>
           </div>
