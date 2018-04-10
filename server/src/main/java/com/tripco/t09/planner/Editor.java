@@ -18,30 +18,34 @@ public class Editor {
 
   /**
    * Insert() inserts new_place into the places array at index destIndex. Requires replanning
-   * @return
+   * @return 1,0
    */
   public int insert(){
-    if(verifyInit() == -1)
+    if(verifyInit() == -1) {
       return -1;
+    }
     if(destIndex < 0 || newPlace == null){
       return -1;
     }
-    if(destIndex > places.size())
+    if(destIndex > places.size()) {
       places.add(newPlace);
-    else
+    }
+    else {
       places.add(destIndex, newPlace);
+    }
     return 0;
   }
 
   /**
    * Reverse() simply reverses the trip and, by extension, appropriately modifies
    * the distances arraylist. Does not require replanning.
-   * @return
+   * @return 1,0
    */
 
   public int reverse(){
-    if(verifyInit() == -1)
+    if(verifyInit() == -1) {
       return -1;
+    }
     try {
       Collections.reverse(places);
       ArrayList<Integer> newDistances = new ArrayList<>();
@@ -61,11 +65,12 @@ public class Editor {
   /**
    * Remove() removes the place specified by targetIndex; requires replanning trip to recalculate
    * optimal routes (if optimized), or at minimum distances (if not optimized).
-   * @return
+   * @return 1,0
    */
   public int remove(){
-    if(verifyInit() == -1)
+    if(verifyInit() == -1) {
       return -1;
+    }
     places.remove(targetIndex);
     return 0;
   }
@@ -74,12 +79,13 @@ public class Editor {
    * changeStartPos() simply shifts the array until places begins with the element specified at
    * index targetIndex. Requires replanning, as some distances may have not been previously
    * calculated in the distances array.
-   * @return
+   * @return 1,0
    */
 
   public int changeStartPos(){
-    if(verifyInit() == -1)
+    if(verifyInit() == -1) {
       return -1;
+    }
     ArrayList<Place> newPlaces = new ArrayList<>();
     newPlaces.add(places.get(targetIndex));
 
@@ -96,12 +102,13 @@ public class Editor {
   /**
    * verifyInit() checks the necessary fields are appropriately assigned values, depending on
    * the specific request.
-   * @return
+   * @return 1,0
    */
   protected int verifyInit(){
     if(editType.equals("remove") || editType.equals("changeStartPos")){
-      if(places == null || distances == null || targetIndex < 0 || targetIndex > places.size())
+      if(places == null || distances == null || targetIndex < 0 || targetIndex > places.size()) {
         return -1;
+      }
     }
     else if(editType.equals("reverse")){
       if(places == null || distances == null)
