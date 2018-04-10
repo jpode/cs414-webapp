@@ -226,20 +226,25 @@ public class MicroServer {
     boolean isChangeStartPos = editor.editType.equals("changeStartPos");
 
     if(isInsert){
-
+        editor.insert();
     } else if(isRemove){
-
+        editor.remove();
     } else if(isReverse){
-
+        editor.reverse();
     } else if(isChangeStartPos){
-
+        editor.changeStartPos();
     }
 
+    //at this point, editor.places needs to be correct, as does editor.distances (unless
+    //it is an insert call)
+
+
+    //this method just iterates through cache, changing as necessary
     for(int i = 0; i < 3; i++){
       if(opts[i] != null && opts[i] != ""){
         Trip trip = gson.fromJson(opts[i], Trip.class);
         Plan plan;
-        if(isInsert){
+        if(isInsert || isRemove || isChangeStartPos){
           trip.places = editor.places;
           trip.distances.clear();
           plan = new Plan(trip);
