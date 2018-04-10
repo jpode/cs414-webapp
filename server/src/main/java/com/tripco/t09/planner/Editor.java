@@ -23,13 +23,13 @@ public class Editor {
   public int insert(){
     if(verifyInit() == -1)
       return -1;
-    if(destIndex < 0 || new_place == null){
+    if(destIndex < 0 || newPlace == null){
       return -1;
     }
     if(destIndex > places.size())
-      places.add(new_place);
+      places.add(newPlace);
     else
-      places.add(destIndex, new_place);
+      places.add(destIndex, newPlace);
     return 0;
   }
 
@@ -110,7 +110,7 @@ public class Editor {
       return 0;
     }
     else{   // "insert"
-      if(destIndex < 0 || new_place == null)
+      if(destIndex < 0 || newPlace == null)
         return -1;
       return 0;
     }

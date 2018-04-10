@@ -635,13 +635,13 @@ public class TestTrip {
 
     edit.editType = "insert";
     edit.destIndex = 0;
-    edit.new_place = placeE;
+    edit.newPlace = placeE;
     edit.insert();
     expected.add(0, placeE);
     assertEquals(expected, edit.places);
 
     edit.destIndex = 4;
-    edit.new_place = placeB;
+    edit.newPlace = placeB;
     edit.insert();
     expected.add(4, placeB);
     assertEquals(expected, edit.places);

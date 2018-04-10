@@ -234,10 +234,8 @@ public class MicroServer {
         editor.changeStartPos();
     }
 
-    }
-
     //Edit the stored optimizations, if there are any
-    if(editOpts(editor, isInsert, isRemove, isReverse, isChangeStartPos)) {
+    if(editOpts(editor, isInsert, isRemove, isChangeStartPos)) {
       //Return the optimization that the client was currently displaying
       return opts[getOptLvl(editor.optimization)];
     } else {
@@ -246,17 +244,19 @@ public class MicroServer {
       trip.places = editor.places;
       trip.distances = editor.distances;
       Plan plan = new Plan(trip);
+      if(!isReverse)  // only one that doesn't need to be replanned
+        plan.planTrip();
       return plan.getTrip();
     }
   }
 
   private boolean editOpts(Editor editor, boolean isInsert, boolean isRemove,
-      boolean isReverse, boolean isChangeStartPos){
+      boolean isChangeStartPos){
 
     Gson gson = new Gson();
     boolean hasOpt = false;
     for(int i = 0; i < 3; i++){
-      if(opts[i] != null && opts[i] != ""){
+      if(opts[i] != null && !opts[i].equals("")){
         hasOpt = true;
         Trip trip = gson.fromJson(opts[i], Trip.class);
         Plan plan;
@@ -300,7 +300,7 @@ public class MicroServer {
     int optLvl;
     if(optDouble == 0){
       optLvl = 0;
-    } else if(optDouble <= .5){
+    } else if(optDouble < 1){
       optLvl = 1;
     } else {
       optLvl = 2;
