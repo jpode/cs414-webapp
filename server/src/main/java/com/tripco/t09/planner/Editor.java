@@ -111,12 +111,14 @@ public class Editor {
       }
     }
     else if(editType.equals("reverse")){
-      if(places == null || distances == null)
+      if(places == null || distances == null) {
         return -1;
+      }
     }
     else{   // "insert"
-      if(destIndex < 0 || newPlace == null)
+      if(destIndex < 0 || newPlace == null) {
         return -1;
+      }
     }
     return 0;
   }

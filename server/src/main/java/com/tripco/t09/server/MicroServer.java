@@ -224,7 +224,7 @@ public class MicroServer {
     boolean isReverse = editor.editType.equals("reverse");
     boolean isChangeStartPos = editor.editType.equals("changeStartPos");
 
-    if(editMethod(editor, isInsert, isRemove, isReverse, isChangeStartPos) == -1){
+    if(editMethod(editor, isInsert, isRemove, isChangeStartPos) == -1){
       response.status(400);
       return gson.toJson(editor);
     }
@@ -239,23 +239,24 @@ public class MicroServer {
       trip.places = editor.places;
       trip.distances = editor.distances;
       Plan plan = new Plan(trip);
-      if(!isReverse)  // only one that doesn't need to be replanned
+      if(!isReverse) {  // only one that doesn't need to be replanned
         plan.planTrip();
+      }
       return plan.getTrip();
     }
   }
 
   private int editMethod(Editor editor, boolean isInsert, boolean isRemove,
-      boolean isReverse, boolean isChangeStartPos){
+      boolean isChangeStartPos){
     int code = 0;
     if(isInsert){
       code = editor.insert();
     } else if(isRemove){
       code = editor.remove();
-    } else if(isReverse){
-      code = editor.reverse();
     } else if(isChangeStartPos){
       code = editor.changeStartPos();
+    } else {
+      code = editor.reverse();
     }
     return code;
   }
