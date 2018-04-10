@@ -102,18 +102,16 @@ public class Editor {
     if(editType.equals("remove") || editType.equals("changeStartPos")){
       if(places == null || distances == null || targetIndex < 0 || targetIndex > places.size())
         return -1;
-      return 0;
     }
     else if(editType.equals("reverse")){
       if(places == null || distances == null)
         return -1;
-      return 0;
     }
     else{   // "insert"
       if(destIndex < 0 || newPlace == null)
         return -1;
-      return 0;
     }
+    return 0;
   }
 
 }
