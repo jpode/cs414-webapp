@@ -208,7 +208,6 @@ public class MicroServer {
   private String edit(Request request, Response response) {
 
     response.type("application/json");
-    //Edit the stored optimizations
 
     //Print the request
     System.out.println(HTTP.echoRequest(request));
@@ -235,13 +234,30 @@ public class MicroServer {
         editor.changeStartPos();
     }
 
-    //at this point, editor.places needs to be correct, as does editor.distances (unless
-    //it is an insert call)
+    }
 
+    //Edit the stored optimizations, if there are any
+    if(editOpts(editor, isInsert, isRemove, isReverse, isChangeStartPos)) {
+      //Return the optimization that the client was currently displaying
+      return opts[getOptLvl(editor.optimization)];
+    } else {
+      //No stored optimizations: return the trip as is
+      Trip trip = new Trip();
+      trip.places = editor.places;
+      trip.distances = editor.distances;
+      Plan plan = new Plan(trip);
+      return plan.getTrip();
+    }
+  }
 
-    //this method just iterates through cache, changing as necessary
+  private boolean editOpts(Editor editor, boolean isInsert, boolean isRemove,
+      boolean isReverse, boolean isChangeStartPos){
+
+    Gson gson = new Gson();
+    boolean hasOpt = false;
     for(int i = 0; i < 3; i++){
       if(opts[i] != null && opts[i] != ""){
+        hasOpt = true;
         Trip trip = gson.fromJson(opts[i], Trip.class);
         Plan plan;
         if(isInsert || isRemove || isChangeStartPos){
@@ -258,7 +274,7 @@ public class MicroServer {
         }
       }
     }
-    return opts[getOptLvl(editor.optimization)];
+    return hasOpt;
   }
 
   /**
@@ -267,31 +283,21 @@ public class MicroServer {
    * is to be saved as well.
    */
   private int getOptLvl(Plan plan){
-    double optDouble;
-    int optLvl;
-
-    optDouble = plan.optimizationLevel();
-
-    if(optDouble == 0){
-      optLvl = 0;
-    } else if(optDouble <= .5){
-      optLvl = 1;
-    } else {
-      optLvl = 2;
-    }
-    return optLvl;
+    return getOptHelper(plan.optimizationLevel());
   }
 
   private int getOptLvl(String optimizationLevel){
     double optDouble;
-    int optLvl;
-
     try {
       optDouble = Double.parseDouble(optimizationLevel);
     } catch (NumberFormatException e) {
       optDouble = 0.0;
     }
+    return getOptHelper(optDouble);
+  }
 
+  private int getOptHelper(double optDouble){
+    int optLvl;
     if(optDouble == 0){
       optLvl = 0;
     } else if(optDouble <= .5){

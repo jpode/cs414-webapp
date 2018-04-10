@@ -5,15 +5,15 @@ import java.util.Collections;
 
 /**
  * Class to represent an editor object to allow user to reconfigure
- * the trip
+ * the trip.
  */
 public class Editor {
   public String editType;
   public int targetIndex = -1; // index of place to change (if specified) i.e. for remove
   public int destIndex = -1;   // where place should be put in places array (index)
   public String optimization;
-  public Place new_place;   // only used for insert()
-  public ArrayList<Place> places;   // had to fully instantiate for Collections
+  public Place newPlace;
+  public ArrayList<Place> places;
   public ArrayList<Integer> distances;
 
   /**

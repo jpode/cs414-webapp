@@ -6,6 +6,7 @@ class Query extends Component {
 
     this.state = {
       search: "",
+      filters: [],
       places: []
     };
 
@@ -27,6 +28,7 @@ class Query extends Component {
     this.setState({places: []});
   }
 
+
   /* Sends a request to the server with all state information except type.
 * Receives a response containing an optimized itinerary to update the
 * state for this object.
@@ -37,6 +39,7 @@ class Query extends Component {
       "version": 2,
       "type": 'query',
       "query": this.state.search,
+      "filters": this.state.filters,
       "places": []
     };
 
@@ -62,25 +65,34 @@ class Query extends Component {
       console.error(err);
     }
   }
+  //add the place to the current trip
+  addBtn(e)
+  {
+    console.log(e);
+
+  }
 
   createTable() {
 
     let ids = [];
     let names = [];
     let municipalities = [];
+    let btns = [];
+    let i = 0;
 
     if (typeof this.state.places[0] != "undefined") {
       ids = this.state.places.map((item) => <td>{item.id}</td>);
       names = this.state.places.map((item) => <td>{item.name}</td>);
       municipalities = this.state.places.map(
           (item) => <td>{item.municipality}</td>);
+      btns = this.state.places.map((i) => <td><button className="btn " onClick={() => this.addBtn(i)} >Add</button></td>)
     }
 
     console.log(ids);
     console.log(names);
     console.log(municipalities);
 
-    return {ids, names, municipalities};
+    return {ids, names, municipalities, btns};
   }
 
   render() {
@@ -129,6 +141,7 @@ class Query extends Component {
               <tbody>
               <tr>
                 <th className="table-info align-middle">Add</th>
+                {table.btns}
               </tr>
               </tbody>
             </table>
