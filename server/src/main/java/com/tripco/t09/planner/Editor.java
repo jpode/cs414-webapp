@@ -21,10 +21,9 @@ public class Editor {
    * @return 1,0
    */
   public int insert(){
+    System.out.println("Inserting new place...");
     if(verifyInit() == -1) {
-      return -1;
-    }
-    if(destIndex < 0 || newPlace == null){
+      System.out.println("Failed: Incorrect values");
       return -1;
     }
     if(destIndex > places.size()) {
@@ -33,6 +32,7 @@ public class Editor {
     else {
       places.add(destIndex, newPlace);
     }
+    System.out.println("Inserted");
     return 0;
   }
 
@@ -43,22 +43,25 @@ public class Editor {
    */
 
   public int reverse(){
+    System.out.println("Reversing trip...");
     if(verifyInit() == -1) {
+      System.out.println("Failed: Incorrect values");
       return -1;
     }
     try {
       Collections.reverse(places);
-      ArrayList<Integer> newDistances = new ArrayList<>();
-      newDistances.add(0);
-      for(int i = distances.size()-1; i > 0; --i){
-        newDistances.add(distances.get(i));
+      if(distances != null) {
+        ArrayList<Integer> newDistances = new ArrayList<>();
+        newDistances.add(0);
+        for (int i = distances.size() - 1; i > 0; --i) {
+          newDistances.add(distances.get(i));
+        }
+        distances = newDistances;
       }
-      distances = newDistances;
     } catch(UnsupportedOperationException e) {
       return -1;
-    } catch(NullPointerException e){
-      return -1;
     }
+    System.out.println("Reversed");
     return 0;
   }
 
@@ -83,7 +86,9 @@ public class Editor {
    */
 
   public int changeStartPos(){
+    System.out.println("Changing start position...");
     if(verifyInit() == -1) {
+      System.out.println("Failed: Incorrect values");
       return -1;
     }
     ArrayList<Place> newPlaces = new ArrayList<>();
@@ -96,6 +101,8 @@ public class Editor {
       newPlaces.add(places.get(i));
     }
     places = newPlaces;
+    System.out.println("Changed start position");
+
     return 0;
   }
 
@@ -104,14 +111,14 @@ public class Editor {
    * the specific request.
    * @return 1,0
    */
-  protected int verifyInit(){
+  public int verifyInit(){
     if(editType.equals("remove") || editType.equals("changeStartPos")){
-      if(places == null || distances == null || targetIndex < 0 || targetIndex > places.size()) {
+      if(places == null || targetIndex < 0 || targetIndex > places.size()) {
         return -1;
       }
     }
     else if(editType.equals("reverse")){
-      if(places == null || distances == null) {
+      if(places == null) {
         return -1;
       }
     }

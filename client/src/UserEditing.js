@@ -8,7 +8,7 @@ class UserEditing extends Component {
       editType: "",
       targetIndex: 0,
       destIndex: -1,
-      new_place: {
+      newPlace: {
         id: "",
         name: "",
         longitude: "",
@@ -22,6 +22,7 @@ class UserEditing extends Component {
     this.handleCustomLatitude = this.handleCustomLatitude.bind(this);
     this.handleCustomOrder = this.handleCustomOrder.bind(this);
     this.handleInsert = this.handleInsert.bind(this);
+    this.resetState = this.resetState.bind(this);
 
   }
 
@@ -35,37 +36,50 @@ class UserEditing extends Component {
   }
 
   handleCustomName(event){
-    var place = this.state.new_place;
+    var place = this.state.newPlace;
     place.name = event.target.value;
     place.id = event.target.value.substring(0,4);
-    this.setState({new_place: place});
+    this.setState({newPlace: place});
 
   }
 
   handleCustomLongitude(event){
-    var place = this.state.new_place;
+    var place = this.state.newPlace;
     place.longitude = event.target.value;
-    this.setState({new_place: place});
+    this.setState({newPlace: place});
   }
 
   handleCustomLatitude(event){
-    var place = this.state.new_place;
+    var place = this.state.newPlace;
     place.latitude = event.target.value;
-    this.setState({new_place: place});
+    this.setState({newPlace: place});
   }
 
   handleCustomOrder(event){
-    this.setState({destIndex: event.target.value});
+    if(event.target.value < 1){
+      alert("Please enter a value greater than 0.")
+    } else {
+      this.setState({destIndex: event.target.value});
+    }
   }
 
   handleInsert(){
     this.props.editTrip(this.state);
+    this.resetState();
+  }
+
+  resetState(){
+    this.setState({selected : 0});
+    this.setState({editType : ""});
+    this.setState({targetIndex : 0});
+    this.setState({destIndex : -1});
+    this.setState({newPlace : {id : "", name : "", longitude: "", latitude: ""}});
   }
 
   render(){
-    let hasName = this.state.new_place.name !== "";
-    let hasLongitude = this.state.new_place.longitude !== "";
-    let hasLatitude = this.state.new_place.latitude !== "";
+    let hasName = this.state.newPlace.name !== "";
+    let hasLongitude = this.state.newPlace.longitude !== "";
+    let hasLatitude = this.state.newPlace.latitude !== "";
     let hasDestIndex = this.state.destIndex >= 0;
 
     return(
@@ -76,7 +90,7 @@ class UserEditing extends Component {
 
         <div className="btn-group btn-group-toggle" data-toggle="buttons">
           <label className={"btn btn-outline-dark btn-success".concat((this.state.selected === 1) ? " active" : "")}>
-            <input type="radio" id="new_place" name="new_place" value="on" onClick={this.handleCreation} />Create New Destination
+            <input type="radio" id="newPlace" name="newPlace" value="on" onClick={this.handleCreation} />Create New Destination
           </label>
         </div>
 

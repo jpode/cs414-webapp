@@ -238,7 +238,7 @@ public class MicroServer {
       trip.places = editor.places;
       trip.distances = editor.distances;
       Plan plan = new Plan(trip);
-      if(editor.editType.equals("reverse")) {  // only one that doesn't need to be replanned
+      if(editor.editType.equals("insert") || editor.editType.equals("remove")) {  // only two that needs to be replanned
         plan.planTrip();
       }
       return plan.getTrip();
