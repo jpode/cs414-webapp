@@ -221,7 +221,6 @@ public class MicroServer {
 
     boolean isInsert = editor.editType.equals("insert");
     boolean isRemove = editor.editType.equals("remove");
-    boolean isReverse = editor.editType.equals("reverse");
     boolean isChangeStartPos = editor.editType.equals("changeStartPos");
 
     if(editMethod(editor, isInsert, isRemove, isChangeStartPos) == -1){
@@ -239,7 +238,7 @@ public class MicroServer {
       trip.places = editor.places;
       trip.distances = editor.distances;
       Plan plan = new Plan(trip);
-      if(!isReverse) {  // only one that doesn't need to be replanned
+      if(editor.editType.equals("reverse")) {  // only one that doesn't need to be replanned
         plan.planTrip();
       }
       return plan.getTrip();
