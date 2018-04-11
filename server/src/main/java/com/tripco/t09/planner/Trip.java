@@ -264,8 +264,6 @@ public class Trip {
             || !verifyLongitudeCoordinates(convertCoordinate(places.get(i).longitude))) {
           System.out.println("Coordinates for location " + places.get(i).name
               + " are outside of acceptable boundaries");
-          System.out.println("Longitude: " + places.get(i).longitude + ". Result: " + verifyLongitudeCoordinates(convertCoordinate(places.get(i).longitude)));
-          System.out.println("Latitude: " + places.get(i).latitude + ". Result: " + verifyLatitudeCoordinates(convertCoordinate(places.get(i).latitude)));
           places.remove(i);
           i--;
         }

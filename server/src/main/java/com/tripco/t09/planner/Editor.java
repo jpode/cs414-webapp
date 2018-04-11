@@ -106,15 +106,15 @@ public class Editor {
       newPlaces.add(places.get(i));
     }
     places = newPlaces;
-    /*
-    Place temp = places.get(targetIndex);
-    places.remove(targetIndex);
-    places.add(0,temp);
-    System.out.println("Changed start position");
-    */
     return 0;
   }
 
+  /**
+   * Moves the place specified by targetIndex to the location specified by destIndex.
+   * Requires replanning trip to recalculat optimal routes (if optimized), or at
+   * minimum distances (if not optimized).
+   * @return 1,0
+   */
   public int movePlace(){
     System.out.println("Moving place...");
     if(verifyInit() == -1) {
