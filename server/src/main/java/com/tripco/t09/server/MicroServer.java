@@ -221,21 +221,15 @@ public class MicroServer {
 
     boolean isInsert = editor.editType.equals("insert");
     boolean isRemove = editor.editType.equals("remove");
-    boolean isReverse = editor.editType.equals("reverse");
     boolean isChangeStartPos = editor.editType.equals("changeStartPos");
 
-    if(isInsert){
-
-    } else if(isRemove){
-
-    } else if(isReverse){
-
-    } else if(isChangeStartPos){
-
+    if(editMethod(editor, isInsert, isRemove, isChangeStartPos) == -1){
+      response.status(400);
+      return gson.toJson(editor);
     }
 
     //Edit the stored optimizations, if there are any
-    if(editOpts(editor, isInsert, isRemove, isReverse, isChangeStartPos)) {
+    if(editOpts(editor, isInsert, isRemove, isChangeStartPos)) {
       //Return the optimization that the client was currently displaying
       return opts[getOptLvl(editor.optimization)];
     } else {
@@ -244,21 +238,39 @@ public class MicroServer {
       trip.places = editor.places;
       trip.distances = editor.distances;
       Plan plan = new Plan(trip);
+      if(editor.editType.equals("insert") || editor.editType.equals("remove")) {  // only two that needs to be replanned
+        plan.planTrip();
+      }
       return plan.getTrip();
     }
   }
 
+  private int editMethod(Editor editor, boolean isInsert, boolean isRemove,
+      boolean isChangeStartPos){
+    int code = 0;
+    if(isInsert){
+      code = editor.insert();
+    } else if(isRemove){
+      code = editor.remove();
+    } else if(isChangeStartPos){
+      code = editor.changeStartPos();
+    } else {
+      code = editor.reverse();
+    }
+    return code;
+  }
+
   private boolean editOpts(Editor editor, boolean isInsert, boolean isRemove,
-      boolean isReverse, boolean isChangeStartPos){
+      boolean isChangeStartPos){
 
     Gson gson = new Gson();
     boolean hasOpt = false;
     for(int i = 0; i < 3; i++){
-      if(opts[i] != null && opts[i] != ""){
+      if(opts[i] != null && !opts[i].equals("")){
         hasOpt = true;
         Trip trip = gson.fromJson(opts[i], Trip.class);
         Plan plan;
-        if(isInsert){
+        if(isInsert || isRemove || isChangeStartPos){
           trip.places = editor.places;
           trip.distances.clear();
           plan = new Plan(trip);
@@ -298,7 +310,7 @@ public class MicroServer {
     int optLvl;
     if(optDouble == 0){
       optLvl = 0;
-    } else if(optDouble <= .5){
+    } else if(optDouble < 1){
       optLvl = 1;
     } else {
       optLvl = 2;

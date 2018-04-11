@@ -12,7 +12,7 @@ class UserEditing extends Component {
       editType: "",
       targetIndex: -1,
       destIndex: -1,
-      new_place: {
+      newPlace: {
         id: "",
         name: "",
         longitude: "",
@@ -29,6 +29,7 @@ class UserEditing extends Component {
     this.handleCustomName = this.handleCustomName.bind(this);
     this.handleCustomLongitude = this.handleCustomLongitude.bind(this);
     this.handleCustomLatitude = this.handleCustomLatitude.bind(this);
+    this.resetState = this.resetState.bind(this);
 
   }
 
@@ -72,45 +73,67 @@ class UserEditing extends Component {
 
   edit(){
     this.props.editTrip(this.state);
+    this.resetState();
   }
 
   handleDestIndex(event){
-    this.setState({destIndex: event.target.value});
+    if(event.target.value < 1){
+      alert("Please enter a value greater than 0.")
+    } else {
+      this.setState({destIndex: event.target.value});
+    }
   }
 
   handleTargetIndex(event){
-    this.setState({targetIndex: event.target.value});
+    if(event.target.value < 1){
+      alert("Please enter a value greater than 0.")
+    } else {
+      this.setState({targetIndex: event.target.value});
+    }
   }
 
   handleCustomID(event){
-    let place = this.state.new_place;
+    let place = this.state.newPlace;
     place.id = event.target.value;
-    this.setState({new_place: place});
+    this.setState({newPlace: place});
   }
 
   handleCustomName(event){
-    let place = this.state.new_place;
+    let place = this.state.newPlace;
     place.name = event.target.value;
-    this.setState({new_place: place});
+    this.setState({newPlace: place});
   }
 
   handleCustomLongitude(event){
-    let place = this.state.new_place;
+    let place = this.state.newPlace;
     place.longitude = event.target.value;
-    this.setState({new_place: place});
+    this.setState({newPlace: place});
   }
 
   handleCustomLatitude(event){
-    let place = this.state.new_place;
+    let place = this.state.newPlace;
     place.latitude = event.target.value;
-    this.setState({new_place: place});
+    this.setState({newPlace: place});
+  }
+
+  resetState(){
+    this.setState({insertSelected : 0});
+    this.setState({removeSelected : 0});
+    this.setState({reverseSelected : 0});
+    this.setState({newStartSelected : 0});
+    this.setState({movePlaceSelected : 0});
+    this.setState({editType : ""});
+    this.setState({targetIndex : 0});
+    this.setState({destIndex : -1});
+    this.setState({targetIndex : -1});
+    this.setState({newPlace : {id : "", name : "", longitude: "", latitude: ""}});
   }
 
   render(){
-    let hasId = this.state.new_place.id !== "";
-    let hasName = this.state.new_place.name !== "";
-    let hasLongitude = this.state.new_place.longitude !== "";
-    let hasLatitude = this.state.new_place.latitude !== "";
+    let hasId = this.state.newPlace.id !== "";
+    let hasName = this.state.newPlace.name !== "";
+    let hasLongitude = this.state.newPlace.longitude !== "";
+    let hasLatitude = this.state.newPlace.latitude !== "";
     let hasDestIndex = this.state.destIndex >= 0;
     let hasTargetIndex = this.state.targetIndex >= 0;
 

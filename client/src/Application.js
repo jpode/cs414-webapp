@@ -84,9 +84,9 @@ class Application extends Component {
   fetchResponse(param){
     let requestBody = {
       "editType"      : param.editType,
-      "new_place"     : param.new_place,
+      "newPlace"     : param.newPlace,
       "targetIndex"   : param.targetIndex,
-      "destIndex"     : param.destIndex,
+      "destIndex"     : param.destIndex - 1,
       "optimization"  : this.state.trip.options.optimization,
       "places"        : this.state.trip.places,
       "distances"     : this.state.trip.distances,
