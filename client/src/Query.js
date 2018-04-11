@@ -97,7 +97,6 @@ class Query extends Component {
     } else {
       this.setState({selected : 0});
     }
-    console.log(this.state.filters);
   }
 
   createTable()
@@ -115,7 +114,7 @@ class Query extends Component {
       municipalities = this.state.places.map(
           (item) => <td>{item.municipality}</td>);
       btns = this.state.places.map(
-          (i) => <td><button className="btn btn-outline-dark btn-success" onClick={() => this.handleAdd(i)} >Add</button></td>)
+          (i) => <td><button className="btn btn-outline-dark btn-success" onClick={() => this.handleAdd(i)} >Add</button></td>);
     }
 
     return {ids, names, municipalities, btns};
@@ -128,9 +127,9 @@ class Query extends Component {
     let regions = [];
     let continent = [];
 
-    if(typeof this.state.filters[0] != "undifined") {
-//      types = this.state.filters.map((item) => <option>{item.type}</option>);
-
+    if(this.props.config.filters.length > 0) {
+      console.log(this.props.config.filters[0]);
+      types = this.props.config.filters[0].values.map((item) => <option value={item} > {item}</option>);
     }
     return {types,countries,regions,continent};
   }
@@ -140,7 +139,7 @@ class Query extends Component {
     let filter = this.createFilters();
     const numPlaces = this.state.places.length;
     const configVersion = parseInt(this.props.config.version);
-
+    console.log("fooBar");
     if (configVersion > 1) {
       return (
           <div>
@@ -158,20 +157,20 @@ class Query extends Component {
                 <button className="btn btn-outline-dark btn-success"
                         onClick={this.handleClear} type="button">Clear</button>
                 <div className="btn-group btn-group-toggle" data-toggle="buttons">
-                  <label className={"btn btn-outline-dark btn-success".concat((this.state.selected === 1) ? " active" : "")}>
-                    <input type="radio" id="new_place" name="new_place" value="on" onClick={this.handleCreation}/>Add Filters
+                  <label className={"btn btn-outline-dark btn-success".concat((this.state.selected == 1) ? " active" : "")}>
+                    <input type="radio" id="new_place" name="new_place" value="on"/>Add Filters
                   </label>
                 </div>
               </span>
             </div>
-            {this.state.selected === 1 &&
-            <span className="input-group">
-              Type:
-              <select id="mySelect">
-                {filter.types}
-              </select>
-            </span>
-            }
+            <div>
+              <span className="input-group">
+                Type:
+                <select id="mySelect">
+                  {filter.types}
+                </select>
+              </span>
+            </div>
             {numPlaces > 0 &&
             <table className="table table-responsive table-bordered">
               <tbody>
