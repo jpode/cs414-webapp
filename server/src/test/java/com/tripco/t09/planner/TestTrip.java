@@ -551,11 +551,11 @@ public class TestTrip {
     testPlaces.add(placeA); // Fort Collins
     testPlaces.add(placeC); // Greeley
     testPlaces.add(placeB); // Longmont
-    dists.add(0);
     dists.add(1100);        // dist from litt to auro
     dists.add(2200);        // dist from auro to foco
     dists.add(3300);        // dist from foco to gree
     dists.add(4400);        // dist from gree to long
+    dists.add(5500);        // dist from long to little
 
 
     edit.places = new ArrayList<>(testPlaces);  // so testPlaces can be reused
@@ -563,12 +563,12 @@ public class TestTrip {
     edit.editType = "reverse";
     System.out.print("Testing Reverse Trip: ");
 
+    expected.add(placeE);     // littleton
     expected.add(placeB);   // longmont
     expected.add(placeC);   // greeley
     expected.add(placeA);   // fort collins
     expected.add(placeD);    // aurora
-    expected.add(placeE);     // littleton
-    newDists.add(0);
+    newDists.add(5500);        // dist from litte to long
     newDists.add(4400);     // dist from long to gree
     newDists.add(3300);     // dist from gree to foco
     newDists.add(2200);     // dist from foco to auro
@@ -585,7 +585,7 @@ public class TestTrip {
     //test targetIndex = 0
     edit.places = new ArrayList<>(testPlaces);
     edit.distances = dists;
-    edit.editType = "changeStartPos";
+    edit.editType = "newStart";
     edit.targetIndex = 0;
     edit.changeStartPos();
     assertEquals(testPlaces, edit.places);

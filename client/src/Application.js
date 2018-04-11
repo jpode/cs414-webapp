@@ -86,7 +86,7 @@ class Application extends Component {
       "editType"      : param.editType,
       "newPlace"     : param.newPlace,
       "targetIndex"   : param.targetIndex,
-      "destIndex"     : param.destIndex - 1,
+      "destIndex"     : param.destIndex,
       "optimization"  : this.state.trip.options.optimization,
       "places"        : this.state.trip.places,
       "distances"     : this.state.trip.distances,

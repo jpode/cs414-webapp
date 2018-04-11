@@ -221,15 +221,16 @@ public class MicroServer {
 
     boolean isInsert = editor.editType.equals("insert");
     boolean isRemove = editor.editType.equals("remove");
-    boolean isChangeStartPos = editor.editType.equals("changeStartPos");
+    boolean isChangeStartPos = editor.editType.equals("newStart");
+    boolean isMovePlace = editor.editType.equals("movePlace");
 
-    if(editMethod(editor, isInsert, isRemove, isChangeStartPos) == -1){
+    if(editMethod(editor, isInsert, isRemove, isChangeStartPos, isMovePlace) == -1){
       response.status(400);
       return gson.toJson(editor);
     }
 
     //Edit the stored optimizations, if there are any
-    if(editOpts(editor, isInsert, isRemove, isChangeStartPos)) {
+    if(editOpts(editor, isInsert, isRemove, isChangeStartPos, isMovePlace)) {
       //Return the optimization that the client was currently displaying
       return opts[getOptLvl(editor.optimization)];
     } else {
@@ -246,7 +247,7 @@ public class MicroServer {
   }
 
   private int editMethod(Editor editor, boolean isInsert, boolean isRemove,
-      boolean isChangeStartPos){
+      boolean isChangeStartPos, boolean isMovePlace){
     int code = 0;
     if(isInsert){
       code = editor.insert();
@@ -254,6 +255,8 @@ public class MicroServer {
       code = editor.remove();
     } else if(isChangeStartPos){
       code = editor.changeStartPos();
+    } else if(isMovePlace){
+      code = editor.movePlace();
     } else {
       code = editor.reverse();
     }
@@ -261,20 +264,25 @@ public class MicroServer {
   }
 
   private boolean editOpts(Editor editor, boolean isInsert, boolean isRemove,
-      boolean isChangeStartPos){
+      boolean isChangeStartPos, boolean isMovePlace){
 
     Gson gson = new Gson();
     boolean hasOpt = false;
     for(int i = 0; i < 3; i++){
       if(opts[i] != null && !opts[i].equals("")){
+        System.out.println("Has " + i + "-opt");
         hasOpt = true;
         Trip trip = gson.fromJson(opts[i], Trip.class);
+        System.out.println("OptLevel: " + trip.options.optimization);
         Plan plan;
-        if(isInsert || isRemove || isChangeStartPos){
+        if(isInsert || isRemove || isChangeStartPos || isMovePlace){
           trip.places = editor.places;
           trip.distances.clear();
           plan = new Plan(trip);
           plan.planTrip();
+          if(i > 0) {
+            plan.optimize();
+          }
           opts[i] = plan.getTrip();
         } else {
           trip.places = editor.places;
