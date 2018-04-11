@@ -34,7 +34,7 @@ class UserEditing extends Component {
   }
 
   handleSelect(arg){
-
+    this.resetState();
     this.setState({editType : arg});
     if(arg === "insert") {
       if (this.state.insertSelected === 0) {
@@ -138,21 +138,21 @@ class UserEditing extends Component {
     let hasTargetIndex = this.state.targetIndex >= 0;
 
     return(
-      <div id="options" className="card">
-        <div className="card-header bg-success text-white">
-          Edit Destinations
-        </div>
+        <div id="options" className="card">
+          <div className="card-header bg-success text-white">
+            Edit Destinations
+          </div>
 
-        <div className="btn-group btn-group-toggle" data-toggle="buttons">
-          <label className={"btn btn-outline-dark btn-success".concat((this.state.insertSelected === 1) ? " active" : "")}>
-            <input type="radio" id="new_place" name="new_place" value="on" onClick={() => { this.handleSelect("insert")}} />Create New Destination
-          </label>
-          <label className={"btn btn-outline-dark btn-success".concat((this.state.newStartSelected === 1) ? " active" : "")}>
-            <input type="radio" id="newStart" name="newStart" value="on" onClick={() => { this.handleSelect("newStart")}} />Select New Start Location
-          </label>
-        </div>
+          <div className="btn-group btn-group-toggle" data-toggle="buttons">
+            <label className={"btn btn-outline-dark btn-success".concat((this.state.insertSelected === 1) ? " active" : "")}>
+              <input type="radio" id="new_place" name="new_place" value="on" onClick={() => { this.handleSelect("insert")}} />Create New Destination
+            </label>
+            <label className={"btn btn-outline-dark btn-success".concat((this.state.newStartSelected === 1) ? " active" : "")}>
+              <input type="radio" id="newStart" name="newStart" value="on" onClick={() => { this.handleSelect("newStart")}} />Select New Start Location
+            </label>
+          </div>
 
-        {this.state.insertSelected === 1 &&
+          {this.state.insertSelected === 1 &&
           <div className="input-group" role="group">
             <span>
               <input type="text" className="form-control" onChange={this.handleCustomID} placeholder="Destination ID"/>
@@ -166,40 +166,40 @@ class UserEditing extends Component {
               </span>
             </span>
           </div>
-        }
-        {this.state.newStartSelected === 1 &&
-        <div className="input-group" role="group">
+          }
+          {this.state.newStartSelected === 1 &&
+          <div className="input-group" role="group">
             <span>
               <input type="text" className="form-control" onChange={this.handleTargetIndex} placeholder="Index of New Start"/>
               <span className="input-group-btn">
                 <button disabled={!hasDestIndex} className="btn btn-primary " onClick={this.edit} type="button">Submit</button>
               </span>
             </span>
-        </div>
-        }
-        <div className="btn-group btn-group-toggle" data-toggle="buttons">
-          <label className={"btn btn-outline-dark btn-success".concat((this.state.removeSelected === 1) ? " active" : "")}>
-            <input type="radio" id="remove" name="remove" value="on" onClick={() => { this.handleSelect("remove")}} />Remove A Place
-          </label>
-          <label className={"btn btn-outline-dark btn-success".concat((this.state.reverseSelected === 1) ? " active" : "")}>
-            <input type="radio" id="reverse" name="reverse" value="on" onClick={() => { this.handleSelect("reverse")}} />Reverse The Trip
-          </label>
-          <label className={"btn btn-outline-dark btn-success".concat((this.state.movePlaceSelected === 1) ? " active" : "")}>
-            <input type="radio" id="movePlace" name="movePlace" value="on" onClick={() => { this.handleSelect("movePlace")}} />Move a Place
-          </label>
-        </div>
-        {this.state.removeSelected === 1 &&
-        <div className="input-group" role="group">
+          </div>
+          }
+          <div className="btn-group btn-group-toggle" data-toggle="buttons">
+            <label className={"btn btn-outline-dark btn-success".concat((this.state.removeSelected === 1) ? " active" : "")}>
+              <input type="radio" id="remove" name="remove" value="on" onClick={() => { this.handleSelect("remove")}} />Remove A Place
+            </label>
+            <label className={"btn btn-outline-dark btn-success".concat((this.state.reverseSelected === 1) ? " active" : "")}>
+              <input type="radio" id="reverse" name="reverse" value="on" onClick={() => { this.handleSelect("reverse")}} />Reverse The Trip
+            </label>
+            <label className={"btn btn-outline-dark btn-success".concat((this.state.movePlaceSelected === 1) ? " active" : "")}>
+              <input type="radio" id="movePlace" name="movePlace" value="on" onClick={() => { this.handleSelect("movePlace")}} />Move a Place
+            </label>
+          </div>
+          {this.state.removeSelected === 1 &&
+          <div className="input-group" role="group">
             <span>
               <input type="text" className="form-control" onChange={this.handleDestIndex} placeholder="Index to Remove"/>
               <span className="input-group-btn">
                 <button disabled={!hasDestIndex} className="btn btn-primary " onClick={this.edit} type="button">Submit</button>
               </span>
             </span>
-        </div>
-        }
-        {this.state.movePlaceSelected === 1 &&
-        <div className="input-group" role="group">
+          </div>
+          }
+          {this.state.movePlaceSelected === 1 &&
+          <div className="input-group" role="group">
             <span>
               <input type="text" className="form-control" onChange={this.handleTargetIndex} placeholder="Index to Move"/>
               <input type="text" className="form-control" onChange={this.handleDestIndex} placeholder="Index to Move To"/>
@@ -207,9 +207,9 @@ class UserEditing extends Component {
                 <button disabled={!hasDestIndex || !hasTargetIndex} className="btn btn-primary " onClick={this.edit} type="button">Submit</button>
               </span>
             </span>
+          </div>
+          }
         </div>
-        }
-      </div>
     )
   }
 }

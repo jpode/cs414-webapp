@@ -59,6 +59,12 @@ class Application extends Component {
           console.log(this.props.config.distances[key]);
         }
       }
+      console.log("Supported Filters:");
+      for (var key in this.props.config.filters) {
+        if (this.props.config.filters.hasOwnProperty(key)) {
+          console.log(this.props.config.filters[key]);
+        }
+      }
     }
   }
 
