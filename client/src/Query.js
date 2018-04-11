@@ -149,18 +149,15 @@ class Query extends Component {
               </span>
             </div>
             {this.state.selected === 1 &&
-            <div className="filter-group" role="group">
-              <span className="input-group">
-                Type:
-                <select id="mySelect">
-                  <option value="apple">Apple</option>
-                  <option value="orange">Orange</option>
-                  <option value="pineapple">Pineapple</option>
-                  <option value="banana">Banana</option>
-                </select>
-              </span>
-            <hr/>
-            </div>
+            <span className="input-group">
+              Type:
+              <select id="mySelect">
+                <option value="apple">Apple</option>
+                <option value="orange">Orange</option>
+                <option value="pineapple">Pineapple</option>
+                <option value="banana">Banana</option>
+              </select>
+            </span>
             }
             {numPlaces > 0 &&
             <table className="table table-responsive table-bordered">
