@@ -100,7 +100,8 @@ class Query extends Component {
     console.log(this.state.filters);
   }
 
-  createTable() {
+  createTable()
+  {
 
     let ids = [];
     let names = [];
@@ -120,8 +121,23 @@ class Query extends Component {
     return {ids, names, municipalities, btns};
   }
 
+  createFilters()
+  {
+    let types = [];
+    let countries = [];
+    let regions = [];
+    let continent = [];
+
+    if(typeof this.state.filters[0] != "undifined") {
+//      types = this.state.filters.map((item) => <option>{item.type}</option>);
+
+    }
+    return {types,countries,regions,continent};
+  }
+
   render() {
     let table = this.createTable();
+    let filter = this.createFilters();
     const numPlaces = this.state.places.length;
     const configVersion = parseInt(this.props.config.version);
 
@@ -152,10 +168,7 @@ class Query extends Component {
             <span className="input-group">
               Type:
               <select id="mySelect">
-                <option value="apple">Apple</option>
-                <option value="orange">Orange</option>
-                <option value="pineapple">Pineapple</option>
-                <option value="banana">Banana</option>
+                {filter.types}
               </select>
             </span>
             }
