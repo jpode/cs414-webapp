@@ -4,16 +4,28 @@ class Query extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    this.state={
+      selected: 0,
+      editType: "insert",
       search: "",
       filters: [],
-      places: []
+      places: [],
+      targetIndex: 1,
+      destIndex: 1,
+      newPlace: {
+        id: "",
+        name: "",
+        longitude: "",
+        latitude: ""
+      }
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.createTable = this.createTable.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleClear = this.handleClear.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
+    this.handleCreation = this.handleCreation.bind(this);
   }
 
   handleSubmit(event) {
@@ -66,10 +78,27 @@ class Query extends Component {
     }
   }
   //add the place to the current trip
-  addBtn(e)
+  handleAdd(e)
   {
     console.log(e);
+    let place = this.state.newPlace;
+    place.id = e.id;
+    place.name = e.name;
+    place.latitude = e.latitude;
+    place.longitude = e.longitude;
+    console.log(place);
+    this.setState({newPlace: place});
+    this.props.editTrip(this.state);
+  }
 
+  handleCreation(event){
+    this.setState({editType : "insert"});
+    if(this.state.selected === 0){
+      this.setState({selected : 1});
+    } else {
+      this.setState({selected : 0});
+    }
+    console.log(this.state.filters);
   }
 
   createTable() {
@@ -86,12 +115,8 @@ class Query extends Component {
       municipalities = this.state.places.map(
           (item) => <td>{item.municipality}</td>);
       btns = this.state.places.map(
-          (i) => <td><button className="btn btn-outline-dark btn-success" onClick={() => this.addBtn(i)} >Add</button></td>)
+          (i) => <td><button className="btn btn-outline-dark btn-success" onClick={() => this.handleAdd(i)} >Add</button></td>)
     }
-
-    console.log(ids);
-    console.log(names);
-    console.log(municipalities);
 
     return {ids, names, municipalities, btns};
   }
@@ -117,8 +142,27 @@ class Query extends Component {
               <span className="input-group-btn">
                 <button className="btn btn-outline-dark btn-success"
                         onClick={this.handleClear} type="button">Clear</button>
+                <div className="btn-group btn-group-toggle" data-toggle="buttons">
+                  <label className={"btn btn-outline-dark btn-success".concat((this.state.selected === 1) ? " active" : "")}>
+                    <input type="radio" id="new_place" name="new_place" value="on" onClick={this.handleCreation}/>Add Filters
+                  </label>
+                </div>
               </span>
             </div>
+            {this.state.selected === 1 &&
+            <div className="filter-group" role="group">
+              <span className="input-group">
+                Type:
+                <select id="mySelect">
+                  <option value="apple">Apple</option>
+                  <option value="orange">Orange</option>
+                  <option value="pineapple">Pineapple</option>
+                  <option value="banana">Banana</option>
+                </select>
+              </span>
+            <hr/>
+            </div>
+            }
             {numPlaces > 0 &&
             <table className="table table-responsive table-bordered">
               <tbody>
