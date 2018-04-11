@@ -95,11 +95,11 @@ class Trip extends Component {
             <p>Give your trip a title before planning or saving.</p>
             <div className="input-group" role="group">
               <span className="input-group-btn">
-              <button disabled = {!hasTitle} className="btn btn-success" onClick={this.plan} type="button">Plan</button>
+              <button disabled = {!hasTitle} className="btn btn-outline-dark btn-success" onClick={this.plan} type="button">Plan</button>
             </span>
               <input type="text" value={this.props.trip.title} className="form-control" onChange = {this.handleSubmit} placeholder="Trip title"/>
               <span className="input-group-btn">
-              <button disabled = {!hasTitle} className="btn btn-success " onClick={this.saveTFFI} type="button">Save</button>
+              <button disabled = {!hasTitle} className="btn btn-outline-dark btn-success" onClick={this.saveTFFI} type="button">Save</button>
             </span>
             </div>
             <Map trip={this.props.trip} />

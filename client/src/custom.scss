@@ -4,7 +4,32 @@
 
 .btn-success {
     background-color: #C8C372 !important;
+    btn:disabled,
+    btn[disabled] {
+        background-color: #C8C372 !important;
+        outline-color: #1E4D2B !important;
+    }
 }
+
+.table-success {
+    background-color: #C8C372 !important;
+    border-color: #1E4D2B !important;
+}
+
+input[type=text], textarea {
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    -ms-transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    outline: none;
+    border: 1px solid #DDDDDD;
+}
+
+input[type=text]:focus, textarea:focus {
+    box-shadow: 0 0 5px #1E4D2B;
+    border: 1px solid #1E4D2B;
+}
+
 
 body {
     font-family: 'prox-regular', sans-serif !important;

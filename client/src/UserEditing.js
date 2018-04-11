@@ -103,7 +103,7 @@ class UserEditing extends Component {
               <input type="text" className="form-control" onChange={this.handleCustomOrder} placeholder="Order In Trip"/>
               <span className="input-group-btn">
               <button disabled={!hasName || !hasLongitude || !hasLatitude || !hasDestIndex}
-                      className="btn btn-primary " onClick={this.handleInsert} type="button">Submit</button>
+                      className="btn btn-outline-dark btn-success" onClick={this.handleInsert} type="button">Submit</button>
               </span>
             </span>
           </div>
