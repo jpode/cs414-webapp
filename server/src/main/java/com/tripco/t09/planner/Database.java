@@ -79,7 +79,7 @@ public class Database {
 
   /**
    * Searches the database with the given search.
-   * @param SQL search statement.
+   * @param search - SQL statement.
    * @return SQL ResultSet object containing results from the query.
    */
   public ResultSet sendQuery(String search){
@@ -99,7 +99,7 @@ public class Database {
   /**
    * iterate through query results and create a new place object for each row,
    * stop when all results are added or until the limit (20) is reached.
-   * @param ResultSet object containing results of the SQL query.
+   * @param queryResult - ResultSet object containing results of the SQL query.
    */
   private void addPlaces(ResultSet queryResult) throws SQLException {
 
@@ -120,7 +120,7 @@ public class Database {
   /**
    * Creates a new filter object for each column of the ResultSet and adds it to the
    * global filters object.
-   * @param ResultSet object containing results of the SQL query.
+   * @param queryResult - ResultSet object containing results of the SQL query.
    */
   private void loadFilters(ResultSet queryResult) throws SQLException{
 
@@ -138,7 +138,7 @@ public class Database {
 
   /**
    * Adds selected filters to a query string.
-   * @param SQL query string to be modified
+   * @param queryString - SQL query string to be modified
    */
   private void addFilters(String queryString) throws SQLException{
     for(int i = 0; i < query.filters.size(); i++){
