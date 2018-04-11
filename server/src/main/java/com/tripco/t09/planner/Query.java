@@ -8,7 +8,7 @@ import spark.Request;
  * SQL query object that reflects tffi
  */
 public class Query {
-  // The variables in this class shold reflect a query TFFI.
+  // The variables in this class should reflect a query TFFI.
   public int version;
   public String type;
   public String query;
