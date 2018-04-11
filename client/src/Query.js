@@ -91,8 +91,7 @@ class Query extends Component {
     this.props.editTrip(this.state);
   }
 
-  handleCreation(event){
-    this.setState({editType : "insert"});
+  handleCreation(){
     if(this.state.selected === 0){
       this.setState({selected : 1});
     } else {
