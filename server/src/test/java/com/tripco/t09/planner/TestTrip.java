@@ -89,29 +89,29 @@ public class TestTrip {
         2.0);
     assertEquals(10700, trip.distanceHelper(-33.4, -70.666667, 35.652832, 139.839478), 2.0);
 
-    //checking nautical miles
-    option.distance = "nautical miles";
-    trip.options = option;
-    assertEquals(6347, trip.distanceHelper(49.246292, -123.116226, -41.31666667, 174.76666667),
-        2.0);
-    assertEquals(9298, trip.distanceHelper(-33.4, -70.666667, 35.652832, 139.839478), 2.0);
+//    //checking nautical miles
+//    option.distance = "nautical miles";
+//    trip.options = option;
+//    assertEquals(6347, trip.distanceHelper(49.246292, -123.116226, -41.31666667, 174.76666667),
+//        2.0);
+//    assertEquals(9298, trip.distanceHelper(-33.4, -70.666667, 35.652832, 139.839478), 2.0);
 
-    //checking user-defined distance units (meters)
-    option.distance = "user defined";
-    option.userRadius = "6371393";
-    option.userUnit = "meters";
-    trip.options = option;
-    assertEquals(11755560, trip.distanceHelper(49.246292, -123.116226, -41.31666667, 174.76666667),
-        2.0);
-    assertEquals(17221481, trip.distanceHelper(-33.4, -70.666667, 35.652832, 139.839478), 2.0);
-
-    // if cannot parse userRadius, should return distance in miles
-    option.distance = "user defined";
-    option.userRadius = "error";
-    option.userUnit = "error_test";
-    trip.options = option;
-    assertEquals(7304, trip.distanceHelper(49.246292, -123.116226, -41.31666667, 174.76666667),
-        2.0);
+//    //checking user-defined distance units (meters)
+//    option.distance = "user defined";
+//    option.userRadius = "6371393";
+//    option.userUnit = "meters";
+//    trip.options = option;
+//    assertEquals(11755560, trip.distanceHelper(49.246292, -123.116226, -41.31666667, 174.76666667),
+//        2.0);
+//    assertEquals(17221481, trip.distanceHelper(-33.4, -70.666667, 35.652832, 139.839478), 2.0);
+//
+//    // if cannot parse userRadius, should return distance in miles
+//    option.distance = "user defined";
+//    option.userRadius = "error";
+//    option.userUnit = "error_test";
+//    trip.options = option;
+//    assertEquals(7304, trip.distanceHelper(49.246292, -123.116226, -41.31666667, 174.76666667),
+//        2.0);
   }
 
   @Test
@@ -227,6 +227,64 @@ public class TestTrip {
 
   @Test
   public void testNearestNeighbor() {
+    ArrayList<Place> testPlaces = new ArrayList<Place>();
+    Option option = new Option();
+    option.distance = "miles";
+    option.optimization = "0.5";
+    trip.options = option;
+
+    Place placeA = new Place();
+    placeA.id = "foco";
+    placeA.name = "Fort Collins";
+    placeA.latitude = "40° 35' 06\" N";
+    placeA.longitude = "105° 05' 03\" W";
+
+    Place placeE = new Place();
+    placeE.id = "litl";
+    placeE.name = "Littleton";
+    placeE.latitude = "39° 36' 49\" N";
+    placeE.longitude = "105° 01' 00\" W";
+
+    Place placeC = new Place();
+    placeC.id = "grly";
+    placeC.name = "Greeley";
+    placeC.latitude = "40° 25' 23\" N";
+    placeC.longitude = "104° 42' 32\" W";
+
+    Place placeD = new Place();
+    placeD.id = "auro";
+    placeD.name = "Aurora";
+    placeD.latitude = "39° 43' 32\" N";
+    placeD.longitude = "104° 49' 32\" W";
+
+    Place placeB = new Place();
+    placeB.id = "lgmt";
+    placeB.name = "Longmont";
+    placeB.latitude = "40° 10' 01\" N";
+    placeB.longitude = "105° 06' 06\" W";
+
+    testPlaces.add(placeE); // Littleton
+    testPlaces.add(placeD); // Aurora
+    testPlaces.add(placeA); // Fort Collins
+    testPlaces.add(placeC); // Greeley
+    testPlaces.add(placeB); // Longmont
+
+    trip.places = testPlaces;
+    trip.plan();
+    trip.optimize();
+
+    ArrayList<Place> expectedOrder = new ArrayList<Place>();
+    expectedOrder.add(placeC);    // greeley
+    expectedOrder.add(placeA);    // then fort collins
+    expectedOrder.add(placeB);    // then longmont
+    expectedOrder.add(placeD);    // then aurora
+    expectedOrder.add(placeE);    // then littleton
+
+    assertEquals(expectedOrder, trip.places);
+  }
+
+  @Test
+  public void testNearestNeighbor2() {
     ArrayList<Place> testPlaces = new ArrayList<Place>();
     Option option = new Option();
     option.distance = "miles";
@@ -457,6 +515,7 @@ public class TestTrip {
     expectedOrder.add(placeE);  // bottom
     expectedOrder.add(placeC);  // right
 
+
     assertEquals(expectedOrder, trip.places);
 
   }
@@ -551,11 +610,11 @@ public class TestTrip {
     testPlaces.add(placeA); // Fort Collins
     testPlaces.add(placeC); // Greeley
     testPlaces.add(placeB); // Longmont
-    dists.add(0);
     dists.add(1100);        // dist from litt to auro
     dists.add(2200);        // dist from auro to foco
     dists.add(3300);        // dist from foco to gree
     dists.add(4400);        // dist from gree to long
+    dists.add(5500);        // dist from long to little
 
 
     edit.places = new ArrayList<>(testPlaces);  // so testPlaces can be reused
@@ -563,12 +622,12 @@ public class TestTrip {
     edit.editType = "reverse";
     System.out.print("Testing Reverse Trip: ");
 
+    expected.add(placeE);     // littleton
     expected.add(placeB);   // longmont
     expected.add(placeC);   // greeley
     expected.add(placeA);   // fort collins
     expected.add(placeD);    // aurora
-    expected.add(placeE);     // littleton
-    newDists.add(0);
+    newDists.add(5500);        // dist from litte to long
     newDists.add(4400);     // dist from long to gree
     newDists.add(3300);     // dist from gree to foco
     newDists.add(2200);     // dist from foco to auro
@@ -585,7 +644,7 @@ public class TestTrip {
     //test targetIndex = 0
     edit.places = new ArrayList<>(testPlaces);
     edit.distances = dists;
-    edit.editType = "changeStartPos";
+    edit.editType = "newStart";
     edit.targetIndex = 0;
     edit.changeStartPos();
     assertEquals(testPlaces, edit.places);

@@ -34,7 +34,6 @@ class UserEditing extends Component {
   }
 
   handleSelect(arg){
-
     this.setState({editType : arg});
     if(arg === "insert") {
       if (this.state.insertSelected === 0) {
@@ -51,7 +50,7 @@ class UserEditing extends Component {
     } else if(arg === "reverse") {
       if (this.state.reverseSelected === 0) {
         this.setState({reverseSelected: 1});
-        this.edit();
+        this.setState({editType : arg}, this.edit);
       } else {
         this.setState({reverseSelected: 0});
       }
@@ -69,6 +68,7 @@ class UserEditing extends Component {
       }
     }
 
+
   }
 
   edit(){
@@ -80,7 +80,7 @@ class UserEditing extends Component {
     if(event.target.value < 1){
       alert("Please enter a value greater than 0.")
     } else {
-      this.setState({destIndex: event.target.value});
+      this.setState({destIndex: event.target.value - 1});
     }
   }
 
@@ -88,7 +88,7 @@ class UserEditing extends Component {
     if(event.target.value < 1){
       alert("Please enter a value greater than 0.")
     } else {
-      this.setState({targetIndex: event.target.value});
+      this.setState({targetIndex: event.target.value - 1});
     }
   }
 
@@ -162,7 +162,7 @@ class UserEditing extends Component {
               <input type="text" className="form-control" onChange={this.handleDestIndex} placeholder="Order In Trip"/>
               <span className="input-group-btn">
                 <button disabled={!hasId || !hasName || !hasLongitude || !hasLatitude || !hasDestIndex}
-                        className="btn btn-primary " onClick={this.edit} type="button">Submit</button>
+                        className="btn btn-primary " onClick={() => {this.edit()}} type="button">Submit</button>
               </span>
             </span>
           </div>
@@ -172,7 +172,7 @@ class UserEditing extends Component {
             <span>
               <input type="text" className="form-control" onChange={this.handleTargetIndex} placeholder="Index of New Start"/>
               <span className="input-group-btn">
-                <button disabled={!hasDestIndex} className="btn btn-primary " onClick={this.edit} type="button">Submit</button>
+                <button disabled={!hasTargetIndex} className="btn btn-primary " onClick={() => {this.edit()}} type="button">Submit</button>
               </span>
             </span>
         </div>
@@ -191,9 +191,9 @@ class UserEditing extends Component {
         {this.state.removeSelected === 1 &&
         <div className="input-group" role="group">
             <span>
-              <input type="text" className="form-control" onChange={this.handleDestIndex} placeholder="Index to Remove"/>
+              <input type="text" className="form-control" onChange={this.handleTargetIndex} placeholder="Index to Remove"/>
               <span className="input-group-btn">
-                <button disabled={!hasDestIndex} className="btn btn-primary " onClick={this.edit} type="button">Submit</button>
+                <button disabled={!hasTargetIndex} className="btn btn-primary " onClick={() => {this.edit()}} type="button">Submit</button>
               </span>
             </span>
         </div>
@@ -204,7 +204,7 @@ class UserEditing extends Component {
               <input type="text" className="form-control" onChange={this.handleTargetIndex} placeholder="Index to Move"/>
               <input type="text" className="form-control" onChange={this.handleDestIndex} placeholder="Index to Move To"/>
               <span className="input-group-btn">
-                <button disabled={!hasDestIndex || !hasTargetIndex} className="btn btn-primary " onClick={this.edit} type="button">Submit</button>
+                <button disabled={!hasDestIndex || !hasTargetIndex} className="btn btn-primary " onClick={() => {this.edit()}} type="button">Submit</button>
               </span>
             </span>
         </div>

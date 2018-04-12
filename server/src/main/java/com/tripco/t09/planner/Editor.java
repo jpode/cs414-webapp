@@ -49,11 +49,15 @@ public class Editor {
       return -1;
     }
     try {
+      Place temp = places.get(0);
+      places.remove(0);
+      System.out.println("Storing " + temp.name);
       Collections.reverse(places);
+      places.add(0, temp);
       if(distances != null) {
         ArrayList<Integer> newDistances = new ArrayList<>();
-        newDistances.add(0);
-        for (int i = distances.size() - 1; i > 0; --i) {
+        //newDistances.add(0);
+        for (int i = distances.size() - 1; i >= 0; --i) {
           newDistances.add(distances.get(i));
         }
         distances = newDistances;
@@ -71,7 +75,7 @@ public class Editor {
    * @return 1,0
    */
   public int remove(){
-    if(verifyInit() == -1) {
+    if(verifyInit() == 1) {
       return -1;
     }
     places.remove(targetIndex);
@@ -91,6 +95,7 @@ public class Editor {
       System.out.println("Failed: Incorrect values");
       return -1;
     }
+
     ArrayList<Place> newPlaces = new ArrayList<>();
     newPlaces.add(places.get(targetIndex));
 
@@ -101,18 +106,36 @@ public class Editor {
       newPlaces.add(places.get(i));
     }
     places = newPlaces;
-    System.out.println("Changed start position");
-
     return 0;
   }
 
+  /**
+   * Moves the place specified by targetIndex to the location specified by destIndex.
+   * Requires replanning trip to recalculat optimal routes (if optimized), or at
+   * minimum distances (if not optimized).
+   * @return 1,0
+   */
+  public int movePlace(){
+    System.out.println("Moving place...");
+    if(verifyInit() == -1) {
+      System.out.println("Failed: Incorrect values");
+      return -1;
+    }
+
+    Place temp = places.get(targetIndex);
+    places.remove(targetIndex);
+    places.add(destIndex, temp);
+
+    System.out.println("Moved");
+    return 0;
+  }
   /**
    * verifyInit() checks the necessary fields are appropriately assigned values, depending on
    * the specific request.
    * @return 1,0
    */
   public int verifyInit(){
-    if(editType.equals("remove") || editType.equals("changeStartPos")){
+    if(editType.equals("remove") || editType.equals("newStart")){
       if(places == null || targetIndex < 0 || targetIndex > places.size()) {
         return -1;
       }
