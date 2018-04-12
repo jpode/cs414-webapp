@@ -26,6 +26,8 @@ class Query extends Component {
     this.handleClear = this.handleClear.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
     this.handleCreation = this.handleCreation.bind(this);
+    this.handleApplyFilters = this.handleApplyFilters.bind(this);
+    this.handleClearFilters = this.handleClearFilters.bind(this);
   }
 
   handleSubmit(event) {
@@ -100,7 +102,45 @@ class Query extends Component {
   }
 
   handleApplyFilters() {
+    let filters = this.state.filters;
+    var e = document.getElementById("typeSelect");
+    if(e.options[e.selectedIndex].value != "(none)") {
+      var strUser = e.options[e.selectedIndex].value;
+      // console.log(strUser);
+      // if(!filters.includes(strUser)) {
+        filters = filters.concat(strUser);
+      }
+    // }
+    // if(e.options[e.selectedIndex].value != "(none)") {
+    //   e = document.getElementById("countriesSelect");
+    //   strUser = e.options[e.selectedIndex].value;
+    //   console.log(strUser);
+    //   if(!filters.includes(strUser)) {
+    //     filters = filters.concat(strUser);
+    //   }
+    // }
+    // if(e.options[e.selectedIndex].value != "(none)") {
+    //   e = document.getElementById("regionSelect");
+    //   strUser = e.options[e.selectedIndex].value;
+    //   console.log(strUser);
+    //   if(!filters.includes(strUser)) {
+    //     filters = filters.concat(strUser);
+    //   }
+    // }
+    // if(e.options[e.selectedIndex].value != "(none)") {
+    //   e = document.getElementById("continentSelect");
+    //   strUser = e.options[e.selectedIndex].value;
+    //   console.log(strUser);
+    //   if(!filters.includes(strUser)) {
+    //     filters = filters.concat(strUser);
+    //   }
+    // }
+    this.setState({filters: filters});
+    console.log(this.state.filters);
+  }
 
+  handleClearFilters() {
+    this.setState({filters: []});
   }
 
   createTable()
@@ -173,28 +213,35 @@ class Query extends Component {
               <span className="input-group">
                 Type:
                 <select id="typeSelect">
+                  <option value="(none)"> (none)</option>
                   {filter.types}
                 </select>
               </span>
               <span className="input-group">
                 Country:
                 <select id="countriesSelect">
+                  <option value="(none)"> (none)</option>
                   {filter.countries}
                 </select>
               </span>
               <span className="input-group">
                 Region:
                 <select id="regionSelect">
+                  <option value="(none)"> (none)</option>
                   {filter.regions}
                 </select>
               </span>
               <span className="input-group">
                 Continent:
-                <select id="countinentSelect">
+                <select id="continentSelect">
+                  <option value="(none)"> (none)</option>
                   {filter.continents}
                 </select>
               </span>
-              <button className="btn btn-outline-dark btn-success" onClick={this.handleApplyFilters} > Apply Filters </button>
+              <span>
+               <button className="btn btn-outline-dark btn-success" onClick={this.handleApplyFilters} > Apply Filters </button>
+               <button className="btn btn-outline-dark btn-success" onClick={this.handleClearFilters} > Clear Filters </button>
+              </span>
               <hr/>
             </div>
             }
