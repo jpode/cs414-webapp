@@ -189,9 +189,18 @@ public class Database {
         loadFilters(rs);
         rs.close();
       }
-      {
-        return filters;
+      rs = sendQuery("SELECT DISTINCT(region.name) AS region FROM region INNER JOIN airports ON "
+          + "region.id=airports.iso_region WHERE region.name != '(unassigned)' ORDER BY region.name");
+      if (rs != null) {
+        loadFilters(rs);
+        rs.close();
       }
+      rs = sendQuery("SELECT DISTINCT(continents.name) AS continents FROM continents ORDER BY name");
+      if (rs != null) {
+        loadFilters(rs);
+        rs.close();
+      }
+        return filters;
       } catch (Exception e) {
         System.err.println("Exception in retrieving filters: " + e.getMessage());
       }

@@ -99,6 +99,10 @@ class Query extends Component {
     }
   }
 
+  handleApplyFilters() {
+
+  }
+
   createTable()
   {
 
@@ -125,13 +129,15 @@ class Query extends Component {
     let types = [];
     let countries = [];
     let regions = [];
-    let continent = [];
+    let continents = [];
 
     if(this.props.config.filters.length > 0) {
-      console.log(this.props.config.filters[0]);
       types = this.props.config.filters[0].values.map((item) => <option value={item} > {item}</option>);
+      countries = this.props.config.filters[1].values.map((item) => <option value={item} > {item}</option>);
+      regions = this.props.config.filters[2].values.map((item) => <option value={item} > {item}</option>);
+      continents = this.props.config.filters[3].values.map((item) => <option value={item} > {item}</option>);
     }
-    return {types,countries,regions,continent};
+    return {types,countries,regions,continents};
   }
 
   render() {
@@ -139,7 +145,6 @@ class Query extends Component {
     let filter = this.createFilters();
     const numPlaces = this.state.places.length;
     const configVersion = parseInt(this.props.config.version);
-    console.log("fooBar");
     if (configVersion > 1) {
       return (
           <div>
@@ -158,19 +163,41 @@ class Query extends Component {
                         onClick={this.handleClear} type="button">Clear</button>
                 <div className="btn-group btn-group-toggle" data-toggle="buttons">
                   <label className={"btn btn-outline-dark btn-success".concat((this.state.selected == 1) ? " active" : "")}>
-                    <input type="radio" id="new_place" name="new_place" value="on"/>Add Filters
+                    <input type="radio" id="new_place" name="new_place" value="on" onClick={this.handleCreation} />Add Filters
                   </label>
                 </div>
               </span>
             </div>
+            {this.state.selected == 1 &&
             <div>
               <span className="input-group">
                 Type:
-                <select id="mySelect">
+                <select id="typeSelect">
                   {filter.types}
                 </select>
               </span>
+              <span className="input-group">
+                Country:
+                <select id="countriesSelect">
+                  {filter.countries}
+                </select>
+              </span>
+              <span className="input-group">
+                Region:
+                <select id="regionSelect">
+                  {filter.regions}
+                </select>
+              </span>
+              <span className="input-group">
+                Continent:
+                <select id="countinentSelect">
+                  {filter.continents}
+                </select>
+              </span>
+              <button className="btn btn-outline-dark btn-success" onClick={this.handleApplyFilters} > Apply Filters </button>
+              <hr/>
             </div>
+            }
             {numPlaces > 0 &&
             <table className="table table-responsive table-bordered">
               <tbody>
