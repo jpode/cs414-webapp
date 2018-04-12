@@ -66,7 +66,7 @@ public class Database {
         + "OR municipality LIKE '%" + query.query + "%' OR keywords LIKE '%" + query.query + "%')";
 
     try {
-      addFilters(search);
+      search = addFilters(search);
       ResultSet rs = sendQuery(search);
       if(rs != null) {
         addPlaces(rs);
@@ -140,34 +140,70 @@ public class Database {
    * Adds selected filters to a query string.
    * @param queryString - SQL query string to be modified
    */
-  private void addFilters(String queryString) throws SQLException{
+  private String addFilters(String queryString) throws SQLException{
     for(int i = 0; i < query.filters.size(); i++){
       if(query.filters.get(i).attribute.equals("type")){
-        queryString += "AND (";
+        System.out.println("Adding type filter");
+        queryString += " AND (";
         for(int j = 0; j < query.filters.get(i).values.size(); j++){
           if(j > 0){
             queryString += " OR ";
           }
-          queryString += "type=" + query.filters.get(i).values.get(j);
+          queryString += "type='" + query.filters.get(i).values.get(j) + "'";
         }
         queryString += ") ";
       }
       if(query.filters.get(i).attribute.equals("country")){
-        queryString += "AND (";
+        queryString += " AND (";
         for(int j = 0; j < query.filters.get(i).values.size(); j++){
           if(j > 0){
             queryString += " OR ";
           }
-          queryString += "iso_country=" + getCountryId(query.filters.get(i).values.get(j));
+          queryString += "iso_country='" + getCountryId(query.filters.get(i).values.get(j) + "'");
+        }
+        queryString += ") ";
+      }
+      if(query.filters.get(i).attribute.equals("region")){
+        queryString += " AND (";
+        for(int j = 0; j < query.filters.get(i).values.size(); j++){
+          if(j > 0){
+            queryString += " OR ";
+          }
+          queryString += "iso_region='" + getRegionId(query.filters.get(i).values.get(j) + "'");
+        }
+        queryString += ") ";
+      }
+      if(query.filters.get(i).attribute.equals("continent")){
+        queryString += " AND (";
+        for(int j = 0; j < query.filters.get(i).values.size(); j++){
+          if(j > 0){
+            queryString += " OR ";
+          }
+          queryString += "continent='" + getContinentId(query.filters.get(i).values.get(j) + "'");
         }
         queryString += ") ";
       }
     }
+
+    System.out.println(queryString);
+    return queryString;
   }
 
   private String getCountryId(String country) throws SQLException{
     Statement stQuery = conn.createStatement();
-    ResultSet rs = sendQuery("SELECT id FROM country WHERE name=" + country);
+    ResultSet rs = sendQuery("SELECT id FROM country WHERE name='" + country);
+    return rs.getString("id");
+  }
+
+  private String getRegionId(String region) throws SQLException{
+    Statement stQuery = conn.createStatement();
+    ResultSet rs = sendQuery("SELECT id FROM region WHERE name='" + region);
+    return rs.getString("id");
+  }
+
+  private String getContinentId(String continent) throws SQLException{
+    Statement stQuery = conn.createStatement();
+    ResultSet rs = sendQuery("SELECT id FROM continent WHERE name='" + continent);
     return rs.getString("id");
   }
 

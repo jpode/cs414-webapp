@@ -9,6 +9,10 @@ class Query extends Component {
       editType: "insert",
       search: "",
       filters: [],
+      newFilter: {
+        attribute : "",
+        values : []
+      },
       places: [],
       targetIndex: 1,
       destIndex: 1,
@@ -28,6 +32,7 @@ class Query extends Component {
     this.handleCreation = this.handleCreation.bind(this);
     this.handleApplyFilters = this.handleApplyFilters.bind(this);
     this.handleClearFilters = this.handleClearFilters.bind(this);
+    this.concatFilter= this.concatFilter.bind(this);
   }
 
   handleSubmit(event) {
@@ -101,15 +106,34 @@ class Query extends Component {
     }
   }
 
-  handleApplyFilters() {
+  concatFilter(){
     let filters = this.state.filters;
+    filters = filters.concat(this.state.newFilter);
+    this.setState({filters: filters});
+    console.log(this.state.filters);
+  }
+
+  handleApplyFilters() {
     var e = document.getElementById("typeSelect");
     if(e.options[e.selectedIndex].value != "(none)") {
       var strUser = e.options[e.selectedIndex].value;
-      // console.log(strUser);
-      // if(!filters.includes(strUser)) {
-        filters = filters.concat(strUser);
+      this.setState({newFilter: {attribute : "type", values: [strUser]}}, this.concatFilter);
       }
+    e = document.getElementById("countriesSelect");
+    if(e.options[e.selectedIndex].value != "(none)") {
+      var strUser = e.options[e.selectedIndex].value;
+      this.setState({newFilter: {attribute : "country", values: [strUser]}}, this.concatFilter);
+    }
+    var e = document.getElementById("regionSelect");
+    if(e.options[e.selectedIndex].value != "(none)") {
+      var strUser = e.options[e.selectedIndex].value;
+      this.setState({newFilter: {attribute : "region", values: [strUser]}}, this.concatFilter);
+    }
+    var e = document.getElementById("continentSelect");
+    if(e.options[e.selectedIndex].value != "(none)") {
+      var strUser = e.options[e.selectedIndex].value;
+      this.setState({newFilter: {attribute : "continent", values: [strUser]}}, this.concatFilter);
+    }
     // }
     // if(e.options[e.selectedIndex].value != "(none)") {
     //   e = document.getElementById("countriesSelect");
@@ -135,8 +159,6 @@ class Query extends Component {
     //     filters = filters.concat(strUser);
     //   }
     // }
-    this.setState({filters: filters});
-    console.log(this.state.filters);
   }
 
   handleClearFilters() {
@@ -217,27 +239,27 @@ class Query extends Component {
                   {filter.types}
                 </select>
               </span>
-              <span className="input-group">
-                Country:
-                <select id="countriesSelect">
-                  <option value="(none)"> (none)</option>
-                  {filter.countries}
-                </select>
-              </span>
-              <span className="input-group">
-                Region:
-                <select id="regionSelect">
-                  <option value="(none)"> (none)</option>
-                  {filter.regions}
-                </select>
-              </span>
-              <span className="input-group">
-                Continent:
-                <select id="continentSelect">
-                  <option value="(none)"> (none)</option>
-                  {filter.continents}
-                </select>
-              </span>
+              {/*<span className="input-group">*/}
+                {/*Country:*/}
+                {/*<select id="countriesSelect">*/}
+                  {/*<option value="(none)"> (none)</option>*/}
+                  {/*{filter.countries}*/}
+                {/*</select>*/}
+              {/*</span>*/}
+              {/*<span className="input-group">*/}
+                {/*Region:*/}
+                {/*<select id="regionSelect">*/}
+                  {/*<option value="(none)"> (none)</option>*/}
+                  {/*{filter.regions}*/}
+                {/*</select>*/}
+              {/*</span>*/}
+              {/*<span className="input-group">*/}
+                {/*Continent:*/}
+                {/*<select id="continentSelect">*/}
+                  {/*<option value="(none)"> (none)</option>*/}
+                  {/*{filter.continents}*/}
+                {/*</select>*/}
+              {/*</span>*/}
               <span>
                <button className="btn btn-outline-dark btn-success" onClick={this.handleApplyFilters} > Apply Filters </button>
                <button className="btn btn-outline-dark btn-success" onClick={this.handleClearFilters} > Clear Filters </button>
