@@ -9,6 +9,10 @@ class Query extends Component {
       editType: "insert",
       search: "",
       filters: [],
+      newFilter: {
+        attribute : "",
+        values : []
+      },
       places: [],
       targetIndex: 1,
       destIndex: 1,
@@ -26,6 +30,9 @@ class Query extends Component {
     this.handleClear = this.handleClear.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
     this.handleCreation = this.handleCreation.bind(this);
+    this.handleApplyFilters = this.handleApplyFilters.bind(this);
+    this.handleClearFilters = this.handleClearFilters.bind(this);
+    this.concatFilter= this.concatFilter.bind(this);
   }
 
   handleSubmit(event) {
@@ -97,10 +104,69 @@ class Query extends Component {
     } else {
       this.setState({selected : 0});
     }
+  }
+
+  concatFilter(){
+    let filters = this.state.filters;
+    filters = filters.concat(this.state.newFilter);
+    this.setState({filters: filters});
     console.log(this.state.filters);
   }
 
-  createTable() {
+  handleApplyFilters() {
+    var e = document.getElementById("typeSelect");
+    if(e.options[e.selectedIndex].value != "(none)") {
+      var strUser = e.options[e.selectedIndex].value;
+      this.setState({newFilter: {attribute : "type", values: [strUser]}}, this.concatFilter);
+      }
+    e = document.getElementById("countriesSelect");
+    if(e.options[e.selectedIndex].value != "(none)") {
+      var strUser = e.options[e.selectedIndex].value;
+      this.setState({newFilter: {attribute : "country", values: [strUser]}}, this.concatFilter);
+    }
+    var e = document.getElementById("regionSelect");
+    if(e.options[e.selectedIndex].value != "(none)") {
+      var strUser = e.options[e.selectedIndex].value;
+      this.setState({newFilter: {attribute : "region", values: [strUser]}}, this.concatFilter);
+    }
+    var e = document.getElementById("continentSelect");
+    if(e.options[e.selectedIndex].value != "(none)") {
+      var strUser = e.options[e.selectedIndex].value;
+      this.setState({newFilter: {attribute : "continent", values: [strUser]}}, this.concatFilter);
+    }
+    // }
+    // if(e.options[e.selectedIndex].value != "(none)") {
+    //   e = document.getElementById("countriesSelect");
+    //   strUser = e.options[e.selectedIndex].value;
+    //   console.log(strUser);
+    //   if(!filters.includes(strUser)) {
+    //     filters = filters.concat(strUser);
+    //   }
+    // }
+    // if(e.options[e.selectedIndex].value != "(none)") {
+    //   e = document.getElementById("regionSelect");
+    //   strUser = e.options[e.selectedIndex].value;
+    //   console.log(strUser);
+    //   if(!filters.includes(strUser)) {
+    //     filters = filters.concat(strUser);
+    //   }
+    // }
+    // if(e.options[e.selectedIndex].value != "(none)") {
+    //   e = document.getElementById("continentSelect");
+    //   strUser = e.options[e.selectedIndex].value;
+    //   console.log(strUser);
+    //   if(!filters.includes(strUser)) {
+    //     filters = filters.concat(strUser);
+    //   }
+    // }
+  }
+
+  handleClearFilters() {
+    this.setState({filters: []});
+  }
+
+  createTable()
+  {
 
     let ids = [];
     let names = [];
@@ -114,17 +180,33 @@ class Query extends Component {
       municipalities = this.state.places.map(
           (item) => <td>{item.municipality}</td>);
       btns = this.state.places.map(
-          (i) => <td><button className="btn btn-outline-dark btn-success" onClick={() => this.handleAdd(i)} >Add</button></td>)
+          (i) => <td><button className="btn btn-outline-dark btn-success" onClick={() => this.handleAdd(i)} >Add</button></td>);
     }
 
     return {ids, names, municipalities, btns};
   }
 
+  createFilters()
+  {
+    let types = [];
+    let countries = [];
+    let regions = [];
+    let continents = [];
+
+    if(this.props.config.filters.length > 0) {
+      types = this.props.config.filters[0].values.map((item) => <option value={item} > {item}</option>);
+      countries = this.props.config.filters[1].values.map((item) => <option value={item} > {item}</option>);
+      regions = this.props.config.filters[2].values.map((item) => <option value={item} > {item}</option>);
+      continents = this.props.config.filters[3].values.map((item) => <option value={item} > {item}</option>);
+    }
+    return {types,countries,regions,continents};
+  }
+
   render() {
     let table = this.createTable();
+    let filter = this.createFilters();
     const numPlaces = this.state.places.length;
     const configVersion = parseInt(this.props.config.version);
-
     if (configVersion > 1) {
       return (
           <div>
@@ -142,22 +224,48 @@ class Query extends Component {
                 <button className="btn btn-outline-dark btn-success"
                         onClick={this.handleClear} type="button">Clear</button>
                 <div className="btn-group btn-group-toggle" data-toggle="buttons">
-                  <label className={"btn btn-outline-dark btn-success".concat((this.state.selected === 1) ? " active" : "")}>
-                    <input type="radio" id="new_place" name="new_place" value="on" onClick={this.handleCreation}/>Add Filters
+                  <label className={"btn btn-outline-dark btn-success".concat((this.state.selected == 1) ? " active" : "")}>
+                    <input type="radio" id="new_place" name="new_place" value="on" onClick={this.handleCreation} />Add Filters
                   </label>
                 </div>
               </span>
             </div>
-            {this.state.selected === 1 &&
-            <span className="input-group">
-              Type:
-              <select id="mySelect">
-                <option value="apple">Apple</option>
-                <option value="orange">Orange</option>
-                <option value="pineapple">Pineapple</option>
-                <option value="banana">Banana</option>
-              </select>
-            </span>
+            {this.state.selected == 1 &&
+            <div>
+              <span className="input-group">
+                Type:
+                <select id="typeSelect">
+                  <option value="(none)"> (none)</option>
+                  {filter.types}
+                </select>
+              </span>
+              {/*<span className="input-group">*/}
+                {/*Country:*/}
+                {/*<select id="countriesSelect">*/}
+                  {/*<option value="(none)"> (none)</option>*/}
+                  {/*{filter.countries}*/}
+                {/*</select>*/}
+              {/*</span>*/}
+              {/*<span className="input-group">*/}
+                {/*Region:*/}
+                {/*<select id="regionSelect">*/}
+                  {/*<option value="(none)"> (none)</option>*/}
+                  {/*{filter.regions}*/}
+                {/*</select>*/}
+              {/*</span>*/}
+              {/*<span className="input-group">*/}
+                {/*Continent:*/}
+                {/*<select id="continentSelect">*/}
+                  {/*<option value="(none)"> (none)</option>*/}
+                  {/*{filter.continents}*/}
+                {/*</select>*/}
+              {/*</span>*/}
+              <span>
+               <button className="btn btn-outline-dark btn-success" onClick={this.handleApplyFilters} > Apply Filters </button>
+               <button className="btn btn-outline-dark btn-success" onClick={this.handleClearFilters} > Clear Filters </button>
+              </span>
+              <hr/>
+            </div>
             }
             {numPlaces > 0 &&
             <table className="table table-responsive table-bordered">

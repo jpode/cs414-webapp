@@ -14,7 +14,8 @@ class App extends Component {
         maps : [],
         optimization: 0,
         optimizations: [],
-        distances: []
+        distances: [],
+        filters: []
 
       }
     }
