@@ -29,7 +29,7 @@ public class Trip {
   public ArrayList<Place> places;
   public ArrayList<Integer> distances;
   public String map;
-  public transient int[][] memoDists;
+  public transient int[][] memoDists;   // memoDists will always be in miles, and converted as needed
 
   //public int[][] distArr;
   // notes for memoization: how should indexes be handled? We could do it by index in places,
@@ -53,11 +53,11 @@ public class Trip {
         this.map = svg();
         System.out.println("calculating distances...");
         this.distances = legDistances();
+        finalizeDists();
       }
     } catch (NullPointerException e) {
       return;
     }
-
   }
 
   /**
@@ -252,6 +252,33 @@ public class Trip {
     return temp;
   }
 
+  protected void finalizeDists(){
+    double factor = 1;
+    try {
+      if (this.options.distance.compareTo("user defined") == 0) {
+        double rad;
+        try {
+          rad = Double.parseDouble(this.options.userRadius);
+          factor = (rad / (double) 3959);
+        } catch (NumberFormatException e) {
+          this.options.userUnit = "miles";
+          System.out.println("Unable to parse User-Defined radius");
+        }
+      } else if (this.options.distance.compareTo("kilometers") == 0) {
+        factor = 1.60934;
+      } else if (this.options.distance.compareTo("nautical miles") == 0) {
+        factor = 0.868976;
+      }
+    } catch (NullPointerException e) {
+      return;
+    }
+    for(int i = 0; i < distances.size(); ++i){
+      int temp = distances.get(i);
+      distances.set(i, (int) Math.round(factor * distances.get(i)));
+    }
+  }
+
+
   /**
    * Verifies that all places currently in the places arraylist are
    * valid and are within acceptable coordinate boundaries. Any
@@ -289,28 +316,8 @@ public class Trip {
     double z = Math.sin(ptB_LAT) - Math.sin(ptA_LAT);
     double c = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
     double central_angle = 2 * Math.asin(c / 2);
+    return (int) Math.round(3959 * central_angle);
 
-    try {
-      if (this.options.distance.compareTo("user defined") == 0) {
-        double rad;
-        try {
-          rad = Double.parseDouble(this.options.userRadius);
-        } catch (NumberFormatException e) {
-          rad = 3959;
-          this.options.userUnit = "miles";
-          System.out.println("Unable to parse User-Defined radius");
-        }
-        return (int) Math.round(rad * central_angle);
-      } else if (this.options.distance.compareTo("kilometers") == 0) {
-        return (int) Math.round(6371 * central_angle);
-      } else if (this.options.distance.compareTo("nautical miles") == 0) {
-        return (int) Math.round(3440.0695 * central_angle);
-      } else {
-        return (int) Math.round(3959 * central_angle);
-      }
-    } catch (NullPointerException e) {
-      return (int) Math.round(3959 * central_angle);
-    }
   }
 
   /**
