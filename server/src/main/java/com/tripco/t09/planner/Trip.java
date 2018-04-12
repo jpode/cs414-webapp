@@ -50,7 +50,12 @@ public class Trip {
     }
     try {
       if (places.size() > 1) {
-        this.map = svg();
+        if(version < 3){
+          this.map = svg();
+        }
+        else{
+          this.map = worldSvg();
+        }
         System.out.println("calculating distances...");
         this.distances = legDistances();
         finalizeDists();
@@ -124,6 +129,76 @@ public class Trip {
     return totalDist;
   }
 
+  private double convertWorldLatSVG(String lat){
+    double result;
+    double y = convertCoordinate(lat);
+    result = 256 + (2.84444444444444444 * y);
+    return result;
+  }
+
+  private double convertWorldLongSVG(String lon){
+    double result;
+    double y = convertCoordinate(lon);
+    result = 512 + (2.8444444444444444444444 * y);
+    return result;
+  }
+        //  System.out.println(this.map);
+
+  private String worldSvg() {
+    InputStream is = getClass().getResourceAsStream("/world.svg");
+    BufferedReader br = new BufferedReader(new InputStreamReader(is));
+    StringBuffer stringBuffer = new StringBuffer();
+    String line ="";
+    //try {
+//      String path = "\n<svg width=\"1024\" height=\"512\" xmlns=\"http://www.w3.org/2000/svg\">\n<g>\n";
+//      String points = "";
+//      //
+//      double lastLat = convertWorldLatSVG(places.get(0).latitude);
+//      double lastLong = convertWorldLongSVG(places.get(0).longitude);
+//      for(int i = 1; i < places.size(); i++) {
+//        // String newPoint = "";
+//        double newLat = convertWorldLatSVG(places.get(i).latitude);
+//        double newLong = convertWorldLongSVG(places.get(i).longitude);
+//
+//        if (i == places.size() - 1) {
+//          //add path from last to new, then:
+//          path += "<line id=\"" + i + "\" x1=";
+//          path += "\"" + lastLat + "\" y1=\"" + lastLong + "\" x2=\"" + newLat + "\" y2=\"" + newLong + "\" style=\"stroke:rgb(255,0,0);stroke-width:2\"/>\n";
+//          lastLat = convertWorldLatSVG(places.get(0).latitude);
+//          lastLong = convertWorldLongSVG(places.get(0).longitude);
+//          // now calculate from new to last and done! (for round trip)
+//          path += "<line id=\"" + i + "\" x1=";
+//          path += "\"" + newLat + "\" y1=\"" + newLong + "\" x2=\"" + lastLat + "\" y2=\"" + lastLong + "\" style=\"stroke:rgb(255,0,0);stroke-width:2\"/>\n";
+//        } else {
+//          lastLat = newLat;
+//          lastLong = newLong;
+//          //calculate path from last to new
+//          path += "<line id=\"" + i + "\" x1=";
+//          path += "\"" + lastLat + "\" y1=\"" + lastLong + "\" x2=\"" + newLat + "\" y2=\"" + newLong + "\" style=\"stroke:rgb(255,0,0);stroke-width:2\"/>\n";
+//        }
+//      }
+//        path += points + "</g>\n</svg>\n";
+//
+    try {
+
+      while ( (line = br.readLine()) != null) {
+        stringBuffer.append(line);
+        stringBuffer.append("\n");
+      }
+//
+//
+//      stringBuffer.insert(stringBuffer.length()-8, path);
+//      stringBuffer.append(points);
+//      System.out.println(stringBuffer.toString());
+      is.close();
+//      System.out.println(stringBuffer.toString());
+//
+return stringBuffer.toString();
+    } catch (IOException ioe) {
+      System.out.println("ERROR: colorado.svg failed to be read by BufferedReader in Trip.java.");
+      return null;
+    }
+  }
 
 
   /**
