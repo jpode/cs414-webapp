@@ -47,7 +47,7 @@ Epics planned for this release.
 * *Client Side UI Improvements (usability, error-checking)*
 * *Speed Up the Computation on the Server*
 
-Surprisingly, this sprint has 51 story points, as compared to 52 for last sprint. Unfortunately, we were not able to accomplish all story points for last sprint; however, we have discussed this as a team and feel we are fully capable of taking on this amount. Spring break was tough, and we had a few discussions that leads us to believe this is very achievable.
+Surprisingly, this sprint has 65 story points, as compared to 52 for last sprint. Unfortunately, we were not able to accomplish all story points for last sprint; however, we have discussed this as a team and feel we are fully capable of taking on this amount. Spring break was tough, and we had a few discussions that leads us to believe this is very achievable.
 
 ## Metrics
 
