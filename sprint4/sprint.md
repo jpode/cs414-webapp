@@ -53,40 +53,56 @@ Surprisingly, this sprint has 51 story points, as compared to 52 for last sprint
 
 Statistic | Planned | Completed
 --- | ---: | ---:
-Tasks |  *21*   | *value* 
-Story Points |  *51*  | *value* 
+Tasks |  *41*   | *38* 
+Story Points |  *65*  | *57* 
 
 ## Daily Scrums
 
 Date | Tasks done  | Tasks in progress | Impediments 
 :--- | :--- | :--- | :--- 
-*date* | *@task only* | *@task only* | none
+*3/26* | *0* | *2* | none
+*3/28* | *6* | *10* | none
+*4/1* | *7* | *6* | none
+*4/5* | *13* | *11* | Waiting for server modifications before implementing client side changes
+*4/8* | *21* | *12* | Waiting on map implementation before pushing 2Opt etc. changes (for debugging)
+*4/10* | *27* | *6* | none
+*4/11* | *38* | *3* | Did not get maps implemented in time. Pushed all waiting pull requests without visual confirmation.
  | | | 
  
 
 ## Review
 
 #### Completed epics in Sprint Backlog 
-* *user story*:  *comments*
-* 
+* *Let user reverse order of trip*:  *Very quick to render new trip, good client side UI!*
+* *Speed up computation on server*:  *Our 2-Opt and NN is now very, very quick. Only further improvements will be threads.*
+* *Build a trip from existing information*:  *We now accept multiple TFFI files, differing distance units, optimization levels, etc.*
+* *Design a trip from scratch / manually*:  *You can now create a trip entirely from locations either queried from a database(s), or manually input locations.*
+* *Plan trips outside of Colorado*:  *We can now plan trips all over the world! All features that used to be exclusive to Colorado have been scaled to global proportions.*
+* *Filtered Search*:  *Not only can you query for locations, you can filter the search results!*
+* *Client-side UI improvements*:  *We made MASSIVE improvements to our UI and user-friendliness. Although still not perfect, we eliminated all known bugs, worked on better test cases, and streamlined the user experience.*
+* *Let the user choose a new starting location*:  *Pretty self explanatory, but adds to the user-experience.*
+* *Shorter trips #2*:  *Nearest Neighbor and 2-Opt are not only accurate, but fast. Also, we implemented a cache for previously calculated optimizations on the same trip; so, moving from NN - 2Opt back to NN is instantaneous.*
+* *Distance Units*:  *We now support miles, kilometers, nautical miles, and user-inputted distance units, all within a user-friendly UI.*
+*
 
 #### Incomplete epics in Sprint Backlog 
-* *user story*: *explanation...*
+* *Zoom and pan the map*: *Unfortunately, this rather large part of the sprint was left uncompleted. We will be setting up a meeting with Dave to discuss the reasons why.*
+* *Give the user the option of what to display in the itinerary*: *I think we just overestimated what we could do with only three people. We were able to accomplish a significant amount, but this was one of the lower-priority epics we decided to do without.*
 *
 
 #### What went well
-* *something*
+* *We did a significant amount of work in a short amount of time with only three people! I think what we were able to accomplish was pretty impressive, especially considering what we did complete is bug-free for casual use (I'm sure there are ways for a dedicated person to break our server, but a casual user will not encounter any unexpected results). All in all, it was a really good sprint, with great communication and cooperation between most of us!*
 *
 
 #### Problems encountered and resolutions
-* *something*
+* *The only problem we ran into is something we will be meeting with Dave to discuss. Other than that, things actually went pretty smoothly!*
 *
 
 ## Retrospective
 
 Topic | Teamwork | Process | Tools
 :--- | :--- | :--- | :---
-What we will change this time |  |  | 
-What we did well |  |  | 
-What we need to work on |  |  |
-What we will change next time |  |  | 
+What we will change this time | We really need to work on communicating things that are not getting done. Unfortunately, this ended up in another late Wednesday rush, trying to implement last minute epics whose progress was not communicated well. | I think our process was actually great this sprint. Luke and Jake both caught bugs in branches before they were pushed, which was great, and all-in-all we did get a lot done. Perhaps better focus on the daily scrums, but that's all I can think of. | I think we are using our tools pretty well, but I do think we should emphasize continuing code climate coverage, and implementing system/javascript testing.
+What we did well | We mostly had awesome teamwork this sprint! Great communication, frequent meetings, cooperation on different aspects of the code; it definitely helped us accomplish as much as we did! | Our burndown chart is probably the best we've had, especially considering the long period in the front is due to the planning period. If shifted, we are pretty close to optimal! | We were great with maintaining code climate coverages, writing new tests as code was developed, etc. We definitely made use of the tools available to us. 
+What we need to work on | This is something we will discuss with Dave. | Our process was mostly great, but it has seemed to be a frequent issue that uncompleted epics are left until Wednesday. I think better communication can fix this, but we will get Dave's input as well. | I would say SQL queries are still a challenge, as is javascript. We will be working on both this next sprint, in an effort to massively streamline user-friendliness.
+What we will change next time | Mostly we will stay the same, as most of us had a fantastic sprint and accomplished a lot. However, depending on our meeting with Dave, we definitely will be changing some things, but we'll wait for his input. | As always, minimizing periods of inactivity is a good thing. We did pretty good this sprint, but we can keep focusing on it! | Utilizing system testing and javascript testing will definitely help expose any obscure bugs or issues we haven't experienced yet.
