@@ -14,7 +14,7 @@
 * Javadoc and unit tests for public methods.
 * System testing for database REST APIs, database, and JavaScript
 * Coverage at least 60% overall and for each class.
-* Code Maintainability at A
+* Code Maintainability rated at an A
 
 
 ## Policies
@@ -35,8 +35,15 @@ Epics planned for this release.
 
 * *Update TFFI*
 * *Zoom and Pan the Map*
-* *save my Options as Defaults for future use*
-
+* *Save my Options as Defaults for future use*
+* *Shorter Trips #3*
+* *Interop*
+* *System testing*
+* *Staff Page*
+* *Speed up the computation on the server*
+* *View trip in other tools*
+* *Improve the user experience*
+* *Give the user the option to choose what information to display in the itinerary*
 
 
 ## Metrics
