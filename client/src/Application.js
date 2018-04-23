@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Options from './Options';
 import Destinations from './Destinations';
 import UserEditing from './UserEditing';
+import StaffPage from './StaffPage';
 import Trip from './Trip';
 import "./custom.scss";
 
@@ -126,26 +127,41 @@ class Application extends Component {
   }
 
   render() {
-
     return(
         <div id="application" className="container">
-          <div className="row">
-            <div className="col-12">
-                <Options trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip}/>
+          <nav>
+            <div className="nav nav-tabs" id="nav-tab" role="tablist">
+              <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
+                <h5>Home</h5>
+              </a>
+              <a className="nav-item nav-link" id="nav-staff-tab" data-toggle="tab" href="#nav-staff" role="tab" aria-controls="nav-staff" aria-selected="false">
+                <h5>Staff</h5>
+              </a>
             </div>
-            <div className="col-12">
-                <Destinations trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} editTrip={this.editTrip}/>
+          </nav>
+          <div className="tab-content" id="nav-tabContent">
+            <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+              <div className="row">
+                <div className="col-12">
+                  <Options trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip}/>
+                </div>
+                <div className="col-12">
+                  <Destinations trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} editTrip={this.editTrip}/>
+                </div>
+                <div className="col-12">
+                  <UserEditing trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} editTrip={this.editTrip}/>
+                </div>
+                <div className="col-12">
+                  <Trip trip={this.state.trip} updateTrip={this.updateTrip} />
+                </div>
+              </div>
             </div>
-            <div className="col-12">
-              <UserEditing trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} editTrip={this.editTrip}/>
-            </div>
-            <div className="col-12">
-                <Trip trip={this.state.trip} updateTrip={this.updateTrip} />
+            <div className="tab-pane fade" id="nav-staff" role="tabpanel" aria-labelledby="nav-staff-tab">
+              <h5>STAFF</h5>
             </div>
           </div>
         </div>
     )
   }
 }
-
 export default Application;
