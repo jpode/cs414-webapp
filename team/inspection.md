@@ -9,8 +9,10 @@ Checklist | *reference, URL, etc.*
 ### Roles
 Name | Role | Preparation Time
 ---- | ---- | ----
- | |
- | |
+Luke Burford | |
+Drew Boston | |
+Jake Marrapode | |
+Jake Servaty | |
 
 ### Log
 file:line | defect | h/m/l | who found | github# 
