@@ -146,12 +146,15 @@ public class Database {
         System.out.println("Adding type filter");
         queryString = getFilterToAdd("type", i);
       }
-      if(query.filters.get(i).attribute.equals("country"))
+      if(query.filters.get(i).attribute.equals("country")) {
         queryString = getFilterToAdd("country", i);
-      if(query.filters.get(i).attribute.equals("region"))
+      }
+      if(query.filters.get(i).attribute.equals("region")) {
         queryString = getFilterToAdd("region", i);
-      if(query.filters.get(i).attribute.equals("continent"))
+      }
+      if(query.filters.get(i).attribute.equals("continent")) {
         queryString = getFilterToAdd("continent", i);
+      }
     }
     System.out.println(queryString);
     return queryString;
