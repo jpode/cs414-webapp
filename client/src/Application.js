@@ -131,12 +131,8 @@ class Application extends Component {
         <div id="application" className="container">
           <nav>
             <div className="nav nav-tabs" id="nav-tab" role="tablist">
-              <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">
-                <h5>Home</h5>
-              </a>
-              <a className="nav-item nav-link" id="nav-staff-tab" data-toggle="tab" href="#nav-staff" role="tab" aria-controls="nav-staff" aria-selected="false">
-                <h5>Staff</h5>
-              </a>
+              <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><h5>Home</h5></a>
+              <a className="nav-item nav-link" id="nav-staff-tab" data-toggle="tab" href="#nav-staff" role="tab" aria-controls="nav-staff" aria-selected="false"><h5>Staff</h5></a>
             </div>
           </nav>
           <div className="tab-content" id="nav-tabContent">
