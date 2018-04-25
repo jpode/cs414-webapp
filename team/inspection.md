@@ -12,7 +12,7 @@ Name | Role | Preparation Time
 Luke Burford | Moderator | 1 hour
 Drew Boston | Tester | 50 mins
 Jake Marrapode | Maintainer | 45 mins
-Jake Servaty | Tester | 35 mins
+Jake Servaty | End User | 35 mins
 
 ### Log
 file:line | defect | h/m/l | who found | github# 
