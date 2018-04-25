@@ -160,13 +160,13 @@ public class Database {
     return queryString;
   }
 
-  private String getFilterToAdd(String queryString ,int i) {
+  private String getFilterToAdd(String queryString ,int index) {
     queryString += " AND (";
-    for(int j = 0; j < query.filters.get(i).values.size(); j++){
+    for(int j = 0; j < query.filters.get(index).values.size(); j++){
       if(j > 0){
         queryString += " OR ";
       }
-      queryString += queryString + "='" + query.filters.get(i).values.get(j) + "'";
+      queryString += queryString + "='" + query.filters.get(index).values.get(j) + "'";
     }
     queryString += ") ";
     return queryString;
