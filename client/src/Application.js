@@ -18,7 +18,7 @@ class Application extends Component {
         type: "trip",
         query: "",
         title: "",
-        options : {distance: "miles", optimization : "0.0", userUnit: "", userRadius: ""},
+        options : {distance: "miles", optimization : "0.0", userUnit: "", userRadius: "", map: "svg"},
         places: [],
         distances: [],
         map: "<svg width=\"1920\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:svg=\"http://www.w3.org/2000/svg\"><g></g></svg>"
@@ -141,16 +141,16 @@ class Application extends Component {
             <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
               <div className="row">
                 <div className="col-12">
-                  <Options trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} location={this.props.location} updateHost={this.props.updateHost}/>
+                  <Options trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} host={this.props.host} updateHost={this.props.updateHost}/>
                 </div>
                 <div className="col-12">
-                  <Destinations trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} editTrip={this.editTrip} location={this.props.location}/>
+                  <Destinations trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} editTrip={this.editTrip} host={this.props.host}/>
                 </div>
                 <div className="col-12">
                   <UserEditing trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} editTrip={this.editTrip}/>
                 </div>
                 <div className="col-12">
-                  <Trip trip={this.state.trip} updateTrip={this.updateTrip} location={this.props.location}/>
+                  <Trip trip={this.state.trip} updateTrip={this.updateTrip} host={this.props.host}/>
                 </div>
               </div>
             </div>

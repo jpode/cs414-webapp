@@ -73,7 +73,7 @@ class Query extends Component {
     console.log(process.env.SERVICE_URL);
     console.log(requestBody);
 
-    return fetch('http://' + this.props.location.host + ":" + this.props.location.port + '/query', {
+    return fetch('http://' + this.props.host + '/query', {
       header: {'Access-Control-Allow-Origin':'*'},
       method: "POST",
       body: JSON.stringify(requestBody)
@@ -128,7 +128,8 @@ class Query extends Component {
     if(e.options[e.selectedIndex].value !== "(none)") {
       strUser = e.options[e.selectedIndex].value;
       this.setState({newFilter: {attribute : "type", values: [strUser]}}, this.concatFilter);
-      }
+    }
+    /*
     e = document.getElementById("countriesSelect");
     if(e.options[e.selectedIndex].value !== "(none)") {
       strUser = e.options[e.selectedIndex].value;
@@ -144,6 +145,7 @@ class Query extends Component {
       strUser = e.options[e.selectedIndex].value;
       this.setState({newFilter: {attribute : "continent", values: [strUser]}}, this.concatFilter);
     }
+    */
     // }
     // if(e.options[e.selectedIndex].value != "(none)") {
     //   e = document.getElementById("countriesSelect");
@@ -203,11 +205,11 @@ class Query extends Component {
     let regions = [];
     let continents = [];
 
-    if(this.props.config.filters.length > 0) {
+    if(typeof this.props.config.filters.length !== 'undefined' && this.props.config.filters.length > 0) {
       types = this.props.config.filters[0].values.map((item) => <option value={item} > {item}</option>);
-      countries = this.props.config.filters[1].values.map((item) => <option value={item} > {item}</option>);
-      regions = this.props.config.filters[2].values.map((item) => <option value={item} > {item}</option>);
-      continents = this.props.config.filters[3].values.map((item) => <option value={item} > {item}</option>);
+      //countries = this.props.config.filters[1].values.map((item) => <option value={item} > {item}</option>);
+      //regions = this.props.config.filters[2].values.map((item) => <option value={item} > {item}</option>);
+      //continents = this.props.config.filters[3].values.map((item) => <option value={item} > {item}</option>);
     }
     return {types,countries,regions,continents};
   }

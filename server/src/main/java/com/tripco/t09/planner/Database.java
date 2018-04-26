@@ -66,6 +66,7 @@ public class Database {
         + "OR municipality LIKE '%" + query.query + "%' OR keywords LIKE '%" + query.query + "%')";
 
     try {
+      System.out.println("query before filters: " + search);
       search = addFilters(search);
       ResultSet rs = sendQuery(search);
       if(rs != null) {
@@ -150,30 +151,29 @@ public class Database {
   private String addFilters(String queryString) throws SQLException{
     for(int i = 0; i < query.filters.size(); i++){
       if(query.filters.get(i).attribute.equals("type")) {
-        System.out.println("Adding type filter");
-        queryString = getFilterToAdd("type", i);
+        queryString += getFilterToAdd("type", i);
       }
       if(query.filters.get(i).attribute.equals("country")) {
-        queryString = getFilterToAdd("country", i);
+        queryString += getFilterToAdd("country", i);
       }
       if(query.filters.get(i).attribute.equals("region")) {
-        queryString = getFilterToAdd("region", i);
+        queryString += getFilterToAdd("region", i);
       }
       if(query.filters.get(i).attribute.equals("continent")) {
-        queryString = getFilterToAdd("continent", i);
+        queryString += getFilterToAdd("continent", i);
       }
     }
     System.out.println(queryString);
     return queryString;
   }
 
-  private String getFilterToAdd(String queryString ,int index) {
-    queryString += " AND (";
+  private String getFilterToAdd(String type, int index) {
+    String queryString = " AND (";
     for(int j = 0; j < query.filters.get(index).values.size(); j++){
       if(j > 0){
         queryString += " OR ";
       }
-      queryString += queryString + "='" + query.filters.get(index).values.get(j) + "'";
+      queryString += "type ='" + query.filters.get(index).values.get(j) + "'";
     }
     queryString += ") ";
     return queryString;
