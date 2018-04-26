@@ -106,8 +106,9 @@ public class Database {
     int counter = 0;
     int limit = 20;
 
-    //If a limit is given, use it. Otherwise the limit is set to 20.
-    if(query.limit != 0){
+    // If a valid limit is given, use it. If it is not valid or if it is too
+    // high, use 20 instead.
+    if(query.limit > 0 && query.limit < 1000){
       limit = query.limit;
     }
 
