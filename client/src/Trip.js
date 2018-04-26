@@ -35,7 +35,7 @@ class Trip extends Component {
     console.log(process.env.SERVICE_URL);
     console.log(requestBody);
 
-    return fetch('http://' + location.host + '/plan', {
+    return fetch('http://' + this.props.location.host + ":" + this.props.location.port + '/plan', {
       header: {'Access-Control-Allow-Origin':'*'},
       method:"POST",
       body: JSON.stringify(requestBody)

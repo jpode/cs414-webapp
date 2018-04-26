@@ -16,16 +16,26 @@ class App extends Component {
         optimizations: [],
         distances: [],
         filters: []
-
+      },
+      location: {
+        host: 'localhost',
+        port: '31409'
       }
     };
 
     this.config = this.config.bind(this);
+    this.updateHost = this.updateHost.bind(this);
 
+    console.log(this.state.location.host + ":" + this.state.location.port);
     console.log("fetching config from server");
     this.config();
     console.log("request ending");
 
+  }
+
+  updateHost(newLocation){
+    console.log("Updating host to " + this.state.location.host + ":" + this.state.location.port);
+    this.setState({location: newLocation}, () => {this.config()});
   }
 
   updateFromConfig(config){
@@ -43,7 +53,7 @@ class App extends Component {
   }
 
   fetchConfig(){
-    return fetch('http://' + location.host + '/config', {
+    return fetch('http://' + this.state.location.host + ":" + this.state.location.port + '/config', {
       header: {'Access-Control-Allow-Origin':'*'},
       method:"GET"
     });
@@ -51,7 +61,7 @@ class App extends Component {
 
   async config(){
     try {
-      console.log("fetching...");
+      console.log("fetching from "+ this.state.location.host + ":" + this.state.location.port + "...");
       let serverResponse = await this.fetchConfig();
       let config = await serverResponse.json();
 
@@ -71,7 +81,7 @@ class App extends Component {
 
             <Header number={this.state.config.number} name={this.state.config.name}/>
             {active &&
-              <Application config={this.state.config}/>
+              <Application config={this.state.config} location={this.state.location} updateHost={this.updateHost}/>
             }
             <Footer number={this.state.config.number} name={this.state.config.name}/>
           </div>

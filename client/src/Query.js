@@ -65,7 +65,7 @@ class Query extends Component {
     console.log(process.env.SERVICE_URL);
     console.log(requestBody);
 
-    return fetch('http://' + location.host + '/query', {
+    return fetch('http://' + this.props.location.host + ":" + this.props.location.port + '/query', {
       header: {'Access-Control-Allow-Origin':'*'},
       method: "POST",
       body: JSON.stringify(requestBody)
