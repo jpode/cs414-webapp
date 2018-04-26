@@ -141,16 +141,16 @@ class Application extends Component {
             <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
               <div className="row">
                 <div className="col-12">
-                  <Options trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip}/>
+                  <Options trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} location={this.props.location} updateHost={this.props.updateHost}/>
                 </div>
                 <div className="col-12">
-                  <Destinations trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} editTrip={this.editTrip}/>
+                  <Destinations trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} editTrip={this.editTrip} location={this.props.location}/>
                 </div>
                 <div className="col-12">
                   <UserEditing trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} editTrip={this.editTrip}/>
                 </div>
                 <div className="col-12">
-                  <Trip trip={this.state.trip} updateTrip={this.updateTrip} />
+                  <Trip trip={this.state.trip} updateTrip={this.updateTrip} location={this.props.location}/>
                 </div>
               </div>
             </div>

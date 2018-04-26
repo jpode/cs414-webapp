@@ -12,7 +12,11 @@ class Options extends Component{
     super(props);
     this.state = {
       distanceUnit : "",
-      distanceRadius : ""
+      distanceRadius : "",
+      location: {
+        host: '',
+        port: ''
+      }
     }
 
     this.handleSlider = this.handleSlider.bind(this);
@@ -21,6 +25,10 @@ class Options extends Component{
     this.handleCustomDistanceName = this.handleCustomDistanceName.bind(this);
     this.handleCustomDistanceRadius = this.handleCustomDistanceRadius.bind(this);
     this.updateCustomDistance = this.updateCustomDistance.bind(this);
+    this.handleConfigure = this.handleConfigure.bind(this);
+    this.handleHostConfig = this.handleHostConfig.bind(this);
+    this.handlePortConfig = this.handlePortConfig.bind(this);
+
   }
 
   handleSlider(event){
@@ -65,6 +73,22 @@ class Options extends Component{
 
   }
 
+  handleConfigure(){
+    this.props.updateHost(this.state.location);
+  }
+
+  handleHostConfig(event){
+    let newLocation = this.state.location;
+    newLocation.host = event.target.value;
+    this.setState({location: newLocation});
+  }
+
+  handlePortConfig(event){
+    let newLocation = this.state.location;
+    newLocation.port = event.target.value;
+    this.setState({location: newLocation});
+  }
+
   /* Sends a bas request to the server with only necessary objects.
  * Receives a response containing an optimized itinerary to update the
  * state for this object.
@@ -81,7 +105,7 @@ class Options extends Component{
     console.log(process.env.SERVICE_URL);
     console.log(requestBody);
 
-    return fetch('http://' + location.host + '/optimize', {
+    return fetch('http://' + this.props.location.host + ":" + this.props.location.port + '/optimize', {
       header: {'Access-Control-Allow-Origin':'*'},
       method:"POST",
       body: JSON.stringify(requestBody)
@@ -117,7 +141,7 @@ class Options extends Component{
     console.log(process.env.SERVICE_URL);
     console.log(requestBody);
 
-    return fetch('http://' + location.host + '/plan', {
+    return fetch('http://' + this.props.location.host + ":" + this.props.location.port + '/optimize', {
         header: {'Access-Control-Allow-Origin':'*'},
         method:"POST",
         body: JSON.stringify(requestBody)
@@ -210,6 +234,21 @@ class Options extends Component{
               </span>
             </div>
             }
+            <div>
+              <label>
+                Configure host/port:
+              </label>
+              <div className="input-group" role="group"><span
+                  className="input-group-btn"><button
+                  className="btn btn-outline-dark btn-success"
+                  onClick={this.handleConfigure} type="button">Configure</button>
+              </span>
+                <input type="text" className="form-control input-success"
+                       onChange={this.handleHostConfig} placeholder="New host"/>
+                <input type="text" className="form-control input-success"
+                       onChange={this.handlePortConfig} placeholder="New port"/>
+              </div>
+            </div>
           </div>
         </div>
     )
