@@ -8,6 +8,7 @@ class Query extends Component {
       selected: 0,
       editType: "insert",
       search: "",
+      limit: 0,
       filters: [],
       newFilter: {
         attribute : "",
@@ -25,6 +26,7 @@ class Query extends Component {
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleLimit = this.handleLimit.bind(this);
     this.createTable = this.createTable.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleClear = this.handleClear.bind(this);
@@ -39,6 +41,10 @@ class Query extends Component {
     this.setState({search: event.target.value});
   }
 
+  handleLimit(event) {
+    this.setState({limit: parseInt(event.target.value)});
+  }
+
   handleSearch(event) {
     this.query();
   }
@@ -48,15 +54,17 @@ class Query extends Component {
   }
 
 
-  /* Sends a request to the server with all state information except type.
-* Receives a response containing an optimized itinerary to update the
-* state for this object.
-*/
+  /*
+   * Sends a request to the server with a query object constructed from state.
+   * Receives a response containing an optimized itinerary to update the
+   * state for this object.
+   */
   fetchResponse() {
     // need to get the request body from the trip in state object.
     let requestBody = {
       "version": 2,
       "type": 'query',
+      "limit": this.state.limit,
       "query": this.state.search,
       "filters": this.state.filters,
       "places": []
@@ -116,23 +124,24 @@ class Query extends Component {
 
   handleApplyFilters() {
     var e = document.getElementById("typeSelect");
-    if(e.options[e.selectedIndex].value != "(none)") {
-      var strUser = e.options[e.selectedIndex].value;
+    var strUser;
+    if(e.options[e.selectedIndex].value !== "(none)") {
+      strUser = e.options[e.selectedIndex].value;
       this.setState({newFilter: {attribute : "type", values: [strUser]}}, this.concatFilter);
       }
     e = document.getElementById("countriesSelect");
-    if(e.options[e.selectedIndex].value != "(none)") {
-      var strUser = e.options[e.selectedIndex].value;
+    if(e.options[e.selectedIndex].value !== "(none)") {
+      strUser = e.options[e.selectedIndex].value;
       this.setState({newFilter: {attribute : "country", values: [strUser]}}, this.concatFilter);
     }
-    var e = document.getElementById("regionSelect");
-    if(e.options[e.selectedIndex].value != "(none)") {
-      var strUser = e.options[e.selectedIndex].value;
+    e = document.getElementById("regionSelect");
+    if(e.options[e.selectedIndex].value !== "(none)") {
+      strUser = e.options[e.selectedIndex].value;
       this.setState({newFilter: {attribute : "region", values: [strUser]}}, this.concatFilter);
     }
-    var e = document.getElementById("continentSelect");
-    if(e.options[e.selectedIndex].value != "(none)") {
-      var strUser = e.options[e.selectedIndex].value;
+    e = document.getElementById("continentSelect");
+    if(e.options[e.selectedIndex].value !== "(none)") {
+      strUser = e.options[e.selectedIndex].value;
       this.setState({newFilter: {attribute : "continent", values: [strUser]}}, this.concatFilter);
     }
     // }
@@ -221,17 +230,19 @@ class Query extends Component {
               </span>
               <input type="text" className="form-control input-success"
                      onChange={this.handleSubmit} placeholder="Find"/>
+              <input type="text" className="form-control input-success"
+                     onChange={this.handleLimit} placeholder="Limit number of returned places"/>
               <span className="input-group-btn">
                 <button className="btn btn-outline-dark btn-success"
                         onClick={this.handleClear} type="button">Clear</button>
                 <div className="btn-group btn-group-toggle" data-toggle="buttons">
-                  <label className={"btn btn-outline-dark btn-success".concat((this.state.selected == 1) ? " active" : "")}>
+                  <label className={"btn btn-outline-dark btn-success".concat((this.state.selected === 1) ? " active" : "")}>
                     <input type="radio" id="new_place" name="new_place" value="on" onClick={this.handleCreation} />Add Filters
                   </label>
                 </div>
               </span>
             </div>
-            {this.state.selected == 1 &&
+            {this.state.selected === 1 &&
             <div>
               <span className="input-group">
                 Type:
