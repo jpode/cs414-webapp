@@ -36,6 +36,7 @@ class Trip extends Component {
     console.log(requestBody);
 
     return fetch('http://' + location.host + '/plan', {
+      header: {'Access-Control-Allow-Origin':'*'},
       method:"POST",
       body: JSON.stringify(requestBody)
     });
@@ -63,7 +64,7 @@ class Trip extends Component {
   /* Saves the map and itinerary to the local file system.
    */
   saveTFFI(){
-    var element = document.createElement('a');
+    let element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.props.trip)));
     element.setAttribute('download', this.props.trip.title + ".json");
 
@@ -76,7 +77,7 @@ class Trip extends Component {
   }
 
   handleSubmit(event){
-    var tffi = this.props.trip;
+    let tffi = this.props.trip;
     tffi.title = event.target.value;
     this.props.updateTrip({tffi});
   }

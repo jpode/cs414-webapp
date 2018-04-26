@@ -14,25 +14,25 @@ class Itinerary extends Component {
     let dests = [];
     let dists = [];
 
-    if(typeof this.props.trip.options.distance != "undefined") {
-      if(this.props.trip.options.distance == "user defined"){
+    if(typeof this.props.trip.options.distance !== "undefined") {
+      if(this.props.trip.options.distance === "user defined"){
         units = this.props.trip.options.userUnit;
       } else {
         units = this.props.trip.options.distance;
       }
     }
 
-    if(typeof this.props.trip.distances != "undefined" && this.props.trip.distances.length > 0) {
+    if(typeof this.props.trip.distances !== "undefined" && this.props.trip.distances.length > 0) {
       dists = this.props.trip.distances.map((item) => <td>{item}</td>);
       dists.unshift(<td>{0}</td>)
     }
 
-    if(typeof this.props.trip.places[0] != "undefined") {
+    if(typeof this.props.trip.places[0] !== "undefined") {
       dests = this.props.trip.places.map((item) => <td>{item.name}</td>);
       dests.push(<td>{this.props.trip.places[0].name}</td>);
     }
 
-    for(var i = 0; i < this.props.trip.distances.length; i++){
+    for(let i = 0; i < this.props.trip.distances.length; i++){
       distance += this.props.trip.distances[i];
     }
 

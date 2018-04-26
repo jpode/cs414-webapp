@@ -41,27 +41,28 @@ class Application extends Component {
     if(this.props.config.version > 1){
       console.log("Supported Optimization Levels: " + this.props.config.optimization);
     }
+    let key;
     if(this.props.config.version > 2){
-      for (var key in this.props.config.optimizations) {
+      for (key in this.props.config.optimizations) {
         if (this.props.config.optimizations.hasOwnProperty(key)) {
           console.log(this.props.config.optimizations[key].label + ": "
               + this.props.config.optimizations[key].description);
         }
       }
       console.log("Supported Maps:");
-      for (var key in this.props.config.maps) {
+      for (key in this.props.config.maps) {
         if (this.props.config.maps.hasOwnProperty(key)) {
           console.log(this.props.config.maps[key]);
         }
       }
       console.log("Supported Distances:");
-      for (var key in this.props.config.distances) {
+      for (key in this.props.config.distances) {
         if (this.props.config.distances.hasOwnProperty(key)) {
           console.log(this.props.config.distances[key]);
         }
       }
       console.log("Supported Filters:");
-      for (var key in this.props.config.filters) {
+      for (key in this.props.config.filters) {
         if (this.props.config.filters.hasOwnProperty(key)) {
           console.log(this.props.config.filters[key]);
         }
@@ -70,17 +71,17 @@ class Application extends Component {
   }
 
   updateTrip(tffi){
-    var new_tffi = this.state.trip;
+    let new_tffi = this.state.trip;
 
-    for(var key in tffi){
+    for(let key in tffi){
       if(tffi.hasOwnProperty(key)){
-        if(typeof tffi[key] != "undefined" && tffi[key] != 0 && tffi[key] != ""){
+        if(typeof tffi[key] !== "undefined" && tffi[key] !== 0 && tffi[key] !== ""){
           new_tffi[key] = tffi[key];
         }
       }
     }
 
-    console.log(new_tffi)
+    console.log(new_tffi);
     this.setState({trip: new_tffi});
 
   }
@@ -102,6 +103,7 @@ class Application extends Component {
     console.log(requestBody);
 
     return fetch('http://' + location.host + '/edit', {
+      header: {'Access-Control-Allow-Origin':'*'},
       method:"POST",
       body: JSON.stringify(requestBody)
     });
