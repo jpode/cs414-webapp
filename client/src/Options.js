@@ -82,6 +82,7 @@ class Options extends Component{
     console.log(requestBody);
 
     return fetch('http://' + location.host + '/optimize', {
+      header: {'Access-Control-Allow-Origin':'*'},
       method:"POST",
       body: JSON.stringify(requestBody)
     });
@@ -102,24 +103,25 @@ class Options extends Component{
   }
 
   fetchResponse_V2(){
-      // need to get the request body from the trip in state object.
-      let requestBody = {
-          "version"  : this.props.trip.version,
-          "type"     : this.props.trip.type,
-          "title"    : this.props.trip.title,
-          "options"  : this.props.trip.options,
-          "places"   : this.props.trip.places,
-          "distances": this.props.trip.distances,
-          "map"      : this.props.trip.map
-      };
-      // unsure if map or distances should be included above! ^
-      console.log(process.env.SERVICE_URL);
-      console.log(requestBody);
+    // need to get the request body from the trip in state object.
+    let requestBody = {
+        "version"  : this.props.trip.version,
+        "type"     : this.props.trip.type,
+        "title"    : this.props.trip.title,
+        "options"  : this.props.trip.options,
+        "places"   : this.props.trip.places,
+        "distances": this.props.trip.distances,
+        "map"      : this.props.trip.map
+    };
+    // unsure if map or distances should be included above! ^
+    console.log(process.env.SERVICE_URL);
+    console.log(requestBody);
 
-      return fetch('http://' + location.host + '/plan', {
-          method:"POST",
-          body: JSON.stringify(requestBody)
-      });
+    return fetch('http://' + location.host + '/plan', {
+        header: {'Access-Control-Allow-Origin':'*'},
+        method:"POST",
+        body: JSON.stringify(requestBody)
+    });
   }
 
   async plan(){

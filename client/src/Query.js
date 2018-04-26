@@ -66,6 +66,7 @@ class Query extends Component {
     console.log(requestBody);
 
     return fetch('http://' + location.host + '/query', {
+      header: {'Access-Control-Allow-Origin':'*'},
       method: "POST",
       body: JSON.stringify(requestBody)
     });

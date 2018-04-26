@@ -17,12 +17,12 @@ class Destinations extends Component {
   loadTFFI(event) {
     console.log(event.target.files[0].name);
 
-    var reader = new FileReader();
+    let reader = new FileReader();
     reader.readAsText(event.target.files[0]);
 
     reader.onload = function(event){
 
-      var tffi = JSON.parse(event.target.result);
+      let tffi = JSON.parse(event.target.result);
       this.props.updateTrip(tffi);
 
     }.bind(this);

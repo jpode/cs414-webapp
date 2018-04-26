@@ -18,7 +18,7 @@ class App extends Component {
         filters: []
 
       }
-    }
+    };
 
     this.config = this.config.bind(this);
 
@@ -29,11 +29,11 @@ class App extends Component {
   }
 
   updateFromConfig(config){
-    var newConfig = this.state.config;
+    let newConfig = this.state.config;
 
-    for(var key in config){
+    for(let key in config){
       if(config.hasOwnProperty(key)){
-        if(typeof config[key] != "undefined" && config[key] != 0 && config[key] != ""){
+        if(typeof config[key] !== "undefined" && config[key] !== 0 && config[key] !== ""){
           newConfig[key] = config[key];
         }
       }
@@ -44,7 +44,8 @@ class App extends Component {
 
   fetchConfig(){
     return fetch('http://' + location.host + '/config', {
-      method:"GET",
+      header: {'Access-Control-Allow-Origin':'*'},
+      method:"GET"
     });
   }
 
