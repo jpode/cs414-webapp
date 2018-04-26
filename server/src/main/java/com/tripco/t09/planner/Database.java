@@ -98,14 +98,21 @@ public class Database {
 
   /**
    * iterate through query results and create a new place object for each row,
-   * stop when all results are added or until the limit (20) is reached.
+   * stop when all results are added or until the limit is reached.
    * @param queryResult - ResultSet object containing results of the SQL query.
    */
   private void addPlaces(ResultSet queryResult) throws SQLException {
 
     int counter = 0;
+    int limit = 20;
 
-    while (queryResult.next() && counter < 20) {
+    // If a valid limit is given, use it. If it is not valid or if it is too
+    // high, use 20 instead.
+    if(query.limit > 0 && query.limit < 1000){
+      limit = query.limit;
+    }
+
+    while (queryResult.next() && counter < limit) {
       Place place = new Place();
       place.name = queryResult.getString("name");
       place.id = queryResult.getString("id");

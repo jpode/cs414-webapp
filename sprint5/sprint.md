@@ -57,8 +57,10 @@ Story Points |  *64*  | **
 
 Date | Tasks done  | Tasks in progress | Impediments 
 :--- | :--- | :--- | :--- 
-*4/17* | ** | ** | 
- | | | 
+*4/17* | *0* | *13* | Node issues
+*4/19* | *0* | *13* | Node issues
+*4/24* | *0* | *13* | Node issues, working on code inspections
+*4/25* | *0* | *13* | Fixed node issues
  
 
 ## Review
