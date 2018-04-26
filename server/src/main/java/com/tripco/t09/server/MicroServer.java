@@ -2,7 +2,6 @@ package com.tripco.t09.server;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.tripco.t09.planner.Config;
 import com.tripco.t09.planner.Database;
@@ -53,9 +52,10 @@ public class MicroServer {
     get("/config", this::config);
     // client is sending data, so a HTTP POST is used instead of a GET
     post("/plan", this::plan);
-    post("/optimize", this::optimize);
     post("/query", this::query);
+    //TODO: Remove these two APIs when the client no longer uses them
     post("/edit", this::edit);
+    post("/optimize", this::optimize);
 
     System.out.println("\n\nServer running on port: " + this.port + "\n\n");
   }
@@ -68,6 +68,7 @@ public class MicroServer {
    */
   private String about(Request request, Response response) {
 
+    response.header("Access-Control-Allow-Origin", "*");
     response.type("text/html");
 
     return "<html><head></head><body><h1>"+name+" Micro-server on port "+port+"</h1></body></html>";
@@ -81,6 +82,7 @@ public class MicroServer {
    */
   private String echo(Request request, Response response) {
 
+    response.header("Access-Control-Allow-Origin", "*");
     response.type("application/json");
 
     return HTTP.echoRequest(request);
@@ -94,6 +96,7 @@ public class MicroServer {
    */
   private String hello(Request request, Response response) {
 
+    response.header("Access-Control-Allow-Origin", "*");
     response.type("text/html");
 
     return Greeting.html(request.params(":name"));
@@ -107,6 +110,7 @@ public class MicroServer {
    */
   private String config(Request request, Response response) {
 
+    response.header("Access-Control-Allow-Origin", "*");
     response.type("application/json");
 
     Config cfg = new Config();
@@ -121,6 +125,7 @@ public class MicroServer {
    */
   private String plan(Request request, Response response) {
 
+    response.header("Access-Control-Allow-Origin", "*");
     response.type("application/json");
     //Clear the stored optimizations
     Arrays.fill(opts, null);
@@ -150,6 +155,7 @@ public class MicroServer {
    */
   private String team(Request request, Response response) {
 
+    response.header("Access-Control-Allow-Origin", "*");
     response.type("text/plain");
 
     return name;
@@ -165,6 +171,8 @@ public class MicroServer {
    */
 
   private String optimize(Request request, Response response) {
+
+    response.header("Access-Control-Allow-Origin", "*");
     response.type("application/json");
     String result = "";
     int optLvl;
@@ -192,10 +200,13 @@ public class MicroServer {
    * @return
    */
   private String query(Request request, Response response) {
+
+    response.header("Access-Control-Allow-Origin", "*");
+    response.type("application/json");
+
     System.out.println("Query: " + request.body());
     Database db = new Database();
     db.processRequest(request);
-    response.type("application/json");
     return db.getString();
   }
 
@@ -207,6 +218,7 @@ public class MicroServer {
    */
   private String edit(Request request, Response response) {
 
+    response.header("Access-Control-Allow-Origin", "*");
     response.type("application/json");
 
     //Print the request

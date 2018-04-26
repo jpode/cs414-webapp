@@ -10,6 +10,7 @@ import spark.Request;
 public class Query {
   // The variables in this class should reflect a query TFFI.
   public int version;
+  public int limit;
   public String type;
   public String query;
   public ArrayList<Place> places = new ArrayList<Place>();
