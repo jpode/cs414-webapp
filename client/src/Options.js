@@ -13,10 +13,7 @@ class Options extends Component{
     this.state = {
       distanceUnit : "",
       distanceRadius : "",
-      location: {
-        host: '',
-        port: ''
-      }
+      host: ''
     }
 
     this.handleSlider = this.handleSlider.bind(this);
@@ -27,7 +24,6 @@ class Options extends Component{
     this.updateCustomDistance = this.updateCustomDistance.bind(this);
     this.handleConfigure = this.handleConfigure.bind(this);
     this.handleHostConfig = this.handleHostConfig.bind(this);
-    this.handlePortConfig = this.handlePortConfig.bind(this);
 
   }
 
@@ -74,19 +70,11 @@ class Options extends Component{
   }
 
   handleConfigure(){
-    this.props.updateHost(this.state.location);
+    this.props.updateHost(this.state.host);
   }
 
   handleHostConfig(event){
-    let newLocation = this.state.location;
-    newLocation.host = event.target.value;
-    this.setState({location: newLocation});
-  }
-
-  handlePortConfig(event){
-    let newLocation = this.state.location;
-    newLocation.port = event.target.value;
-    this.setState({location: newLocation});
+    this.setState({host: event.target.value});
   }
 
   /* Sends a bas request to the server with only necessary objects.
@@ -105,7 +93,7 @@ class Options extends Component{
     console.log(process.env.SERVICE_URL);
     console.log(requestBody);
 
-    return fetch('http://' + this.props.location.host + ":" + this.props.location.port + '/optimize', {
+    return fetch('http://' + this.props.host + '/optimize', {
       header: {'Access-Control-Allow-Origin':'*'},
       method:"POST",
       body: JSON.stringify(requestBody)
@@ -141,7 +129,7 @@ class Options extends Component{
     console.log(process.env.SERVICE_URL);
     console.log(requestBody);
 
-    return fetch('http://' + this.props.location.host + ":" + this.props.location.port + '/optimize', {
+    return fetch('http://' + this.props.host + '/optimize', {
         header: {'Access-Control-Allow-Origin':'*'},
         method:"POST",
         body: JSON.stringify(requestBody)
@@ -244,9 +232,7 @@ class Options extends Component{
                   onClick={this.handleConfigure} type="button">Configure</button>
               </span>
                 <input type="text" className="form-control input-success"
-                       onChange={this.handleHostConfig} placeholder="New host"/>
-                <input type="text" className="form-control input-success"
-                       onChange={this.handlePortConfig} placeholder="New port"/>
+                       onChange={this.handleHostConfig} placeholder="host:port"/>
               </div>
             </div>
           </div>
