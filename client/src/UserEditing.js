@@ -38,6 +38,7 @@ class UserEditing extends Component {
   }
 
   handleSelect(arg){
+    this.resetState();
     this.setState({editType : arg});
     if(arg === "insert") {
       if (this.state.insertSelected === 0) {
@@ -185,73 +186,76 @@ class UserEditing extends Component {
         <div className="card-header bg-success text-white">
           Edit Destinations
         </div>
-
-        <div className="btn-group btn-group-toggle" data-toggle="buttons">
-          <label className={"btn btn-outline-dark btn-success".concat((this.state.insertSelected === 1) ? " active" : "")}>
-            <input type="radio" id="new_place" name="new_place" value="on" onClick={() => { this.handleSelect("insert")}} />Create New Destination
-          </label>
-          <label className={"btn btn-outline-dark btn-success".concat((this.state.newStartSelected === 1) ? " active" : "")}>
-            <input type="radio" id="newStart" name="newStart" value="on" onClick={() => { this.handleSelect("newStart")}} />Select New Start Location
-          </label>
-        </div>
-
-        {this.state.insertSelected === 1 &&
-          <div className="input-group" role="group">
-            <span>
-              <input type="text" className="form-control" onChange={this.handleCustomID} placeholder="Destination ID"/>
-              <input type="text" className="form-control" onChange={this.handleCustomName} placeholder="Destination Name"/>
-              <input type="text" className="form-control" onChange={this.handleCustomLongitude} placeholder="Destination Longitude"/>
-              <input type="text" className="form-control" onChange={this.handleCustomLatitude} placeholder="Destination Latitude"/>
-              <input type="text" className="form-control" onChange={this.handleDestIndex} placeholder="Order In Trip"/>
-              <span className="input-group-btn">
-                <button disabled={!hasId || !hasName || !hasLongitude || !hasLatitude || !hasDestIndex}
-                        className="btn btn-primary " onClick={() => {this.addPlace()}} type="button">Submit</button>
-              </span>
-            </span>
+        <div className="card-body">
+          <div className="btn-group btn-group-toggle" data-toggle="buttons">
+            <label className={"btn btn-outline-dark btn-success".concat((this.state.insertSelected === 1) ? " active" : "")}>
+              <input type="radio" id="new_place" name="new_place" value="on" onClick={() => { this.handleSelect("insert")}} />Create New Destination
+            </label>
+            <label className={"btn btn-outline-dark btn-success".concat((this.state.newStartSelected === 1) ? " active" : "")}>
+              <input type="radio" id="newStart" name="newStart" value="on" onClick={() => { this.handleSelect("newStart")}} />Select New Start Location
+            </label>
           </div>
-        }
-        {this.state.newStartSelected === 1 &&
-        <div className="input-group" role="group">
-            <span>
-              <input type="text" className="form-control" onChange={this.handleTargetIndex} placeholder="Index of New Start"/>
-              <span className="input-group-btn">
-                <button disabled={!hasTargetIndex} className="btn btn-primary " onClick={() => {this.changeStartLocation()}} type="button">Submit</button>
+
+          {this.state.insertSelected === 1 &&
+            <div className="input-group" role="group">
+              <span>
+                <input type="text" className="form-control" onChange={this.handleCustomID} placeholder="Destination ID"/>
+                <input type="text" className="form-control" onChange={this.handleCustomName} placeholder="Destination Name"/>
+                <input type="text" className="form-control" onChange={this.handleCustomLongitude} placeholder="Destination Longitude"/>
+                <input type="text" className="form-control" onChange={this.handleCustomLatitude} placeholder="Destination Latitude"/>
+                <input type="text" className="form-control" onChange={this.handleDestIndex} placeholder="Order In Trip"/>
+                <span className="input-group-btn">
+                  <button disabled={!hasId || !hasName || !hasLongitude || !hasLatitude || !hasDestIndex}
+                          className="btn btn-primary " onClick={() => {this.addPlace()}} type="button">Submit</button>
+                </span>
               </span>
-            </span>
-        </div>
-        }
-        <div className="btn-group btn-group-toggle" data-toggle="buttons">
-          <label className={"btn btn-outline-dark btn-success".concat((this.state.removeSelected === 1) ? " active" : "")}>
-            <input type="radio" id="remove" name="remove" value="on" onClick={() => { this.handleSelect("remove")}} />Remove A Place
-          </label>
-          <label className={"btn btn-outline-dark btn-success".concat((this.state.reverseSelected === 1) ? " active" : "")}>
-            <input type="radio" id="reverse" name="reverse" value="on" onClick={() => { this.reverseTrip()}} />Reverse The Trip
-          </label>
-          <label className={"btn btn-outline-dark btn-success".concat((this.state.movePlaceSelected === 1) ? " active" : "")}>
-            <input type="radio" id="movePlace" name="movePlace" value="on" onClick={() => { this.handleSelect("movePlace")}} />Move a Place
-          </label>
-        </div>
-        {this.state.removeSelected === 1 &&
-        <div className="input-group" role="group">
-            <span>
-              <input type="text" className="form-control" onChange={this.handleTargetIndex} placeholder="Index to Remove"/>
-              <span className="input-group-btn">
-                <button disabled={!hasTargetIndex} className="btn btn-primary " onClick={() => {this.removePlace()}} type="button">Submit</button>
+            </div>
+          }
+          {this.state.newStartSelected === 1 &&
+          <div className="input-group" role="group">
+              <span>
+                <input type="text" className="form-control" onChange={this.handleTargetIndex} placeholder="Index of New Start"/>
+                <span className="input-group-btn">
+                  <button disabled={!hasTargetIndex} className="btn btn-primary " onClick={() => {this.changeStartLocation()}} type="button">Submit</button>
+                </span>
               </span>
-            </span>
+          </div>
+          }
         </div>
-        }
-        {this.state.movePlaceSelected === 1 &&
-        <div className="input-group" role="group">
-            <span>
-              <input type="text" className="form-control" onChange={this.handleTargetIndex} placeholder="Index to Move"/>
-              <input type="text" className="form-control" onChange={this.handleDestIndex} placeholder="Index to Move To"/>
-              <span className="input-group-btn">
-                <button disabled={!hasDestIndex || !hasTargetIndex} className="btn btn-primary " onClick={() => {this.movePlace()}} type="button">Submit</button>
+        <div className="card-body">
+          <div className="btn-group btn-group-toggle" data-toggle="buttons">
+            <label className={"btn btn-outline-dark btn-success".concat((this.state.removeSelected === 1) ? " active" : "")}>
+              <input type="radio" id="remove" name="remove" value="on" onClick={() => { this.handleSelect("remove")}} />Remove A Place
+            </label>
+            <label className={"btn btn-outline-dark btn-success".concat((this.state.reverseSelected === 1) ? " active" : "")}>
+              <input type="radio" id="reverse" name="reverse" value="on" onClick={() => { this.reverseTrip()}} />Reverse The Trip
+            </label>
+            <label className={"btn btn-outline-dark btn-success".concat((this.state.movePlaceSelected === 1) ? " active" : "")}>
+              <input type="radio" id="movePlace" name="movePlace" value="on" onClick={() => { this.handleSelect("movePlace")}} />Move a Place
+            </label>
+          </div>
+          {this.state.removeSelected === 1 &&
+          <div className="input-group" role="group">
+              <span>
+                <input type="text" className="form-control" onChange={this.handleTargetIndex} placeholder="Index to Remove"/>
+                <span className="input-group-btn">
+                  <button disabled={!hasTargetIndex} className="btn btn-primary " onClick={() => {this.removePlace()}} type="button">Submit</button>
+                </span>
               </span>
-            </span>
+          </div>
+          }
+          {this.state.movePlaceSelected === 1 &&
+          <div className="input-group" role="group">
+              <span>
+                <input type="text" className="form-control" onChange={this.handleTargetIndex} placeholder="Index to Move"/>
+                <input type="text" className="form-control" onChange={this.handleDestIndex} placeholder="Index to Move To"/>
+                <span className="input-group-btn">
+                  <button disabled={!hasDestIndex || !hasTargetIndex} className="btn btn-primary " onClick={() => {this.movePlace()}} type="button">Submit</button>
+                </span>
+              </span>
+          </div>
+          }
         </div>
-        }
       </div>
     )
   }

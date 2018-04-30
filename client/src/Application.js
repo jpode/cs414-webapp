@@ -144,7 +144,7 @@ class Application extends Component {
             <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
               <div className="row">
                 <div className="col-12">
-                  <Options trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} host={this.props.host} updateHost={this.props.updateHost}/>
+                  <Options trip={this.state.trip} config={this.props.config} plan={this.plan} updateTrip={this.updateTrip} host={this.props.host} updateHost={this.props.updateHost}/>
                 </div>
                 <div className="col-12">
                   <Destinations trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} plan={this.plan} host={this.props.host}/>

@@ -77,10 +77,11 @@ class Options extends Component{
     this.setState({host: event.target.value});
   }
 
-  /* Sends a bas request to the server with only necessary objects.
- * Receives a response containing an optimized itinerary to update the
- * state for this object.
- */
+  /* Sends a bas request to the server with only necessary objects for optimization.
+   * Receives a response containing an optimized itinerary to update the
+   * state for this object.
+   * ONLY WORKS WITH TEAM 9 SERVER
+   */
   fetchResponse(){
     // need to get the request body from the trip in state object.
     let requestBody = {
@@ -93,7 +94,7 @@ class Options extends Component{
     console.log(process.env.SERVICE_URL);
     console.log(requestBody);
 
-    return fetch('http://' + this.props.host + '/optimize', {
+    return fetch('http://' + location.host + '/optimize', {
       header: {'Access-Control-Allow-Origin':'*'},
       method:"POST",
       body: JSON.stringify(requestBody)
@@ -153,6 +154,8 @@ class Options extends Component{
               <sup>More</sup>
             </div>
             }
+          </div>
+          <div className="card-body">
             <div className="btn-group btn-group-toggle" data-toggle="buttons">
               <label className={"btn btn-outline-dark btn-success".concat((this.props.trip.options.distance === "miles") ? " active" : "")}>
                 <input type="radio" id="miles" name="distance" value="on" onClick={() => { this.changeDistance("miles") }} /> Miles
@@ -182,18 +185,16 @@ class Options extends Component{
               </span>
             </div>
             }
-            <div>
-              <label>
-                Configure host/port:
-              </label>
-              <div className="input-group" role="group"><span
-                  className="input-group-btn"><button
-                  className="btn btn-outline-dark btn-success"
-                  onClick={this.handleConfigure} type="button">Configure</button>
-              </span>
-                <input type="text" className="form-control input-success"
-                       onChange={this.handleHostConfig} placeholder="host:port"/>
-              </div>
+          </div>
+          <div className="card-body">
+            <p>Configure host and port for server to communicate with:</p>
+            <div className="input-group" role="group"><span
+                className="input-group-btn"><button
+                className="btn btn-outline-dark btn-success"
+                onClick={this.handleConfigure} type="button">Configure</button>
+            </span>
+              <input type="text" className="form-control input-success"
+                     onChange={this.handleHostConfig} placeholder="host:port"/>
             </div>
           </div>
         </div>
