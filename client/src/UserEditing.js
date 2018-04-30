@@ -31,6 +31,11 @@ class UserEditing extends Component {
     this.handleCustomLatitude = this.handleCustomLatitude.bind(this);
     this.resetState = this.resetState.bind(this);
 
+    this.changeStartLocation = this.changeStartLocation.bind(this);
+    this.removePlace = this.removePlace.bind(this);
+    this.addPlace = this.addPlace.bind(this);
+    this.movePlace = this.movePlace.bind(this);
+
   }
 
   handleSelect(arg){
@@ -77,16 +82,20 @@ class UserEditing extends Component {
   }
 
   handleDestIndex(event){
-    if(event.target.value < 1){
-      alert("Please enter a value greater than 0.")
+    if(event.target.value > this.props.trip.places.length){
+      this.setState({destIndex: this.props.trip.places.length - 1});
+    } else if(event.target.value < 1) {
+      this.setState({destIndex: 0});
     } else {
       this.setState({destIndex: event.target.value - 1});
     }
   }
 
   handleTargetIndex(event){
-    if(event.target.value < 1){
-      alert("Please enter a value greater than 0.")
+    if(event.target.value > this.props.trip.places.length){
+      this.setState({targetIndex: this.props.trip.places.length - 1});
+    } else if(event.target.value < 1) {
+      this.setState({targetIndex: 0});
     } else {
       this.setState({targetIndex: event.target.value - 1});
     }
@@ -129,6 +138,34 @@ class UserEditing extends Component {
     this.setState({newPlace : {id : "", name : "", longitude: "", latitude: ""}});
   }
 
+  changeStartLocation(){
+      let editedTrip = this.props.trip;
+      editedTrip.places = editedTrip.places.concat(editedTrip.places.splice(0, this.state.targetIndex));
+      editedTrip.distances = editedTrip.distances.concat(editedTrip.distances.splice(0, this.state.targetIndex));
+      this.props.updateTrip(editedTrip);
+  }
+
+  removePlace(){
+    let editedTrip = this.props.trip;
+    editedTrip.places.splice(this.state.targetIndex, 1);
+    this.props.updateTrip(editedTrip);
+    this.props.plan();
+  }
+
+  addPlace(){
+    let editedTrip = this.props.trip;
+    editedTrip.places.splice(this.state.destIndex, 0, this.state.newPlace);
+    this.props.updateTrip(editedTrip);
+    this.props.plan();
+  }
+
+  movePlace(){
+    let editedTrip = this.props.trip;
+    editedTrip.places.splice(this.state.destIndex, 0, editedTrip.places.splice(this.state.targetIndex, 1)[0]);
+    this.props.updateTrip(editedTrip);
+    this.props.plan();
+  }
+
   render(){
     let hasId = this.state.newPlace.id !== "";
     let hasName = this.state.newPlace.name !== "";
@@ -162,7 +199,7 @@ class UserEditing extends Component {
               <input type="text" className="form-control" onChange={this.handleDestIndex} placeholder="Order In Trip"/>
               <span className="input-group-btn">
                 <button disabled={!hasId || !hasName || !hasLongitude || !hasLatitude || !hasDestIndex}
-                        className="btn btn-primary " onClick={() => {this.edit()}} type="button">Submit</button>
+                        className="btn btn-primary " onClick={() => {this.addPlace()}} type="button">Submit</button>
               </span>
             </span>
           </div>
@@ -172,7 +209,7 @@ class UserEditing extends Component {
             <span>
               <input type="text" className="form-control" onChange={this.handleTargetIndex} placeholder="Index of New Start"/>
               <span className="input-group-btn">
-                <button disabled={!hasTargetIndex} className="btn btn-primary " onClick={() => {this.edit()}} type="button">Submit</button>
+                <button disabled={!hasTargetIndex} className="btn btn-primary " onClick={() => {this.changeStartLocation()}} type="button">Submit</button>
               </span>
             </span>
         </div>
@@ -193,7 +230,7 @@ class UserEditing extends Component {
             <span>
               <input type="text" className="form-control" onChange={this.handleTargetIndex} placeholder="Index to Remove"/>
               <span className="input-group-btn">
-                <button disabled={!hasTargetIndex} className="btn btn-primary " onClick={() => {this.edit()}} type="button">Submit</button>
+                <button disabled={!hasTargetIndex} className="btn btn-primary " onClick={() => {this.removePlace()}} type="button">Submit</button>
               </span>
             </span>
         </div>
@@ -204,7 +241,7 @@ class UserEditing extends Component {
               <input type="text" className="form-control" onChange={this.handleTargetIndex} placeholder="Index to Move"/>
               <input type="text" className="form-control" onChange={this.handleDestIndex} placeholder="Index to Move To"/>
               <span className="input-group-btn">
-                <button disabled={!hasDestIndex || !hasTargetIndex} className="btn btn-primary " onClick={() => {this.edit()}} type="button">Submit</button>
+                <button disabled={!hasDestIndex || !hasTargetIndex} className="btn btn-primary " onClick={() => {this.movePlace()}} type="button">Submit</button>
               </span>
             </span>
         </div>
@@ -213,5 +250,6 @@ class UserEditing extends Component {
     )
   }
 }
+
 
 export default UserEditing;

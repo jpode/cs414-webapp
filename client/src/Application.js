@@ -28,6 +28,7 @@ class Application extends Component {
     this.printConfig = this.printConfig.bind(this);
     this.updateTrip = this.updateTrip.bind(this);
     this.editTrip = this.editTrip.bind(this);
+    this.plan = this.plan.bind(this);
 
     this.printConfig();
   }
@@ -128,6 +129,51 @@ class Application extends Component {
     }
   }
 
+  /* Sends a request to the server with the destinations and options.
+ * Receives a response containing the map and itinerary to update the
+ * state for this object.
+ */
+  fetchResponsePlan(){
+    // need to get the request body from the trip in state object.
+    let requestBody = {
+      "version"  : this.state.trip.version,
+      "type"     : this.state.trip.type,
+      "title"    : this.state.trip.title,
+      "options"  : this.state.trip.options,
+      "places"   : this.state.trip.places,
+      "distances": this.state.trip.distances,
+      "map"      : this.state.trip.map
+    };
+    // unsure if map or distances should be included above! ^
+    console.log(process.env.SERVICE_URL);
+    console.log(requestBody);
+
+    return fetch('http://' + this.props.host + '/plan', {
+      header: {'Access-Control-Allow-Origin':'*'},
+      method:"POST",
+      body: JSON.stringify(requestBody)
+    });
+  }
+
+  async plan(){
+    try {
+      let serverResponse = await this.fetchResponsePlan();
+      let tffi = await serverResponse.json();
+
+      console.log("Status " + serverResponse.status + ": " + serverResponse.statusText);
+      if(serverResponse.status >= 200 && serverResponse.status < 300) {
+        console.log(tffi);
+        this.updateTrip(tffi);
+      } else {
+        alert("Error " + serverResponse.status + ": " + serverResponse.statusText);
+      }
+
+    } catch(err) {
+      console.error(err);
+      alert(err);
+    }
+  }
+
   render() {
     return(
         <div id="application" className="container">
@@ -147,7 +193,7 @@ class Application extends Component {
                   <Destinations trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} editTrip={this.editTrip} host={this.props.host}/>
                 </div>
                 <div className="col-12">
-                  <UserEditing trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} editTrip={this.editTrip}/>
+                  <UserEditing trip={this.state.trip} config={this.props.config} plan={this.plan} updateTrip={this.updateTrip} editTrip={this.editTrip}/>
                 </div>
                 <div className="col-12">
                   <Trip trip={this.state.trip} updateTrip={this.updateTrip} host={this.props.host}/>
