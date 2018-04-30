@@ -17,7 +17,7 @@ public class Config {
   public String[] maps;
   public int optimization;
   public OptType[] optimizations;
-  public String[] distances;
+  public String[] units;
   public ArrayList<Filter> filters;
 
   /**
@@ -32,7 +32,7 @@ public class Config {
     this.optimizations = new OptType[]{new OptType("NN", "Basic Nearest Neighbor algorithm"),
                                        new OptType("2-opt", "Expansion on NN using 2-opt algorithm")
                                       };
-    this.distances = new String[]{"miles", "kilometers", "nautical miles", "user defined"};
+    this.units = new String[]{"miles", "kilometers", "nautical miles", "user defined"};
     Database db = new Database();
     this.filters = db.getFilters();
   }
