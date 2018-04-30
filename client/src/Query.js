@@ -15,8 +15,6 @@ class Query extends Component {
         values : []
       },
       places: [],
-      targetIndex: 1,
-      destIndex: 1,
       newPlace: {
         id: "",
         name: "",
@@ -98,13 +96,25 @@ class Query extends Component {
   {
     console.log(e);
     let place = this.state.newPlace;
+
     place.id = e.id;
     place.name = e.name;
     place.latitude = e.latitude;
     place.longitude = e.longitude;
+
     console.log(place);
+
     this.setState({newPlace: place});
-    this.props.editTrip(this.state);
+    this.addPlace();
+  }
+
+  addPlace(){
+    let editedTrip = this.props.trip;
+
+    editedTrip.places.splice(editedTrip.places.length, 0, this.state.newPlace);
+
+    this.props.updateTrip(editedTrip);
+    this.props.plan();
   }
 
   handleCreation(){
@@ -123,8 +133,8 @@ class Query extends Component {
   }
 
   handleApplyFilters() {
-    var e = document.getElementById("typeSelect");
-    var strUser;
+    let e = document.getElementById("typeSelect");
+    let strUser;
     if(e.options[e.selectedIndex].value !== "(none)") {
       strUser = e.options[e.selectedIndex].value;
       this.setState({newFilter: {attribute : "type", values: [strUser]}}, this.concatFilter);
@@ -186,7 +196,7 @@ class Query extends Component {
     let btns = [];
     let i = 0;
 
-    if (typeof this.state.places[0] != "undefined") {
+    if (typeof this.state.places[0] !== "undefined") {
       ids = this.state.places.map((item) => <td>{item.id}</td>);
       names = this.state.places.map((item) => <td>{item.name}</td>);
       municipalities = this.state.places.map(

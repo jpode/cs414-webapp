@@ -21,10 +21,8 @@ class UserEditing extends Component {
     }
 
     this.handleSelect = this.handleSelect.bind(this);
-    this.edit = this.edit.bind(this);
     this.handleDestIndex = this.handleDestIndex.bind(this);
     this.handleTargetIndex = this.handleTargetIndex.bind(this);
-
     this.handleCustomID = this.handleCustomID.bind(this);
     this.handleCustomName = this.handleCustomName.bind(this);
     this.handleCustomLongitude = this.handleCustomLongitude.bind(this);
@@ -35,6 +33,7 @@ class UserEditing extends Component {
     this.removePlace = this.removePlace.bind(this);
     this.addPlace = this.addPlace.bind(this);
     this.movePlace = this.movePlace.bind(this);
+    this.reverseTrip = this.reverseTrip.bind(this);
 
   }
 
@@ -74,11 +73,6 @@ class UserEditing extends Component {
     }
 
 
-  }
-
-  edit(){
-    this.props.editTrip(this.state);
-    this.resetState();
   }
 
   handleDestIndex(event){
@@ -139,10 +133,11 @@ class UserEditing extends Component {
   }
 
   changeStartLocation(){
-      let editedTrip = this.props.trip;
-      editedTrip.places = editedTrip.places.concat(editedTrip.places.splice(0, this.state.targetIndex));
-      editedTrip.distances = editedTrip.distances.concat(editedTrip.distances.splice(0, this.state.targetIndex));
-      this.props.updateTrip(editedTrip);
+    let editedTrip = this.props.trip;
+    editedTrip.places = editedTrip.places.concat(editedTrip.places.splice(0, this.state.targetIndex));
+    editedTrip.distances = editedTrip.distances.concat(editedTrip.distances.splice(0, this.state.targetIndex));
+    this.props.updateTrip(editedTrip);
+    this.resetState();
   }
 
   removePlace(){
@@ -150,6 +145,7 @@ class UserEditing extends Component {
     editedTrip.places.splice(this.state.targetIndex, 1);
     this.props.updateTrip(editedTrip);
     this.props.plan();
+    this.resetState();
   }
 
   addPlace(){
@@ -157,6 +153,7 @@ class UserEditing extends Component {
     editedTrip.places.splice(this.state.destIndex, 0, this.state.newPlace);
     this.props.updateTrip(editedTrip);
     this.props.plan();
+    this.resetState();
   }
 
   movePlace(){
@@ -164,6 +161,15 @@ class UserEditing extends Component {
     editedTrip.places.splice(this.state.destIndex, 0, editedTrip.places.splice(this.state.targetIndex, 1)[0]);
     this.props.updateTrip(editedTrip);
     this.props.plan();
+    this.resetState();
+  }
+
+  reverseTrip(){
+    let editedTrip = this.props.trip;
+    editedTrip.places = editedTrip.places.splice(0,1).concat(editedTrip.places.reverse());
+    editedTrip.distances.reverse();
+    this.props.updateTrip(editedTrip);
+    this.resetState();
   }
 
   render(){
@@ -219,7 +225,7 @@ class UserEditing extends Component {
             <input type="radio" id="remove" name="remove" value="on" onClick={() => { this.handleSelect("remove")}} />Remove A Place
           </label>
           <label className={"btn btn-outline-dark btn-success".concat((this.state.reverseSelected === 1) ? " active" : "")}>
-            <input type="radio" id="reverse" name="reverse" value="on" onClick={() => { this.handleSelect("reverse")}} />Reverse The Trip
+            <input type="radio" id="reverse" name="reverse" value="on" onClick={() => { this.reverseTrip()}} />Reverse The Trip
           </label>
           <label className={"btn btn-outline-dark btn-success".concat((this.state.movePlaceSelected === 1) ? " active" : "")}>
             <input type="radio" id="movePlace" name="movePlace" value="on" onClick={() => { this.handleSelect("movePlace")}} />Move a Place
@@ -250,6 +256,5 @@ class UserEditing extends Component {
     )
   }
 }
-
 
 export default UserEditing;

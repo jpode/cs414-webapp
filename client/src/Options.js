@@ -43,7 +43,7 @@ class Options extends Component{
       newTFFI.options.distance = arg;
 
       this.props.updateTrip(newTFFI);
-      this.plan();
+      this.props.plan();
   }
 
   changeDistanceCustom(arg) {
@@ -65,7 +65,7 @@ class Options extends Component{
     newTFFI.options.userRadius = this.state.distanceRadius;
 
     this.props.updateTrip(newTFFI);
-    this.plan();
+    this.props.plan();
 
   }
 
@@ -110,59 +110,19 @@ class Options extends Component{
       this.props.updateTrip(tffi);
 
     } catch(err) {
-      console.error(err);
+      console.error("This error probably occurred because the client is communicating with a"
+          + " server that has a port other than 31409. This is not an issue, but additional "
+          + " functionality is available when using a 31409 server.");
     }
   }
 
-  fetchResponse_V2(){
-    // need to get the request body from the trip in state object.
-    let requestBody = {
-        "version"  : this.props.trip.version,
-        "type"     : this.props.trip.type,
-        "title"    : this.props.trip.title,
-        "options"  : this.props.trip.options,
-        "places"   : this.props.trip.places,
-        "distances": this.props.trip.distances,
-        "map"      : this.props.trip.map
-    };
-    // unsure if map or distances should be included above! ^
-    console.log(process.env.SERVICE_URL);
-    console.log(requestBody);
-
-    return fetch('http://' + this.props.host + '/optimize', {
-        header: {'Access-Control-Allow-Origin':'*'},
-        method:"POST",
-        body: JSON.stringify(requestBody)
-    });
-  }
-
-  async plan(){
-      try {
-          let serverResponse = await this.fetchResponse_V2();
-          let tffi = await serverResponse.json();
-
-          console.log("Status " + serverResponse.status + ": " + serverResponse.statusText);
-          if(serverResponse.status >= 200 && serverResponse.status < 300) {
-              console.log(tffi);
-              this.props.updateTrip(tffi);
-          } else {
-              alert("Error " + serverResponse.status + ": " + serverResponse.statusText);
-          }
-
-      } catch(err) {
-          console.error(err);
-          alert(err);
-      }
-  }
-
-
   render() {
 
-    const isCustomUnit = this.state.distanceUnit != "";
-    const hasTitle = this.state.distanceUnit != "" && this.state.distanceUnit != "new";
-    const hasRadius = this.state.distanceRadius != "";
+    const isCustomUnit = this.state.distanceUnit !== "";
+    const hasTitle = this.state.distanceUnit !== "" && this.state.distanceUnit !== "new";
+    const hasRadius = this.state.distanceRadius !== "";
 
-    const distances = this.props.config.distances;
+    const distances = this.props.config.units;
     const configNMiles= distances.includes("nautical miles");
     const configUD= distances.includes("user defined");
     const configOptLevel = this.props.config.optimization;

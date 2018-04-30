@@ -11,7 +11,7 @@ class Trip extends Component {
   constructor(props) {
     super(props);
 
-    this.plan = this.plan.bind(this);
+    //this.plan = this.plan.bind(this);
     this.saveTFFI = this.saveTFFI.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -19,7 +19,7 @@ class Trip extends Component {
   /* Sends a request to the server with the destinations and options.
    * Receives a response containing the map and itinerary to update the
    * state for this object.
-   */
+
   fetchResponse(){
     // need to get the request body from the trip in state object.
     let requestBody = {
@@ -60,7 +60,7 @@ class Trip extends Component {
       alert(err);
     }
   }
-
+  */
   /* Saves the map and itinerary to the local file system.
    */
   saveTFFI(){
@@ -96,7 +96,7 @@ class Trip extends Component {
             <p>Give your trip a title before planning or saving.</p>
             <div className="input-group" role="group">
               <span className="input-group-btn">
-              <button disabled = {!hasTitle} className="btn btn-outline-dark btn-success" onClick={this.plan} type="button">Plan</button>
+              <button disabled = {!hasTitle} className="btn btn-outline-dark btn-success" onClick={this.props.plan} type="button">Plan</button>
             </span>
               <input type="text" value={this.props.trip.title} className="form-control" onChange = {this.handleSubmit} placeholder="Trip title"/>
               <span className="input-group-btn">

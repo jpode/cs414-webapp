@@ -27,7 +27,6 @@ class Application extends Component {
 
     this.printConfig = this.printConfig.bind(this);
     this.updateTrip = this.updateTrip.bind(this);
-    this.editTrip = this.editTrip.bind(this);
     this.plan = this.plan.bind(this);
 
     this.printConfig();
@@ -56,10 +55,10 @@ class Application extends Component {
           console.log(this.props.config.maps[key]);
         }
       }
-      console.log("Supported Distances:");
-      for (key in this.props.config.distances) {
-        if (this.props.config.distances.hasOwnProperty(key)) {
-          console.log(this.props.config.distances[key]);
+      console.log("Supported Distance Units:");
+      for (key in this.props.config.units) {
+        if (this.props.config.units.hasOwnProperty(key)) {
+          console.log(this.props.config.units[key]);
         }
       }
       console.log("Supported Filters:");
@@ -87,53 +86,11 @@ class Application extends Component {
 
   }
 
-  /* Sends a request to the server with the editing options.
-   * Receives a response containing the edited trip.
-   */
-  fetchResponse(param){
-    let requestBody = {
-      "editType"      : param.editType,
-      "newPlace"     : param.newPlace,
-      "targetIndex"   : param.targetIndex,
-      "destIndex"     : param.destIndex,
-      "optimization"  : this.state.trip.options.optimization,
-      "places"        : this.state.trip.places,
-      "distances"     : this.state.trip.distances,
-    };
-    console.log(process.env.SERVICE_URL);
-    console.log(requestBody);
-
-    return fetch('http://' + location.host + '/edit', {
-      header: {'Access-Control-Allow-Origin':'*'},
-      method:"POST",
-      body: JSON.stringify(requestBody)
-    });
-  }
-
-  async editTrip(param){
-    try {
-      let serverResponse = await this.fetchResponse(param);
-      let tffi = await serverResponse.json();
-
-      console.log("Status " + serverResponse.status + ": " + serverResponse.statusText);
-      if(serverResponse.status >= 200 && serverResponse.status < 300) {
-        console.log(tffi);
-        this.updateTrip(tffi);
-      } else {
-        alert("Error " + serverResponse.status + ": " + serverResponse.statusText);
-      }
-
-    } catch(err) {
-      console.error(err);
-      alert(err);
-    }
-  }
-
   /* Sends a request to the server with the destinations and options.
  * Receives a response containing the map and itinerary to update the
  * state for this object.
  */
-  fetchResponsePlan(){
+  fetchResponse(){
     // need to get the request body from the trip in state object.
     let requestBody = {
       "version"  : this.state.trip.version,
@@ -157,7 +114,7 @@ class Application extends Component {
 
   async plan(){
     try {
-      let serverResponse = await this.fetchResponsePlan();
+      let serverResponse = await this.fetchResponse();
       let tffi = await serverResponse.json();
 
       console.log("Status " + serverResponse.status + ": " + serverResponse.statusText);
@@ -190,13 +147,13 @@ class Application extends Component {
                   <Options trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} host={this.props.host} updateHost={this.props.updateHost}/>
                 </div>
                 <div className="col-12">
-                  <Destinations trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} editTrip={this.editTrip} host={this.props.host}/>
+                  <Destinations trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} plan={this.plan} host={this.props.host}/>
                 </div>
                 <div className="col-12">
-                  <UserEditing trip={this.state.trip} config={this.props.config} plan={this.plan} updateTrip={this.updateTrip} editTrip={this.editTrip}/>
+                  <UserEditing trip={this.state.trip} config={this.props.config} plan={this.plan} updateTrip={this.updateTrip}/>
                 </div>
                 <div className="col-12">
-                  <Trip trip={this.state.trip} updateTrip={this.updateTrip} host={this.props.host}/>
+                  <Trip trip={this.state.trip} updateTrip={this.updateTrip} plan={this.plan}/>
                 </div>
               </div>
             </div>
