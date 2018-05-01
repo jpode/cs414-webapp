@@ -66,8 +66,8 @@ public class Database {
         + "OR municipality LIKE '%" + query.query + "%' OR keywords LIKE '%" + query.query + "%')";
 
     try {
-      System.out.println("query before filters: " + search);
       search = addFilters(search);
+      System.out.println("Sending query: " + search);
       ResultSet rs = sendQuery(search);
       if(rs != null) {
         addPlaces(rs);
@@ -87,10 +87,7 @@ public class Database {
     System.out.println(search);
     try {
       Statement stQuery = conn.createStatement();
-      ResultSet rsQuery = stQuery.executeQuery(search);
-      {
-        return rsQuery;
-      }
+      return stQuery.executeQuery(search);
     } catch (Exception e) {
       System.err.println("Exception in sending query: " + e.getMessage());
     }
@@ -154,10 +151,10 @@ public class Database {
         queryString += getFilterToAdd("type", i);
       }
       if(query.filters.get(i).attribute.equals("country")) {
-        queryString += getFilterToAdd("country", i);
+        queryString += getFilterToAdd("iso_country", i);
       }
       if(query.filters.get(i).attribute.equals("region")) {
-        queryString += getFilterToAdd("region", i);
+        queryString += getFilterToAdd("iso_region", i);
       }
       if(query.filters.get(i).attribute.equals("continent")) {
         queryString += getFilterToAdd("continent", i);
@@ -167,13 +164,21 @@ public class Database {
     return queryString;
   }
 
-  private String getFilterToAdd(String type, int index) {
+  private String getFilterToAdd(String attribute, int index) throws SQLException{
     String queryString = " AND (";
     for(int j = 0; j < query.filters.get(index).values.size(); j++){
       if(j > 0){
         queryString += " OR ";
       }
-      queryString += "type ='" + query.filters.get(index).values.get(j) + "'";
+      if(attribute.equals("iso_country")){
+        queryString += attribute + "='" + getCountryId(query.filters.get(index).values.get(j)) + "'";
+      } else if(attribute.equals("iso_region")){
+        queryString += attribute + "='" + getRegionId(query.filters.get(index).values.get(j)) + "'";
+      } else if(attribute.equals("continent")){
+        queryString += attribute + "='" + getContinentId(query.filters.get(index).values.get(j)) + "'";
+      } else {
+        queryString += attribute + "='" + query.filters.get(index).values.get(j) + "'";
+      }
     }
     queryString += ") ";
     return queryString;
@@ -181,19 +186,22 @@ public class Database {
 
   private String getCountryId(String country) throws SQLException{
     Statement stQuery = conn.createStatement();
-    ResultSet rs = sendQuery("SELECT id FROM country WHERE name='" + country);
+    ResultSet rs = sendQuery("SELECT id FROM country WHERE name='" + country  + "'");
+    rs.next();
     return rs.getString("id");
   }
 
   private String getRegionId(String region) throws SQLException{
     Statement stQuery = conn.createStatement();
-    ResultSet rs = sendQuery("SELECT id FROM region WHERE name='" + region);
+    ResultSet rs = sendQuery("SELECT id FROM region WHERE name='" + region + "'");
+    rs.next();
     return rs.getString("id");
   }
 
   private String getContinentId(String continent) throws SQLException{
     Statement stQuery = conn.createStatement();
-    ResultSet rs = sendQuery("SELECT id FROM continent WHERE name='" + continent);
+    ResultSet rs = sendQuery("SELECT id FROM continents WHERE name='" + continent  + "'");
+    rs.next();
     return rs.getString("id");
   }
 
@@ -209,14 +217,14 @@ public class Database {
         loadFilters(rs);
         rs.close();
       }
-      rs = sendQuery("SELECT DISTINCT(country.name) AS country FROM country INNER JOIN airports ON "
-          + "country.id=airports.iso_country ORDER BY country.name");
+      rs = sendQuery("SELECT DISTINCT(region.name) AS region FROM region INNER JOIN airports ON "
+          + "region.id=airports.iso_region WHERE region.name != '(unassigned)' ORDER BY region.name");
       if (rs != null) {
         loadFilters(rs);
         rs.close();
       }
-      rs = sendQuery("SELECT DISTINCT(region.name) AS region FROM region INNER JOIN airports ON "
-          + "region.id=airports.iso_region WHERE region.name != '(unassigned)' ORDER BY region.name");
+      rs = sendQuery("SELECT DISTINCT(country.name) AS country FROM country INNER JOIN airports ON "
+          + "country.id=airports.iso_country ORDER BY country.name");
       if (rs != null) {
         loadFilters(rs);
         rs.close();
