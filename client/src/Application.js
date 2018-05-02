@@ -1,3 +1,4 @@
+import Cookies from "universal-cookie";
 import React, {Component} from 'react';
 import Options from './Options';
 import Destinations from './Destinations';
@@ -25,11 +26,25 @@ class Application extends Component {
       }
     }
 
+    var cookie = new Cookies();
+    cookie = cookie.get("stateCookie")
+    if(cookie != null){
+      console.log(cookie);
+      this.state = cookie;
+    }
+    this.saveCookie = this.saveCookie.bind(this);
+
     this.printConfig = this.printConfig.bind(this);
     this.updateTrip = this.updateTrip.bind(this);
     this.plan = this.plan.bind(this);
 
     this.printConfig();
+  }
+
+  saveCookie(){
+    const cookies = new Cookies();
+    cookies.set("stateCookie", this.state);
+    console.log(cookies.get("stateCookie"));
   }
 
   //Print out information from the config file received from the server.
@@ -82,7 +97,8 @@ class Application extends Component {
     }
 
     console.log(new_tffi);
-    this.setState({trip: new_tffi});
+    this.setState({trip: new_tffi}, () => {this.saveCookie()});
+
 
   }
 
