@@ -28,11 +28,10 @@ class Application extends Component {
 
     var cookie = new Cookies();
     cookie = cookie.get("stateCookie")
-    if(cookie !== null){
+    if(cookie != null){
       console.log(cookie);
       this.state = cookie;
     }
-
     this.saveCookie = this.saveCookie.bind(this);
 
     this.printConfig = this.printConfig.bind(this);
