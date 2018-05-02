@@ -16,8 +16,6 @@ class Query extends Component {
         values : []
       },
       places: [],
-      targetIndex: 1,
-      destIndex: 1,
       newPlace: {
         id: "",
         name: "",
@@ -105,13 +103,25 @@ class Query extends Component {
   {
     console.log(e);
     let place = this.state.newPlace;
+
     place.id = e.id;
     place.name = e.name;
     place.latitude = e.latitude;
     place.longitude = e.longitude;
+
     console.log(place);
+
     this.setState({newPlace: place});
-    this.props.editTrip(this.state);
+    this.addPlace();
+  }
+
+  addPlace(){
+    let editedTrip = this.props.trip;
+
+    editedTrip.places.splice(editedTrip.places.length, 0, this.state.newPlace);
+
+    this.props.updateTrip(editedTrip);
+    this.props.plan();
   }
 
   handleCreation(){
@@ -125,7 +135,9 @@ class Query extends Component {
   addTypeFilter(){
     var strUser;
 
-    var e = document.getElementById("typeSelect");
+  handleApplyFilters() {
+    let e = document.getElementById("typeSelect");
+    let strUser;
     if(e.options[e.selectedIndex].value !== "(none)") {
       strUser = e.options[e.selectedIndex].value;
       this.setState({newFilter: {attribute : "type", values: [strUser]}}, () => {this.holdFilter()});

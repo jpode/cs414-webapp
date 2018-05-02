@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.tripco.t09.planner.Config;
 import com.tripco.t09.planner.Database;
-import com.tripco.t09.planner.Editor;
 import com.tripco.t09.planner.Plan;
 
 import com.tripco.t09.planner.Trip;
@@ -54,7 +53,6 @@ public class MicroServer {
     post("/plan", this::plan);
     post("/query", this::query);
     //TODO: Remove these two APIs when the client no longer uses them
-    post("/edit", this::edit);
     post("/optimize", this::optimize);
 
     System.out.println("\n\nServer running on port: " + this.port + "\n\n");
@@ -208,103 +206,6 @@ public class MicroServer {
     Database db = new Database();
     db.processRequest(request);
     return db.getString();
-  }
-
-  /** A REST API to support user editing of trip.
-   *
-   * @param request
-   * @param response
-   * @return
-   */
-  private String edit(Request request, Response response) {
-
-    response.header("Access-Control-Allow-Origin", "*");
-    response.type("application/json");
-
-    //Print the request
-    System.out.println(HTTP.echoRequest(request));
-
-    // extract the information from the body of the request.
-    JsonParser jsonParser = new JsonParser();
-    JsonElement requestBody = jsonParser.parse(request.body());
-    // convert the body of the request to a Java class.
-    Gson gson = new Gson();
-    Editor editor = gson.fromJson(requestBody, Editor.class);
-
-    boolean isInsert = editor.editType.equals("insert");
-    boolean isRemove = editor.editType.equals("remove");
-    boolean isChangeStartPos = editor.editType.equals("newStart");
-    boolean isMovePlace = editor.editType.equals("movePlace");
-
-    if(editMethod(editor, isInsert, isRemove, isChangeStartPos, isMovePlace) == -1){
-      response.status(400);
-      return gson.toJson(editor);
-    }
-
-    //Edit the stored optimizations, if there are any
-    if(editOpts(editor, isInsert, isRemove, isChangeStartPos, isMovePlace)) {
-      //Return the optimization that the client was currently displaying
-      return opts[getOptLvl(editor.optimization)];
-    } else {
-      //No stored optimizations: return the trip as is
-      Trip trip = new Trip();
-      trip.places = editor.places;
-      trip.distances = editor.distances;
-      Plan plan = new Plan(trip);
-      if(editor.editType.equals("insert") || editor.editType.equals("remove")) {  // only two that needs to be replanned
-        plan.planTrip();
-      }
-      return plan.getTrip();
-    }
-  }
-
-  private int editMethod(Editor editor, boolean isInsert, boolean isRemove,
-      boolean isChangeStartPos, boolean isMovePlace){
-    int code = 0;
-    if(isInsert){
-      code = editor.insert();
-    } else if(isRemove){
-      code = editor.remove();
-    } else if(isChangeStartPos){
-      code = editor.changeStartPos();
-    } else if(isMovePlace){
-      code = editor.movePlace();
-    } else {
-      code = editor.reverse();
-    }
-    return code;
-  }
-
-  private boolean editOpts(Editor editor, boolean isInsert, boolean isRemove,
-      boolean isChangeStartPos, boolean isMovePlace){
-
-    Gson gson = new Gson();
-    boolean hasOpt = false;
-    for(int i = 0; i < 3; i++){
-      if(opts[i] != null && !opts[i].equals("")){
-        System.out.println("Has " + i + "-opt");
-        hasOpt = true;
-        Trip trip = gson.fromJson(opts[i], Trip.class);
-        System.out.println("OptLevel: " + trip.options.optimization);
-        Plan plan;
-        if(isInsert || isRemove || isChangeStartPos || isMovePlace){
-          trip.places = editor.places;
-          trip.distances.clear();
-          plan = new Plan(trip);
-          plan.planTrip();
-          if(i > 0) {
-            plan.optimize();
-          }
-          opts[i] = plan.getTrip();
-        } else {
-          trip.places = editor.places;
-          trip.distances = editor.distances;
-          plan = new Plan(trip);
-          opts[i] = plan.getTrip();
-        }
-      }
-    }
-    return hasOpt;
   }
 
   /**
