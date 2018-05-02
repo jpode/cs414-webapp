@@ -13,17 +13,17 @@ class KmlMap extends React.Component {
   // IMPORTANT: since our trip.places array contains strings, we'll need to convert them somewhere in this
   //  class. I'll leave that to you (it only works since I've hard coded lat/lng in places as Numbers)
 
-  convertCords(places) {
-    let newPlaces = places.map(
-        
-    );
-  }
+  // convertCords(places) {
+  //   let newPlaces = places.map(
+  //
+  //   );
+  // }
 
   // Create our path from the places array
   makePath(places) {
     let path = places.map(
-        x => ({lat: x.latitude, lng: x.longitude}));
-    path.push({lat: places[0].latitude, lng: places[0].longitude});
+        x => ({lat: Number(x.latitude), lng: Number(x.longitude)}));
+    path.push({lat: Number(places[0].latitude), lng: Number(places[0].longitude)});
     return path;
   }
 
