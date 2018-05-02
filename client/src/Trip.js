@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Map from './Map';
 import Itinerary from './Itinerary';
+import KmlMap from './KmlMap';
 
 /* Trip computes the map an intinerary based on a set of destinations and options.
  * The destinations and options reside in the parent object so they may be set by
@@ -103,6 +104,7 @@ class Trip extends Component {
               <button disabled = {!hasTitle} className="btn btn-outline-dark btn-success" onClick={this.saveTFFI} type="button">Save</button>
             </span>
             </div>
+            <KmlMap trip={this.props.trip}/>
             <Map trip={this.props.trip} />
             <Itinerary trip={this.props.trip} />
           </div>

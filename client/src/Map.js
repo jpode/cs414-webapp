@@ -1,7 +1,4 @@
-import React, {Component} from 'react'
-import {compose, withProps} from 'recompose'
-import {withScriptjs, withGoogleMap,
-  GoogleMap, Polyline, Marker} from 'react-google-maps'
+import React, {Component} from 'react';
 /* Map obtains and renders the map for the trip.
  * Might be an SVG or KML contained in the server response.
  */
@@ -16,10 +13,10 @@ class Map extends Component {
       let svgData = this.props.trip.map;
 
       return (
-          <figure className="figure" id="map">
-            <img className="figure-img img-fluid" alt="Map"
-                 src={svgHeader.concat(svgData)}/>
-          </figure>
+            <figure className="figure" id="map">
+              <img className="figure-img img-fluid" alt="Map"
+                   src={svgHeader.concat(svgData)}/>
+            </figure>
       )
     }
   }
