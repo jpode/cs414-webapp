@@ -36,7 +36,6 @@ class Application extends Component {
 
     this.printConfig = this.printConfig.bind(this);
     this.updateTrip = this.updateTrip.bind(this);
-    this.editTrip = this.editTrip.bind(this);
     this.changeTab = this.changeTab.bind(this);
     this.plan = this.plan.bind(this);
 

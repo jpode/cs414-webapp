@@ -59,8 +59,8 @@ class Trip extends Component {
               <button disabled = {!hasTitle} className="btn btn-outline-dark btn-success" onClick={this.saveTFFI} type="button">Save</button>
             </span>
             </div>
-            {/*<KmlMap trip={this.props.trip}/>*/}
-            <Map trip={this.props.trip} />
+            <KmlMap trip={this.props.trip}/>
+            {/*<Map trip={this.props.trip} />*/}
             <Itinerary trip={this.props.trip} />
           </div>
         </div>
