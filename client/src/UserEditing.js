@@ -206,7 +206,7 @@ class UserEditing extends Component {
                 <input type="text" className="form-control" onChange={this.handleDestIndex} placeholder="Order In Trip"/>
                 <span className="input-group-btn">
                   <button disabled={!hasId || !hasName || !hasLongitude || !hasLatitude || !hasDestIndex}
-                          className="btn btn-primary " onClick={() => {this.addPlace()}} type="button">Submit</button>
+                   className="btn btn-primary " onClick={() => {this.addPlace()}} type="button">Submit</button>
                 </span>
               </span>
             </div>
