@@ -230,7 +230,7 @@ public class TestTrip {
     ArrayList<Place> testPlaces = new ArrayList<Place>();
     Option option = new Option();
     option.distance = "miles";
-    option.optimization = "0.5";
+    option.optimization = "0.26";
     trip.options = option;
 
     Place placeA = new Place();
@@ -288,7 +288,7 @@ public class TestTrip {
     ArrayList<Place> testPlaces = new ArrayList<Place>();
     Option option = new Option();
     option.distance = "miles";
-    option.optimization = "0.5";
+    option.optimization = "0.3";
     trip.options = option;
 
     Place placeA = new Place();
@@ -346,7 +346,7 @@ public class TestTrip {
     ArrayList<Place> testPlaces = new ArrayList<Place>();
     Option option = new Option();
     option.distance = "miles";
-    option.optimization = "1.0";
+    option.optimization = "0.55";
     trip.options = option;
 
     Place placeA = new Place();
@@ -451,7 +451,7 @@ public class TestTrip {
     ArrayList<Place> testPlaces = new ArrayList<Place>();
     Option option = new Option();
     option.distance = "miles";
-    option.optimization = "0.9";
+    option.optimization = "0.2";
     trip.options = option;
 
 
@@ -505,7 +505,7 @@ public class TestTrip {
     // 2Opt section:
 
     trip.places = testPlaces2;
-    option.optimization = "1.0";
+    option.optimization = "0.6";
     trip.options = option;
     trip.optimize();
 

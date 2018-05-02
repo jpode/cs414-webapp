@@ -26,7 +26,7 @@ public class MicroServer {
   private String name;
   private String path = "/public";
 
-  private String[] opts = new String[3];
+  private String[] opts = new String[4];
 
   /** Creates a micro-server to load static files and provide REST APIs.
    *
@@ -328,12 +328,14 @@ public class MicroServer {
 
   private int getOptHelper(double optDouble){
     int optLvl;
-    if(optDouble == 0){
+    if(optDouble < 0.25){
       optLvl = 0;
-    } else if(optDouble < 1){
+    } else if(optDouble < 0.5){
       optLvl = 1;
-    } else {
+    } else if (optDouble < 0.75){
       optLvl = 2;
+    } else {
+      optLvl = 3;
     }
     return optLvl;
   }
