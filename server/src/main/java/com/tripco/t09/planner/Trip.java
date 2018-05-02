@@ -351,7 +351,6 @@ public class Trip {
       return;
     }
     for(int i = 0; i < distances.size(); ++i){
-      int temp = distances.get(i);
       distances.set(i, (int) Math.round(factor * distances.get(i)));
     }
   }
