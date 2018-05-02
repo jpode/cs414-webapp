@@ -181,7 +181,7 @@ public class Optimization extends Trip {
     ArrayList<Place> minRoute = new ArrayList<>(places);
     int minDist = sumDistances(places);
 
-    
+
     for (int i = 0; i < places.size(); i++) {
       Place current = places.get(i);
       ArrayList<Place> temp = nearestNeighborRoute(current);
