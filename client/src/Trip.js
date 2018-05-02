@@ -12,54 +12,9 @@ class Trip extends Component {
   constructor(props) {
     super(props);
 
-    this.plan = this.plan.bind(this);
+    //this.plan = this.plan.bind(this);
     this.saveTFFI = this.saveTFFI.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  /* Sends a request to the server with the destinations and options.
-   * Receives a response containing the map and itinerary to update the
-   * state for this object.
-   */
-  fetchResponse(){
-    // need to get the request body from the trip in state object.
-    let requestBody = {
-      "version"  : this.props.trip.version,
-      "type"     : this.props.trip.type,
-      "title"    : this.props.trip.title,
-      "options"  : this.props.trip.options,
-      "places"   : this.props.trip.places,
-      "distances": this.props.trip.distances,
-      "map"      : this.props.trip.map
-    };
-    // unsure if map or distances should be included above! ^
-    console.log(process.env.SERVICE_URL);
-    console.log(requestBody);
-
-    return fetch('http://' + this.props.host + '/plan', {
-      header: {'Access-Control-Allow-Origin':'*'},
-      method:"POST",
-      body: JSON.stringify(requestBody)
-    });
-  }
-
-  async plan(){
-    try {
-      let serverResponse = await this.fetchResponse();
-      let tffi = await serverResponse.json();
-
-      console.log("Status " + serverResponse.status + ": " + serverResponse.statusText);
-      if(serverResponse.status >= 200 && serverResponse.status < 300) {
-        console.log(tffi);
-        this.props.updateTrip(tffi);
-      } else {
-        alert("Error " + serverResponse.status + ": " + serverResponse.statusText);
-      }
-
-    } catch(err) {
-      console.error(err);
-      alert(err);
-    }
   }
 
   /* Saves the map and itinerary to the local file system.
@@ -97,7 +52,7 @@ class Trip extends Component {
             <p>Give your trip a title before planning or saving.</p>
             <div className="input-group" role="group">
               <span className="input-group-btn">
-              <button disabled = {!hasTitle} className="btn btn-outline-dark btn-success" onClick={this.plan} type="button">Plan</button>
+              <button disabled = {!hasTitle} className="btn btn-outline-dark btn-success" onClick={this.props.plan} type="button">Plan</button>
             </span>
               <input type="text" value={this.props.trip.title} className="form-control" onChange = {this.handleSubmit} placeholder="Trip title"/>
               <span className="input-group-btn">

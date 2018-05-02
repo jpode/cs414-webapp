@@ -15,3 +15,5 @@ after_script:
   - mv target/site/jacoco/jacoco.xml ./
   - sed -i 's_com/_server/src/main/java/com/_g' jacoco.xml
   - ./cc-test-reporter --debug after-build --exit-code $TRAVIS_TEST_RESULT
+services
+  -mysql
