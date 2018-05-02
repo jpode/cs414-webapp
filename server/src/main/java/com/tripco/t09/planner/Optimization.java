@@ -207,12 +207,62 @@ public class Optimization extends Trip {
           for(int k = j+1; k < size-1; ++k){
             temp.clear();
             int currentDist = distanceHelper3Opt(route, i, i+1, j, j+1, k, k+1);
-
-            //case 7:
-            int case7 = distanceHelper3Opt(route, i, j+1, k, i+1, j, k+1);
-            if(case7 < currentDist){
+            //case 1:
+            int case1 = distanceHelper3Opt(route, i, k, j+1, j, i+1, k+1);
+            if(case1 < currentDist) {
               addUntil(temp, route, i);
-              for(int w = j+1; w <= k; ++w){
+              for(int w = k; w >= i+1; --w){
+                temp.add(route.get(w));
+              }
+              addRemaining(temp, route, k+1);
+              route = new LinkedList<>(temp);
+              improvement = true;
+              continue;
+            }
+            //case 2:
+            int case2 = distanceHelper3Opt(route, i, j, i+1, j+1, k, k+1);
+            if(case2 < currentDist){
+              addUntil(temp, route, i);
+              for(int w = j; w >= i+1; --w){
+                temp.add(route.get(w));
+              }
+              addRemaining(temp, route, j+1);
+              route = new LinkedList<>(temp);
+              improvement = true;
+              continue;
+            }
+            //case 3:
+            int case3 = distanceHelper3Opt(route, i, i+1, j, k, j+1, k+1);
+            if(case3 < currentDist){
+              addUntil(temp, route, j);
+              for(int w = k; w >= j+1; --w){
+                temp.add(route.get(w));
+              }
+              addRemaining(temp, route, k+1);
+              route = new LinkedList<>(temp);
+              improvement = true;
+              continue;
+            }
+            //case 4:
+            int case4 = distanceHelper3Opt(route, i, j, i+1, k, j+1, k+1);
+            if(case4 < currentDist){
+              addUntil(temp, route, i);
+              for(int w = j; w >= i+1; --w){
+                temp.add(route.get(w));
+              }
+              for(int w = k; w >= j+1; --w){
+                temp.add(route.get(w));
+              }
+              addRemaining(temp, route, k+1);
+              route = new LinkedList<>(temp);
+              improvement = true;
+              continue;
+            }
+            //case 5:
+            int case5 = distanceHelper3Opt(route, i, k, j+1, i+1, j, k+1);
+            if(case5 < currentDist){
+              addUntil(temp, route, i);
+              for(int w = k; w >= j+1; --w){
                 temp.add(route.get(w));
               }
               for(int w = i+1; w <= j; ++w){
@@ -238,65 +288,14 @@ public class Optimization extends Trip {
               improvement = true;
               continue;
             }
-            //case 5:
-            int case5 = distanceHelper3Opt(route, i, k, j+1, i+1, j, k+1);
-            if(case5 < currentDist){
+            //case 7:
+            int case7 = distanceHelper3Opt(route, i, j+1, k, i+1, j, k+1);
+            if(case7 < currentDist){
               addUntil(temp, route, i);
-              for(int w = k; w >= j+1; --w){
+              for(int w = j+1; w <= k; ++w){
                 temp.add(route.get(w));
               }
               for(int w = i+1; w <= j; ++w){
-                temp.add(route.get(w));
-              }
-              addRemaining(temp, route, k+1);
-              route = new LinkedList<>(temp);
-              improvement = true;
-              continue;
-            }
-            //case 4:
-            int case4 = distanceHelper3Opt(route, i, j, i+1, k, j+1, k+1);
-            if(case4 < currentDist){
-              addUntil(temp, route, i);
-              for(int w = j; w >= i+1; --w){
-                temp.add(route.get(w));
-              }
-              for(int w = k; w >= j+1; --w){
-                temp.add(route.get(w));
-              }
-              addRemaining(temp, route, k+1);
-              route = new LinkedList<>(temp);
-              improvement = true;
-              continue;
-            }
-            //case 3:
-            int case3 = distanceHelper3Opt(route, i, i+1, j, k, j+1, k+1);
-            if(case3 < currentDist){
-              addUntil(temp, route, j);
-              for(int w = k; w >= j+1; --w){
-                temp.add(route.get(w));
-              }
-              addRemaining(temp, route, k+1);
-              route = new LinkedList<>(temp);
-              improvement = true;
-              continue;
-            }
-            //case 2:
-            int case2 = distanceHelper3Opt(route, i, j, i+1, j+1, k, k+1);
-            if(case2 < currentDist){
-              addUntil(temp, route, i);
-              for(int w = j; w >= i+1; --w){
-                temp.add(route.get(w));
-              }
-              addRemaining(temp, route, j+1);
-              route = new LinkedList<>(temp);
-              improvement = true;
-              continue;
-            }
-            //case 1:
-            int case1 = distanceHelper3Opt(route, i, k, j+1, j, i+1, k+1);
-            if(case1 < currentDist) {
-              addUntil(temp, route, i);
-              for(int w = k; w >= i+1; --w){
                 temp.add(route.get(w));
               }
               addRemaining(temp, route, k+1);
