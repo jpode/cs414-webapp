@@ -103,7 +103,8 @@ public class Trip {
       this.places = opt.plan2Opt();
       System.out.println("2OPT Optimized Round Trip Distance: " + sumDistances(places));
       } else if (optLevel >= 0.75) {
-      this.places = opt.plan3Opt();
+      Executor ex = new Executor(places);
+      this.places = ex.ThreeOpt();
       System.out.println("3OPT Optimized Round Trip Distance: " + sumDistances(places));
     }
     this.plan();
