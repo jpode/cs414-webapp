@@ -132,10 +132,11 @@ class Query extends Component {
     }
   }
 
-  addTypeFilter(){
+  addTypeFilter() {
     var strUser;
+  }
 
-  handleApplyFilters() {
+  handleApplyFilters(){
     let e = document.getElementById("typeSelect");
     let strUser;
     if(e.options[e.selectedIndex].value !== "(none)") {
