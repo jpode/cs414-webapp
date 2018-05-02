@@ -1,6 +1,5 @@
 package com.tripco.t09.planner;
 
-import com.tripco.t09.server.MicroServer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
