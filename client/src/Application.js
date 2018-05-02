@@ -28,8 +28,10 @@ class Application extends Component {
     this.printConfig = this.printConfig.bind(this);
     this.updateTrip = this.updateTrip.bind(this);
     this.editTrip = this.editTrip.bind(this);
+    this.changeTab = this.changeTab.bind(this);
 
     this.printConfig();
+
   }
 
   //Print out information from the config file received from the server.
@@ -126,6 +128,10 @@ class Application extends Component {
       console.error(err);
       alert(err);
     }
+  }
+
+  changeTab() {
+
   }
 
   render() {

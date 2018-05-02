@@ -1,6 +1,7 @@
-import React, {Component} from 'react';
-
-
+import React, {Component} from 'react'
+import {compose, withProps} from 'recompose'
+import {withScriptjs, withGoogleMap,
+  GoogleMap, Polyline, Marker} from 'react-google-maps'
 /* Map obtains and renders the map for the trip.
  * Might be an SVG or KML contained in the server response.
  */
