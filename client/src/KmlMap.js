@@ -3,9 +3,16 @@ import {compose, withProps} from 'recompose'
 import {withScriptjs, withGoogleMap,
   GoogleMap, Polyline, Marker} from 'react-google-maps'
 
-class KmlMap extends React.Component {
+class KmlMap extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+        places : null,
+        path : null,
+        markers : null
+    }
+    this.makePath = this.makePath.bind(this);
+    this.makeMarkers = this.makeMarkers.bind(this);
   }
 
   // react-google-maps expects all of it's data in the form {lat: x, lng: y}
@@ -14,37 +21,39 @@ class KmlMap extends React.Component {
   //  class. I'll leave that to you (it only works since I've hard coded lat/lng in places as Numbers)
 
   // Create our path from the places array
-  makePath(places) {
-    try {
-        let path = places.map(
-            x => ({lat: parseFloat(x.latitude), lng: parseFloat(x.longitude)}));
-        path.push({lat: parseFloat(places[0].latitude), lng: parseFloat(places[0].longitude)});
-        return path;
-    } catch(err){
-        console.log("places has not been initialized yet(KML MAP)");
-    }
+  makePath() {
+      let temp = this.props.places;
+      if(temp.length > 0) {
+       let path = temp.map(x => ({lat: parseFloat(x.latitude), lng: parseFloat(x.longitude)}));
+       path.push({lat: parseFloat(temp[0].latitude), lng: parseFloat(temp[0].longitude)});
+       return path;
+   }
+   else{
+       console.log(this.state.places);
+   }
   }
 
   // Create our markers
-  makeMarkers(places) {
-    try {
-        let markers = places.map(
-            x => <Marker position={{lat: parseFloat(x.latitude), lng: parseFloat(x.longitude)}}/>);
-        return markers;
-    } catch(err){
-        console.log("places has not been initialized yet (KML MAP)");
-    }
+  makeMarkers() {
+      if(this.props.places > 0) {
+          let markersTemp = this.state.places.map(
+              x => <Marker position={{lat: parseFloat(x.latitude), lng: parseFloat(x.longitude)}}/>);
+          this.state.path.setState(markersTemp);
+      }
+      else{
+          console.log(this.state.places);
+      }
   }
 
   render() {
-    const places = this.props.trip.places;
+      console.log("RENDERING KML")
+      let temp = this.makePath();
     return (
         <GoogleMap
             defaultCenter={{lat: 0, lng: 0}}
             defaultZoom={1}>
-          <Polyline path={this.makePath(this.props.trip.places)}
+          <Polyline path={this.makePath(temp)}
                     options={{strokeColor: 'DeepSkyBlue'}}/>
-          {this.makeMarkers(this.props.trip.places)}
         </GoogleMap>
     );
   }

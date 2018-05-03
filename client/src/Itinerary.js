@@ -40,6 +40,8 @@ class Itinerary extends Component {
   }
 
   render() {
+    console.log("RENDERING ITINERARY");
+    console.log(this.props.trip.places);
     let table = this.createTable();
     const numPlaces = table.dists.length;
 
