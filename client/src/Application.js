@@ -36,9 +36,11 @@ class Application extends Component {
 
     this.printConfig = this.printConfig.bind(this);
     this.updateTrip = this.updateTrip.bind(this);
+    this.changeTab = this.changeTab.bind(this);
     this.plan = this.plan.bind(this);
 
     this.printConfig();
+
   }
 
   saveCookie(){
@@ -145,6 +147,10 @@ class Application extends Component {
       console.error(err);
       alert(err);
     }
+  }
+
+  changeTab() {
+
   }
 
   render() {
