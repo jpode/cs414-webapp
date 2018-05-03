@@ -36,8 +36,9 @@ public class Executor {
   }
 
   /**
-   *
-   * @return
+   * Computes a 3-opt optimized trip for the given
+   * list of places.
+   * @return List of places in optimized order.
    */
   public ArrayList<Place> ThreeOpt() {
 
@@ -51,8 +52,7 @@ public class Executor {
       int endIndex;
 
       // If the length of the array doesn't divide evenly into NUM_THREADS,
-      // assign the rest to the last thread. You might want more elegant
-      // balancing than this
+      // assign the rest to the last thread.
       if (i == NUM_THREADS - 1) {
         endIndex = places.size();
       } else {
@@ -62,11 +62,6 @@ public class Executor {
     }
         /*
          * Invoke the the call() method of each ArrayMinTask object in the tasks List.
-         *
-         * Notice how a list of Future<Integer> objects is returned instead of just Integers.
-         * Future objects in Java indicate that the boxed object (in this case an Integer)
-         * is being computed asynchronously. The invokeAll method will return instantly,
-         * but the call method of each ArrayMinTask could still be running.
          */
     List<Future<Route>> routes;
     try {
@@ -75,17 +70,9 @@ public class Executor {
       ArrayList<Place> routePlaces = new ArrayList<Place>();
 
       for (int i = 0; i < NUM_THREADS; i++) {
-        // Further emphasis that the return objects of the Callable tasks
-        // are boxed in Future objects:
         Future<Route> boxedRoutes = routes.get(i);
-                /*
-                 * Calling the get method on a Future object retrieves the object
-                 * it holds. If the object hasn't been calculated yet, the get
-                 * method will block until it is available. get() will raise an
-                 * ExecutionException if the call method calculating its value
-                 * throws an exception.
-                 */
         int localMin = boxedRoutes.get().dist;
+
         if (localMin < min) {
           min = localMin;
           routePlaces = boxedRoutes.get().places;
@@ -97,10 +84,6 @@ public class Executor {
       e.printStackTrace();
       return null;
     } finally {
-      // Starting a thread pool is a very expensive operation, and
-      // idle threads don't have much of a performance impact on an
-      // application. You should only call shutdown when you are completely
-      // done using the thread pool.
       shutdown();
     }
   }
@@ -109,8 +92,6 @@ public class Executor {
    * Stop the ExecutorService
    */
   private void shutdown() {
-    // If you don't call shutdown method on an ExecutorService object,
-    // it will run in a background thread indefinitely
     executor.shutdown();
   }
 }
