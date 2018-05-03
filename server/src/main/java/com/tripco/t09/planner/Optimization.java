@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import com.tripco.t09.server.HTTP;
 import java.util.LinkedList;
 import spark.Request;
+import java.util.Collections;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.lang.Math;
 import java.util.Arrays;
+import sun.awt.image.ImageWatched.Link;
 
 public class Optimization extends Trip {
 
@@ -34,6 +36,7 @@ public class Optimization extends Trip {
     int finalMinDist = sumDistances(finalMinRoute);
     // calculate nearestNeighbor for each starting city
     for (int i = 0; i < places.size(); ++i) {
+      System.out.println("places iteration " + i + " is: ");
       ArrayList<Place> tempMinRoute = nearestNeighborRoute(places.get(i)); // starting city
       int tempMinDist = sumDistances(tempMinRoute);   // find tot. round-trip distance of new route
       if (tempMinDist < finalMinDist) {     // if less than current, set as new min (dist & route)
@@ -165,12 +168,4 @@ public class Optimization extends Trip {
     }
   }
 
-  /**
-   * Top level method that does planning for 3-Opt optimization. Currently will override any
-   * previously calculated SVG map or distances array.
-   */
-
-  public void plan3Opt() {
-
-  }
 }

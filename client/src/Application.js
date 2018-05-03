@@ -36,16 +36,14 @@ class Application extends Component {
 
     this.printConfig = this.printConfig.bind(this);
     this.updateTrip = this.updateTrip.bind(this);
-    this.changeTab = this.changeTab.bind(this);
     this.plan = this.plan.bind(this);
 
     this.printConfig();
-
   }
 
   saveCookie(){
     const cookies = new Cookies();
-    //cookies.set("stateCookie", this.state);
+    cookies.set("stateCookie", this.state);
     console.log(cookies.get("stateCookie"));
   }
 
@@ -147,10 +145,6 @@ class Application extends Component {
       console.error(err);
       alert(err);
     }
-  }
-
-  changeTab() {
-
   }
 
   render() {
