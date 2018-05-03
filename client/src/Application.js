@@ -45,7 +45,7 @@ class Application extends Component {
 
   saveCookie(){
     const cookies = new Cookies();
-    //cookies.set("stateCookie", this.state);
+    cookies.set("stateCookie", this.state);
     console.log(cookies.get("stateCookie"));
   }
 
