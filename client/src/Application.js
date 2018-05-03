@@ -151,11 +151,11 @@ class Application extends Component {
   }
 
   handleSelectHome(){
-    this.setState({nav: 1});
+    this.setState({nav: 0});
   }
 
   handleSelectStaff(){
-    this.setState({nav: 0});
+    this.setState({nav: 1});
   }
 
 
@@ -169,7 +169,7 @@ class Application extends Component {
               <a className="nav-item nav-link" id="nav-staff-tab" onClick={this.handleSelectStaff} data-toggle="tab" href="#nav-staff" role="tab" aria-controls="nav-staff" aria-selected="false"><h5>Staff</h5></a>
             </div>
           </nav>
-          {!nav &&
+          {nav &&
           <div className="tab-content" id="nav-tabContent">
             <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
               <div className="row">
@@ -189,10 +189,11 @@ class Application extends Component {
             </div>
           </div>
           }
-          {nav &&
+          {!nav &&
           <div className="tab-content" id="nav-tabContent">
             <div className="row">
               <div className="col-12">
+                  <StaffPage/>
               </div>
             </div>
           </div>

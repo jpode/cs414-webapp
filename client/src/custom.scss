@@ -2,6 +2,16 @@
     background-color: #1E4D2B !important;
 }
 
+.btn-hidden {
+    background-color: #1E4D2B !important;
+    color: white !important;
+    btn:disabled,
+    btn[disabled] {
+        background-color: #1E4D2B !important;
+        outline-color: #1E4D2B !important;
+    }
+}
+
 .btn-success {
     background-color: #C8C372 !important;
     btn:disabled,
@@ -42,4 +52,9 @@ h1, h2, h3, h4, h5, h6 {
 
 #footer {
     margin-top: auto !important;
+}
+
+body.modal-open {
+    overflow: visible !important;
+    display: block !important;
 }
