@@ -28,9 +28,10 @@ public class Config {
     this.type = "config";
     this.version = 3;
     this.maps = new String[]{"svg"};
-    this.optimization = 2;
+    this.optimization = 3;
     this.optimizations = new OptType[]{new OptType("NN", "Basic Nearest Neighbor algorithm"),
-                                       new OptType("2-opt", "Expansion on NN using 2-opt algorithm")
+                                       new OptType("2-opt", "Expansion on NN using 2-opt algorithm"),
+                                       new OptType("3-opt", "Expansion on NN using 3-opt algorithm")
                                       };
     this.units = new String[]{"miles", "kilometers", "nautical miles", "user defined"};
     Database db = new Database();
