@@ -9,6 +9,12 @@ public class ThreeOpt extends Trip implements Callable<Route> {
   private int startIndex;
   private int endIndex;
 
+
+  /*
+   * Constructor that takes the array of places, and the
+   * subset of which places it will calculate optimizations
+   * for.
+   */
   public ThreeOpt(ArrayList<Place> places, int startIndex, int endIndex) {
     this.places = places;
     this.startIndex = startIndex;
@@ -19,7 +25,6 @@ public class ThreeOpt extends Trip implements Callable<Route> {
    * Top level method that does planning for 3-Opt optimization. Currently will override any
    * previously calculated SVG map or distances array.
    */
-
   public Route call(){
     Optimization opt = new Optimization(places, memoDists);
     Route result;
