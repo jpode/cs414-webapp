@@ -54,6 +54,7 @@ class KmlMap extends Component {
             defaultZoom={1}>
           <Polyline path={this.makePath(temp)}
                     options={{strokeColor: 'DeepSkyBlue'}}/>
+
         </GoogleMap>
     );
   }
