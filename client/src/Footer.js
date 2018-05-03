@@ -31,23 +31,7 @@ class Footer extends Component {
                     <div className="col-md-4 align-self-center">
                         <h4 className="text-white">© 2018 TripCo t{this.props.number} Over9000</h4>
                     </div>
-                    <div className="col-md-4 align-self-center align-right">
-                        <button type="button" className="btn btn-hidden" onClick={this.handleShow}><h4 className="text-white">About Us</h4></button>
-
-                        <Modal show={this.state.show} onHide={this.handleClose}>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Meet the Developers</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <h4>Staff</h4>
-                                <hr/>
-                                <p>TEST</p>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <button type="button" className="btn-success" onClick={this.handleClose}>Close</button>
-                            </Modal.Footer>
-                        </Modal>
-
+                    <div className="col-md-4">
                     </div>
                     <div className="col-md-4">
                         <a href="http://colostate.edu">
