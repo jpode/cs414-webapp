@@ -55,7 +55,6 @@ public class Trip {
         }
         else{
           this.map = worldSvg();
-          System.out.println(this.map);
         }
         System.out.println("calculating distances...");
         this.distances = legDistances();
@@ -91,16 +90,21 @@ public class Trip {
       this.plan();
       return;
     }
-    // optPartition is to be calculated later
-    //double optPartition = 1.0 / 2 + .01;
-    if (optLevel < (1) && optLevel != 0) {
+    // [0,0.25) = no Opt
+    // [0.25, 0.5) = nearest Neighbor
+    // [0.5, 0.75) = 2Opt
+    // [0.75, 1] = 3Opt
+    if (optLevel < 0.25) {
+      this.plan();
+    } else if(optLevel < 0.5){
       this.places = opt.planNearestNeighbor();
       System.out.println("NN Optimized Round Trip Distance: " + sumDistances(places));
-    } else if (optLevel == 1) {
+    } else if (optLevel < 0.75) {
       this.places = opt.plan2Opt();
       System.out.println("2OPT Optimized Round Trip Distance: " + sumDistances(places));
-//      } else if (optLevel < (3 * optPartition)) {
-//        opt.plan3Opt();
+      } else if (optLevel >= 0.75) {
+      this.places = opt.plan3Opt();
+      System.out.println("3OPT Optimized Round Trip Distance: " + sumDistances(places));
     }
     this.plan();
   }
@@ -351,6 +355,7 @@ public class Trip {
       return;
     }
     for(int i = 0; i < distances.size(); ++i){
+      int temp = distances.get(i);
       distances.set(i, (int) Math.round(factor * distances.get(i)));
     }
   }
