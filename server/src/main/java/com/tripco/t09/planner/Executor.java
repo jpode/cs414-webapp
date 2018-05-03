@@ -6,7 +6,7 @@ import java.util.concurrent.*;
 
 public class Executor {
 
-  // Get the number of cores allotted to the JVM
+  // Get the number of cores allotted to the JVM.
   private final int NUM_THREADS = Runtime.getRuntime().availableProcessors();
 
   /*
@@ -20,16 +20,16 @@ public class Executor {
    * If you've used other threading methods in Java before, Callable
    * objects are like Runnable objects but with a return type. Rather
    * than a run method, they have a call method. Runnable objects can be
-   * converted to Callable objects with the Executors.callable method
+   * converted to Callable objects with the Executors.callable method.
    */
   private final ExecutorService executor;
   private ArrayList<Place> places;
 
   /**
-   * Starts up an ExecutorService with a fixed size thread pool
+   * Starts up an ExecutorService with a fixed size thread pool.
    */
   public Executor(ArrayList<Place> places) {
-    // Use one thread per core
+    // Use one thread per core.
     executor = Executors.newFixedThreadPool(NUM_THREADS);
     this.places = places;
     // Fill the array with random integers
@@ -89,7 +89,7 @@ public class Executor {
   }
 
   /**
-   * Stop the ExecutorService
+   * Stop the ExecutorService.
    */
   private void shutdown() {
     executor.shutdown();
