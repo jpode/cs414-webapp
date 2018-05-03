@@ -37,11 +37,13 @@ class Application extends Component {
 
     this.printConfig = this.printConfig.bind(this);
     this.updateTrip = this.updateTrip.bind(this);
+    this.changeTab = this.changeTab.bind(this);
     this.plan = this.plan.bind(this);
     this.handleSelectHome = this.handleSelectHome.bind(this);
     this.handleSelectStaff = this.handleSelectStaff.bind(this);
 
     this.printConfig();
+
   }
 
   saveCookie(){
@@ -157,7 +159,6 @@ class Application extends Component {
   handleSelectStaff(){
     this.setState({nav: 1});
   }
-
 
   render() {
     const nav = (this.state.nav === 0);
