@@ -15,10 +15,17 @@ class KmlMap extends React.Component {
 
   // Create our path from the places array
   makePath(places) {
-    let path = places.map(
-        x => ({lat: parseFloat(x.latitude), lng: parseFloat(x.longitude)}));
-    path.push({lat: parseFloat(places[0].latitude), lng: parseFloat(places[0].longitude)});
-    return path;
+    try {
+      let path = places.map(
+          x => ({lat: parseFloat(x.latitude), lng: parseFloat(x.longitude)}));
+      path.push({
+        lat: parseFloat(places[0].latitude),
+        lng: parseFloat(places[0].longitude)
+      });
+      return path;
+    }catch(err) {
+      console.log("no kml defined yet...")
+    }
   }
 
   // Create our markers
@@ -29,7 +36,6 @@ class KmlMap extends React.Component {
   }
 
   render() {
-    const places = this.props.trip.places;
     return (
         <GoogleMap
             defaultCenter={{lat: 0, lng: 0}}
