@@ -25,10 +25,10 @@ class Application extends Component {
         map: "<svg width=\"1920\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:svg=\"http://www.w3.org/2000/svg\"><g></g></svg>"
       },
       nav : 0
-    }
+    };
 
     var cookie = new Cookies();
-    cookie = cookie.get("stateCookie")
+    cookie = cookie.get("stateCookie");
     if(cookie != null){
       console.log(cookie);
       this.state = cookie;
@@ -37,7 +37,6 @@ class Application extends Component {
 
     this.printConfig = this.printConfig.bind(this);
     this.updateTrip = this.updateTrip.bind(this);
-    this.changeTab = this.changeTab.bind(this);
     this.plan = this.plan.bind(this);
     this.handleSelectHome = this.handleSelectHome.bind(this);
     this.handleSelectStaff = this.handleSelectStaff.bind(this);
