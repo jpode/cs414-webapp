@@ -23,7 +23,8 @@ class Application extends Component {
         places: [],
         distances: [],
         map: "<svg width=\"1920\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:svg=\"http://www.w3.org/2000/svg\"><g></g></svg>"
-      }
+      },
+      nav : 0
     }
 
     var cookie = new Cookies();
@@ -37,6 +38,8 @@ class Application extends Component {
     this.printConfig = this.printConfig.bind(this);
     this.updateTrip = this.updateTrip.bind(this);
     this.plan = this.plan.bind(this);
+    this.handleSelectHome = this.handleSelectHome.bind(this);
+    this.handleSelectStaff = this.handleSelectStaff.bind(this);
 
     this.printConfig();
   }
@@ -147,36 +150,53 @@ class Application extends Component {
     }
   }
 
+  handleSelectHome(){
+    this.setState({nav: 1});
+  }
+
+  handleSelectStaff(){
+    this.setState({nav: 0});
+  }
+
+
   render() {
+    const nav = (this.state.nav === 0);
     return(
         <div id="application" className="container">
           <nav>
             <div className="nav nav-tabs" id="nav-tab" role="tablist">
-              <a className="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><h5>Home</h5></a>
-              <a className="nav-item nav-link" id="nav-staff-tab" data-toggle="tab" href="#nav-staff" role="tab" aria-controls="nav-staff" aria-selected="false"><h5>Staff</h5></a>
+              <a className="nav-item nav-link active" id="nav-home-tab" onClick={this.handleSelectHome} data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><h5>Home</h5></a>
+              <a className="nav-item nav-link" id="nav-staff-tab" onClick={this.handleSelectStaff} data-toggle="tab" href="#nav-staff" role="tab" aria-controls="nav-staff" aria-selected="false"><h5>Staff</h5></a>
             </div>
           </nav>
-          <div className="tab-content" id="nav-tabContent">
-            <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-              <div className="row">
-                <div className="col-12">
-                  <Options trip={this.state.trip} config={this.props.config} plan={this.plan} updateTrip={this.updateTrip} host={this.props.host} updateHost={this.props.updateHost}/>
-                </div>
-                <div className="col-12">
-                  <Destinations trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} plan={this.plan} host={this.props.host}/>
-                </div>
-                <div className="col-12">
-                  <UserEditing trip={this.state.trip} config={this.props.config} plan={this.plan} updateTrip={this.updateTrip}/>
-                </div>
-                <div className="col-12">
-                  <Trip trip={this.state.trip} updateTrip={this.updateTrip} plan={this.plan}/>
+          {!nav &&
+            <div className="tab-content" id="nav-tabContent">
+              <div className="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div className="row">
+                  <div className="col-12">
+                    <Options trip={this.state.trip} config={this.props.config} plan={this.plan} updateTrip={this.updateTrip} host={this.props.host} updateHost={this.props.updateHost}/>
+                  </div>
+                  <div className="col-12">
+                    <Destinations trip={this.state.trip} config={this.props.config} updateTrip={this.updateTrip} plan={this.plan} host={this.props.host}/>
+                  </div>
+                  <div className="col-12">
+                    <UserEditing trip={this.state.trip} config={this.props.config} plan={this.plan} updateTrip={this.updateTrip}/>
+                  </div>
+                  <div className="col-12">
+                    <Trip trip={this.state.trip} updateTrip={this.updateTrip} plan={this.plan}/>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="tab-pane fade" id="nav-staff" role="tabpanel" aria-labelledby="nav-staff-tab">
-              <h5>STAFF</h5>
-            </div>
-          </div>
+          }
+          {nav &&
+            <div className="tab-content" id="nav-tabContent">
+                <div className="row">
+                  <div className="col-12">
+                  </div>
+                </div>
+              </div>
+          }
         </div>
     )
   }
